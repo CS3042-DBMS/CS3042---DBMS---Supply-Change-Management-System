@@ -13,9 +13,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">
-
   <title>Signin Template for Bootstrap</title>
-
   <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
 
   <!-- Bootstrap core CSS -->
@@ -30,20 +28,47 @@
     <img class="mb-4" src="/images/bootstrap-solid.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Welcome 😊</h1>
     <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus=""
+      name="email">
     <label for="inputPassword" class="sr-only">Password</label>
-    <label for="inputPassword" class="sr-only">Re-type Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="password">
     <div class="checkbox mb-3">
       <label>
-        <input type="checkbox" value="remember-me"> Remember me
+        <input type="checkbox" name="rememberme"> Remember me
       </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
-    Don't have a account? <a href='/signin'>Sign in</a>
+    Don't have a account? <a href='/signup'>Sign in</a>
     <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
   </form>
 
+  <script>
+    const loginform = document.querySelector('form');
+    loginform.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // get the values
+      const email = loginform.email.value;
+      const password = loginform.password.value;
+      const rememberme = loginform.rememberme.checked;
+
+      console.log(email, password, rememberme)
+
+      // fetching data to back end
+      try {
+        const res = await fetch('/login', {
+          method: 'POST',
+          mode: 'cors',
+          body: JSON.stringify({
+            email: email,
+            password: password
+          }),
+          headers: { 'Content-Type': 'application/json' }
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    });
+  </script>
 
 </body>
 

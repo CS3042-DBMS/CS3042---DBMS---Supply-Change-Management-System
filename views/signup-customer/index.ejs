@@ -4,7 +4,6 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -44,7 +43,7 @@
     <input type="password" id="RetypeinputPassword" class="form-control" placeholder="Retype Password" required="">
     <div class="checkbox mb-3">
       <label>
-        <input type="checkbox" value="remember-me"> Remember me
+        <input type="checkbox" value="remember-me" name="rememberme"> Remember me
       </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
@@ -52,6 +51,48 @@
     <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
   </form>
 
+  <script>
+
+    const signupform = document.querySelector('form');
+
+    signupform.addEventListener('submit', async (e) => {
+
+      e.preventDefault();
+
+      // get the values
+      const email = signupform.inputEmail.value;
+      const password = signupform.inputPassword.value;
+      const city = signupform.city.value;
+      const address = signupform.address.value;
+      const name = signupform.name.value;
+      const rememberme = signupform.rememberme.checked;
+
+      console.log(email, password, rememberme, name, city, password, address)
+
+
+
+
+
+      // fetch data to bacck end to regidter customer
+      try {
+        const res = await fetch("/signup", {
+          method: "POST",
+          mode: 'cors',
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            city: city,
+            address: address,
+            name: name
+          }),
+          headers: { 'Content-Type': 'application/json' },
+
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    });
+  </script>
 
 </body>
 
