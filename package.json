@@ -1,0 +1,19 @@
+{
+  "name": "cs3042-dbms",
+  "version": "1.0.0",
+  "description": "Supply Chain Management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaheshMadushan/CS3042-DBMS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaheshMadushan/CS3042-DBMS/issues"
+  },
+  "homepage": "https://github.com/MaheshMadushan/CS3042-DBMS#readme"
+}
