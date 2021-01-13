@@ -2,7 +2,7 @@
   "name": "cs3042-dbms",
   "version": "1.0.0",
   "description": "Supply Chain Management",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/MaheshMadushan/CS3042-DBMS/issues"
   },
-  "homepage": "https://github.com/MaheshMadushan/CS3042-DBMS#readme"
+  "homepage": "https://github.com/MaheshMadushan/CS3042-DBMS#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "mysql": "^2.18.1"
+  }
 }

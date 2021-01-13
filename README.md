@@ -1,1 +1,1 @@
-# CS3042-DBMS
+# CS3042-DBMS - Supply Chain Management System
