@@ -1,6 +1,8 @@
-const bcrypt = require('bcrypt');
-const pool = require('../models/connection');
 
+
+let pool = require('../database/connection');
+const bcrypt = require('bcrypt');
+const AuthCustomer = require('../models/authentication/customer/authCustomer').getAuthCustomerInstance();
 /****
  * TODO
  *  - need to validate request data
@@ -43,29 +45,17 @@ module.exports.signup_post = (req,res) => {
                 return 
             }
 
-
             // store in database
-            pool.getConnection(function(err, connection) {
-                if (err) {
-                    res.status(500).send('Internal Server Error')
-                    res.end();
-                    throw err;
-                } // not connected!
-                
-                // Use the connection
-                connection.query(`INSERT INTO customer (customer_name,customer_address,city,password,email) VALUES (?,?,?,?,?)`,[name,address,city,hash,email], function (error, results, fields) {
-                    console.log(results);
-                    console.log(fields);
-
-                // When done with the connection, release it.
-                connection.release();
-
-                // Handle error after the release.
-                if (error) {throw error;}
-
-                // Don't use the connection here, it has been returned to the pool.
-                });
-            });
+            AuthCustomer.registerCustomer(pool,req,res,{email:email,address:address,name:name,city:city,hash:hash})
+            .then(data => {
+                // if success redirect to the login page
+                res.redirect('http://localhost:5000/login')
+                console.log(data)
+            })
+            .catch(err => {
+                res.status(500).send('Internal Server Error')
+                throw new Error(err);
+            })
         })
     })
 }
