@@ -3,13 +3,7 @@
 let pool = require('../database/connection');
 const bcrypt = require('bcrypt');
 const AuthCustomer = require('../models/authentication/customer/authCustomer').getAuthCustomerInstance();
-/****
- * TODO
- *  - need to validate request data
- *  - check user exist prior to create new entry in db 
- *  - error handling
- *  - login function
- */
+
 
 module.exports.signup_get = (req,res) => {
     res.render('signup-customer/index')
@@ -18,7 +12,13 @@ module.exports.signup_get = (req,res) => {
 module.exports.login_get = (req,res) => {
     res.render('login-customer/index')
 }
-
+/****
+ * TODO
+ *  - need to validate request data
+ *  - check user exist prior to create new entry in db 
+ *  - error handling
+ *  - login function
+ */
 module.exports.signup_post = (req,res) => {
     const {
         email,
@@ -46,7 +46,16 @@ module.exports.signup_post = (req,res) => {
             }
 
             // store in database
-            AuthCustomer.registerCustomer(pool,req,res,{email:email,address:address,name:name,city:city,hash:hash})
+            AuthCustomer.registerCustomer(
+                pool,
+                req,
+                res,{
+                    email:email,
+                    address:address,
+                    name:name,
+                    city:city,
+                    hash:hash
+                })
             .then(data => {
                 // if success redirect to the login page
                 res.redirect('http://localhost:5000/login')
