@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 CREATE TABLE `Product` (
   `product_id` int(10) NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(30) NOT NULL,
+  `product_name` varchar(50) NOT NULL,
   `product_type` varchar(50) NOT NULL,
   `description` varchar(1000) NOT NULL,
   `unit_capacity` int(100) NOT NULL CHECK (`unit_capacity` > 0),
@@ -66,9 +66,9 @@ CREATE TABLE `Order` (
   `state` varchar(10) NOT NULL,
   `delivery_address` varchar(1000) NOT NULL,
   PRIMARY KEY (`order_id`)
---   FOREIGN KEY (`cart_id`) REFERENCES `Cart`,`Cart_addition` ON DELETE CASCADE ON UPDATE CASCADE,
+--   FOREIGN KEY (`cart_id`) REFERENCES `Cart`,`Cart_Addition` ON DELETE CASCADE ON UPDATE CASCADE,
 --   FOREIGN KEY (`route_id`) REFERENCES `Route` ON DELETE CASCADE ON UPDATE CASCADE,
---   FOREIGN KEY (`schedule_id`) REFERENCES `Truck_schedule` ON DELETE CASCADE ON UPDATE CASCADE
+--   FOREIGN KEY (`schedule_id`) REFERENCES `Truck_Schedule` ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Customer` (
@@ -199,9 +199,9 @@ CREATE TABLE `Order_Assign` (
 ALTER TABLE `Cart`
   ADD FOREIGN KEY (`customer_id`) REFERENCES `Customer` (`customer_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE `Cart_addition`
-   ADD CONSTRAINT `Cart_addition_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `Cart` (`cart_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `Cart_addition_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `Product` (`product_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `Cart_Addition`
+   ADD CONSTRAINT `Cart_Addition_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `Cart` (`cart_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `Cart_Addition_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `Product` (`product_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE `Customer`
   ADD CONSTRAINT `Customer_ibfk_1` FOREIGN KEY (`email`) REFERENCES `User` (`email`) ON DELETE RESTRICT ON UPDATE RESTRICT;
@@ -234,20 +234,20 @@ ALTER TABLE `Order_Assign`
 
 ALTER TABLE `Order`
   ADD CONSTRAINT `Order_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `Cart` (`cart_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `Order_ibfk_2` FOREIGN KEY (`cart_id`) REFERENCES `Cart_addition` (`cart_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `Order_ibfk_2` FOREIGN KEY (`cart_id`) REFERENCES `Cart_Addition` (`cart_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `Order_ibfk_3` FOREIGN KEY (`route_id`) REFERENCES `Route` (`route_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `Order_ibfk_4` FOREIGN KEY (`schedule_id`) REFERENCES `Truck_schedule` (`schedule_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `Order_ibfk_4` FOREIGN KEY (`schedule_id`) REFERENCES `Truck_Schedule` (`schedule_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE `truck_schedule` 
-  ADD CONSTRAINT `Truck_schedule_ibfk_1` FOREIGN KEY (`assistant_id`) REFERENCES `driver_assistant`(`assitant_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `Truck_schedule_ibfk_2` FOREIGN KEY (`route_id`) REFERENCES `Route` (`route_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `Truck_schedule_ibfk_3` FOREIGN KEY (`truck_id`) REFERENCES `Truck` (`truck_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `Truck_schedule_ibfk_4` FOREIGN KEY (`driver_id`) REFERENCES `Driver` (`driver_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `Truck_Schedule` 
+  ADD CONSTRAINT `Truck_Schedule_ibfk_1` FOREIGN KEY (`assistant_id`) REFERENCES `Driver_Assistant`(`assitant_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `Truck_Schedule_ibfk_2` FOREIGN KEY (`route_id`) REFERENCES `Route` (`route_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `Truck_Schedule_ibfk_3` FOREIGN KEY (`truck_id`) REFERENCES `Truck` (`truck_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `Truck_Schedule_ibfk_4` FOREIGN KEY (`driver_id`) REFERENCES `Driver` (`driver_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
-insert into `product`(`product_name`,`product_type`,`description`,`unit_capacity`,`unit_price`) VALUES('promate single rule CR pages 80','stationary','available book types are single rule, double rule, square rule: no of pages 40,80,120,160:CR and exercise:promate and atlas',15,115);
-insert into `product`(`product_name`,`product_type`,`description`,`unit_capacity`,`unit_price`) VALUES('promate double rule CR pages 80','stationary','available book types are single rule, double rule, square rule: no of pages 40,80,120,160:CR and exercise:promate and atlas',15,115);
-insert into `product`(`product_name`,`product_type`,`description`,`unit_capacity`,`unit_price`) VALUES('promate square rule CR pages 80','stationary','available book types are single rule, double rule, square rule: no of pages 40,80,120,160:CR and exercise:promate and atlas',15,115);
+insert into `Product`(`product_name`,`product_type`,`description`,`unit_capacity`,`unit_price`) VALUES('promate single rule CR pages 80','stationary','available book types are single rule, double rule, square rule: no of pages 40,80,120,160:CR and exercise:promate and atlas',15,115);
+insert into `Product`(`product_name`,`product_type`,`description`,`unit_capacity`,`unit_price`) VALUES('promate double rule CR pages 80','stationary','available book types are single rule, double rule, square rule: no of pages 40,80,120,160:CR and exercise:promate and atlas',15,115);
+insert into `Product`(`product_name`,`product_type`,`description`,`unit_capacity`,`unit_price`) VALUES('promate square rule CR pages 80','stationary','available book types are single rule, double rule, square rule: no of pages 40,80,120,160:CR and exercise:promate and atlas',15,115);
 
 
 
