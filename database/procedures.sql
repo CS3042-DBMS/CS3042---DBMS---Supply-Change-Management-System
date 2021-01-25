@@ -14,7 +14,6 @@ CREATE OR REPLACE PROCEDURE `add_to_cartAddition` (
   )
 BEGIN
     set AUTOCOMMIT = 0;
-    
     INSERT INTO `cart_addition` (`cart_id`,`product_id`,`quantity`) VALUES 
     (get_max_cart_id(),product_id,quantity);
     commit;

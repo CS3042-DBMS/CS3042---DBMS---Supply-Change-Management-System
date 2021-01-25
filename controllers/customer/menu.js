@@ -1,4 +1,5 @@
 let pool = require('../../database/connection');
+const {validateAddToCart} = require('../../validation/add_to_cart');
 const bcrypt = require('bcrypt');
 const Customer = require('../../models/customer/customer');
 
@@ -15,18 +16,30 @@ async function getMenu(request,response){
 }
     async function addToCart(request,response) {
         // 1 means cart
+        const {error} = validateAddToCart(request.body);
+        // if(error){
+        //     return response.status(400).send(error.message);
+        //     }
         try {
-            if(request.body.method_type ==1){
-                await Customer.add_to_cartAddition(request);
-            }
-    
-            else if(request.body.method_type ==2){
+          
+            if(request.body.method_type ==2){
                 await Customer.add_to_cart();
     
     
-            }
+               }
+            else if(request.body.method_type ==1){
+                if(error){
+                     return response.status(400).send(error.message);}
+                    
+                else{ await Customer.add_to_cartAddition(request);}
+               
             
-        } catch (error) {
+        
+             }
+            }
+    
+            
+         catch (error) {
             console.log(error);
         }
         response.redirect('back');
