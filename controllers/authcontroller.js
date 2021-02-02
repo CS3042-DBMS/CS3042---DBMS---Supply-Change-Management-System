@@ -10,7 +10,7 @@ module.exports.signup_get = (req,res) => {
 }
 
 module.exports.login_get = (req,res) => {
-    res.render('login-customer/index')
+    res.render('login/index')
 }
 /****
  * TODO
@@ -22,15 +22,13 @@ module.exports.login_get = (req,res) => {
 module.exports.signup_post = (req,res) => {
     const {
         email,
-        address,
         name,
-        city,
-        password
+        type,
+        password,
+        contact_no
     } = req.body;
 
     // ************ to-do - validating ********** //
-
-
     // hashing the password
     bcrypt.genSalt(10, (err, salt) => {
         if(err){
@@ -40,7 +38,7 @@ module.exports.signup_post = (req,res) => {
         bcrypt.hash(password,salt,(err,hash) => {
 
             if(err){
-                console.log(err)
+                console.error('[error] - hashing password - contoller/authcontroller '+err)
                 res.status(500).send('Internal Server Error')
                 return 
             }
@@ -51,19 +49,21 @@ module.exports.signup_post = (req,res) => {
                 req,
                 res,{
                     email:email,
-                    address:address,
                     name:name,
-                    city:city,
+                    type:type,
+                    contact_no:contact_no,
                     hash:hash
                 })
             .then(data => {
                 // if success redirect to the login page
-                res.redirect('http://localhost:5000/login')
-                console.log(data)
+                res.status(400).json({error:0})
+                console.log(data[0])
             })
             .catch(err => {
-                res.status(500).send('Internal Server Error')
-                throw new Error(err);
+                // if email already used send bad reqeyuest
+                if(err.code === 'ER_DUP_ENTRY')
+                    res.status(400).json({error:'this email alredy used'})
+                    console.log(err);
             })
         })
     })
