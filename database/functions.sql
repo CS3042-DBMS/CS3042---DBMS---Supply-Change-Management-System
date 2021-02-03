@@ -1,8 +1,9 @@
-create function get_max_order_id()
+create function get_max_cart_id()
  returns integer
   return
-   (select max(order_id) from Order);
-   
+   (select max(cart_id) from cart);
+
+--    creating customer function
 DELIMITER //
 CREATE FUNCTION create_cus(
 	email varchar(100),
