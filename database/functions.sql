@@ -1,4 +1,5 @@
-create function get_max_cart_id()
+create function get_max_order_id()
  returns integer
   return
-   (select max(cart_id) from Cart);
+   (select max(order_id) from Order);
+
