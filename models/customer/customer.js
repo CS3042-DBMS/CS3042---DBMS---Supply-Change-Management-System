@@ -15,9 +15,9 @@ module.exports= class Customer {
       
     }
 
-    static add_to_cart(request){
+    static add_to_cartAddition(request){
         return new Promise((resolve,reject) =>{
-            pool.query("CALL add_to_cart(?,?)",
+            pool.query("CALL add_to_cartAddition(?,?)",
             [
                 
                 request.body.prod,
@@ -34,54 +34,22 @@ module.exports= class Customer {
         })
         
     }
-    static getCart(request) {
-        return new Promise((resolve, reject) => {
-            pool.query("CALL getcart()",
-                // [
-                //     // request.userEmail
-                // ],
-                (error, results, fields) => {
-                    if (error) {
-                        reject(error);
-                    };
-                    resolve(results);
-                }
-            )
+    static add_to_cart(){
+        return new Promise((resolve,reject) =>{
+            pool.query("CALL add_to_cart()",
+            [
+            
+            ],
+            (error, results, fields) => {
+                if (error) {
+                    reject(error);
+                };
+                resolve(console.log('cart created'));
+            }
+        )
+
         })
-      
-    }
-    static getTotalPrice(request) {
-        return new Promise((resolve, reject) => {
-            pool.query("CALL totalPrice()",
-                // [
-                //     // request.userEmail,
-                // ],
-                (error, results, fields) => {
-                    if (error) {
-                        reject(error);
-                    };
-                    resolve(results);
-                }
-            )
-        })
-      
-    }
-    static removeCartItem(request) {
-        return new Promise((resolve, reject) => {
-            pool.query("CALL removeCartItem(?)",
-                [
-                 
-                    request.body.prod
-                ],
-                (error, results, fields) => {
-                    if (error) {
-                        reject(error);
-                    };
-                    resolve("removed cart item");
-                }
-            )
-        })
-      
+        
     }
     
 
