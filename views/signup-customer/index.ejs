@@ -10,12 +10,9 @@
   <link rel="icon" href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">
 
   <title>Signin Template for Bootstrap</title>
-
   <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
-
   <!-- Bootstrap core CSS -->
   <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
-
   <!-- Custom styles for this template -->
   <link href="/stylesheets/signin.css" rel="stylesheet">
 </head>
@@ -28,14 +25,17 @@
     <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
     <label for="name" class="sr-only">Name</label>
     <input type="text" id="name" class="form-control" placeholder="Name" required="">
-    <label for="address" class="sr-only">Address</label>
-    <input type="text" id="address" class="form-control" placeholder="Address " required="">
-    <label for="city" class="sr-only">City</label>
-    <select id='city' class="custom-select">
-      <option selected>New Hampton</option>
-      <option value="1">Las vegas</option>
-      <option value="2">New York</option>
-      <option value="3">UK</option>
+    <label for="contact_no" class="sr-only">Telephone</label>
+    <input type="number" id="contact_no" class="form-control" placeholder="Telephone" required="">
+    <label for="type" class="sr-only">You are a/an</label>
+    <select id='type' class="custom-select">
+      <option selected>wholesaler</option>
+      <option value="retailer">retailer</option>
+      <option value="end customer">end customer</option>
+      <!--  
+      <option value="1">retailer</option>
+      <option value="2">end customer</option>
+      -->
     </select>
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
@@ -62,32 +62,38 @@
       // get the values
       const email = signupform.inputEmail.value;
       const password = signupform.inputPassword.value;
-      const city = signupform.city.value;
-      const address = signupform.address.value;
+      const contact_no = signupform.contact_no.value;
+      const type = signupform.type.value;
       const name = signupform.name.value;
       const rememberme = signupform.rememberme.checked;
 
-      console.log(email, password, rememberme, name, city, password, address)
+      console.log(email, password, rememberme, name, type, password,)
 
-
-
-
-
-      // fetch data to bacck end to regidter customer
+      // fetch data to bacck end to register customer
       try {
-        const res = await fetch("/signup", {
+
+        fetch("/signup", {
           method: "POST",
           mode: 'cors',
           body: JSON.stringify({
             email: email,
             password: password,
-            city: city,
-            address: address,
+            type: type,
+            contact_no: contact_no,
             name: name
           }),
           headers: { 'Content-Type': 'application/json' },
 
+        }).then(response => {
+          return response.json()
+        }).then(data => {
+          if (data.error)
+            alert(data.error)
+          else {
+            window.location.href = '/login'
+          }
         })
+
       } catch (e) {
         console.log(e)
       }
