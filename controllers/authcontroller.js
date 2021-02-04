@@ -81,6 +81,7 @@ module.exports.login_get = (req,res) => {
             if(decodedToken.type === "customer"){
 
                 res.redirect("/customer_func/menu/view")
+                
             }else if (decodedToken.type === "manager"){
 
                 // <=================== TODO =======================>
