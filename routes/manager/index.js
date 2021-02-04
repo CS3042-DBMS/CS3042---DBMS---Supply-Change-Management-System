@@ -1,7 +1,8 @@
 const router = require('express').Router();
-const menu = require('./menu');
-
-router.use('/menu',menu);
+const orders = require('./orders');
+const trainshed = require('./trains');
+router.use('/orders',orders);
+router.use('/trainschedule',trainshed);
 
 
 module.exports = router

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/manager-train.css">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Train Schedule</h2>
+    <div class="tableData">
+        <table class="orderTable">
+          <thead>
+          </thead>
+          <tbody>
+              <tr>
+                  <th>Train Name</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Available Capacity</th> 
+                             
+              </tr>
+              
+              <% result.forEach(item => {%>
+                <tr>
+                  <td><%= item.train_name  %></td>
+                  <td><%= item.time_schedule.substring(0,10)  %></td>
+                  <td><%= item.time_schedule.substring(11,16)  %></td>
+                  <td><%= item.available_capacity %></td>
+                </tr>
+              <% }); %> 
+    
+          </tbody>
+        </table>
+      </div>
+</body>
+</html>

@@ -7,7 +7,7 @@ async function viewOrders(request,response){
     try {
         const res = await Manager.viewOrders;
         const result = JSON.parse(JSON.stringify(res[0]))
-        console.log(request);
+        //console.log(request);
         response.render('manager/menu',{result: result});
         
     } catch (error) {
