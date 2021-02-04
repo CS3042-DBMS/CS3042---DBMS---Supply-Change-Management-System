@@ -69,6 +69,10 @@ module.exports.signup_get = (req,res) => {
 
 module.exports.login_get = (req,res) => {
 
+
+
+
+    
     const token = req.cookies.jwt;
     if(token){
         const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
