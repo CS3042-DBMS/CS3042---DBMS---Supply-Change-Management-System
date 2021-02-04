@@ -1,23 +1,4 @@
 # CS3042-DBMS - Supply Chain Management System
-changes : test/nuvindu2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# CS3042-DBMS - Supply Chain Management System
 
 
 
@@ -138,5 +119,4 @@ const token = req.cookies.jwt;
 const email = decodedToken.email;
 const userType = decodedToken.type;
 ```
-
 
