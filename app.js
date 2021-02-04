@@ -17,6 +17,7 @@ app.use(cors()); // when we are having api call this will not block it and send 
 app.set('view engine','ejs')
 // routes
 app.use(authRoutes); // authentication routes
+app.use(express.static(__dirname + '/'));
 app.use('/', routes);
 app.listen(process.env.PORT || 5000, () => {
   console.log('app is running on port:' + process.env.PORT || 5000);

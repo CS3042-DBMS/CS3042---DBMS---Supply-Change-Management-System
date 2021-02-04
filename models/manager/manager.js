@@ -9,11 +9,22 @@ module.exports = class Manager{
                         reject(error);
                     };
 
-                    console.log(results);
+                    //console.log(results);
                     resolve(results);
 
                 }
             )
+        })
+    }
+
+    static viewTrainSchedule(){
+        return new Promise((resolve,reject) => {
+            pool.query("CALL viewTrain()", (error,results, fields) => {
+                if(error){
+                    reject(error);
+                };
+                resolve(results);
+            })
         })
     }
 }

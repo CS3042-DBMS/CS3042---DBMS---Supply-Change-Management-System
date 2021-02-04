@@ -1,0 +1,20 @@
+html{
+    background-color: rgba(235, 252, 0, 0.74);
+}
+h1{
+    font-size: 28px;
+}
+table.orderTable {
+	margin-top: 50px;
+	text-align:center;  
+	border-collapse: collapse;
+	border-color: black;
+    box-sizing: border-box;
+    text-indent: initial;
+}
+
+table.orderTable th, table.orderTable td {
+    background-color: rgb(0, 255, 55);
+    padding: 10px;
+    border: 2px solid;
+} 

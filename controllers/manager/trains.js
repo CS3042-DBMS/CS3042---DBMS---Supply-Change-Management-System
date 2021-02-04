@@ -3,12 +3,12 @@ const bcrypt = require('bcrypt');
 
 const Manager = require('../../models/manager/manager');
 
-async function viewOrders(request,response){
+async function viewTrainSchedule(request,response){
     try {
-        const res = await Manager.viewOrders;
+        const res = await Manager.viewTrainSchedule();
         const result = JSON.parse(JSON.stringify(res[0]))
-        //console.log(request);
-        response.render('manager/menu',{result: result});
+        //console.log(res[0][0].train_name);
+        response.render('manager/trainschedule',{result: result});
         
     } catch (error) {
         response.send(error.message);
@@ -16,4 +16,4 @@ async function viewOrders(request,response){
     }
 }
 
-exports.viewOrders = viewOrders;
+exports.viewTrainSchedule = viewTrainSchedule;
