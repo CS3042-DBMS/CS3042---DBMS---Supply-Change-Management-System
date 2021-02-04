@@ -73,10 +73,11 @@ module.exports.login_get = (req,res) => {
     if(token){
         const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
             if(err){
-
+                //if anny error occured then redirect to login
                 res.redirect('/')
 
             }
+
             if(decodedToken.type === "customer"){
 
                 res.redirect("/customer_func/menu/view")
@@ -152,7 +153,7 @@ module.exports.signup_post = (req,res) => {
                 // if email already used send bad reqeyuest
                 if(err.code === 'ER_DUP_ENTRY')
                     res.status(400).json({error:'this email alredy used'})
-                    console.log(err);
+                    console.log('[error] - sigining in user [email is laready used] - contoller/authcontroller '+ err);
             })
         })
     })
@@ -204,7 +205,7 @@ module.exports.login_post = (req,res) => {
 
         }).catch(err => {
 
-            console.log(err)
+            console.log('[error] - checking password - contoller/authcontroller '+err)
             // error occured while hash comparing
             res.status(500).send('Internal Server Error')
 
@@ -214,8 +215,7 @@ module.exports.login_post = (req,res) => {
 
         // if user not in the database db throws INVALID_LOGIN exception
         if(err.sqlMessage === 'INVALID_LOGIN')
-
             res.status(400).json({error:'check password or email again'})
-            console.log(err.sqlMessage);
+            console.log('[error] - invalid login attempt - contoller/authcontroller '+err.sqlMessage);
     })
 }
