@@ -7,16 +7,6 @@ BEGIN
     commit;
 END$$
 
-                                                                              
-                                                                              
-                                                                              
-                                                                              
-                                                                              
-                                                                              
-                                                                              
-                                                                              
-                                                                              
-                                                                              
 
 -- check user existense and if exist return pw and type
 DELIMITER // 
