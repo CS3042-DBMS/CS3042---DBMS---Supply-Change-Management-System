@@ -79,7 +79,7 @@ CREATE TABLE `Customer` (
 
 CREATE TABLE `User` (
   `email` varchar(100) NOT NULL ,
-  `password` varchar(30) NOT NULL,
+  `password` TEXT NOT NULL,
   `type` varchar(10) NOT NULL,
   PRIMARY KEY (`email`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

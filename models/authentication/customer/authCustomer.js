@@ -14,7 +14,7 @@ class AuthCustomer{
      * @param {cusDetails} req - details of the customer including hashed password
      * 
      */
-    async registerCustomer(pool,req,res,...cusDetails){
+    async registerCustomer(pool,res,req,...cusDetails){
 
         
             return new Promise((resolve, reject) => {

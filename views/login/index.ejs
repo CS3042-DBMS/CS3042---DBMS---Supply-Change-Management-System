@@ -6,10 +6,15 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
   <meta name="description" content="">
+
   <meta name="author" content="">
+
   <link rel="icon" href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">
+
   <title>Signin Template for Bootstrap</title>
+
   <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
 
   <!-- Bootstrap core CSS -->
@@ -20,46 +25,69 @@
 </head>
 
 <body class="text-center">
+
   <form class="form-signin">
+
     <img class="mb-4" src="/images/bootstrap-solid.svg" alt="" width="72" height="72">
+
     <h1 class="h3 mb-3 font-weight-normal">Welcome 😊</h1>
+
     <label for="inputEmail" class="sr-only">Email address</label>
+
     <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus=""
       name="email">
+
     <label for="inputPassword" class="sr-only">Password</label>
+
     <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="password">
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" name="rememberme"> Remember me
-      </label>
-    </div>
+
     <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+
     Don't have a account? <a href='/signup'>Sign in</a>
+
     <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+
   </form>
 
   <script>
+
     const loginform = document.querySelector('form');
+
     loginform.addEventListener('submit', async (e) => {
+
       e.preventDefault();
+
       // get the values
       const email = loginform.email.value;
       const password = loginform.password.value;
-      const rememberme = loginform.rememberme.checked;
-
-      console.log(email, password, rememberme)
 
       // fetching data to back end
       try {
-        const res = await fetch('/login', {
+
+        fetch('/login', {
+
           method: 'POST',
           mode: 'cors',
           body: JSON.stringify({
             email: email,
             password: password
           }),
+
           headers: { 'Content-Type': 'application/json' }
+
+        }).then(response => {
+
+          return response.json()
+
+        }).then(data => {
+
+          if (data.error === false && data.message === 'login success') {
+
+            console.log(data);
+            window.location.href = data.redirect;
+          }
         })
+
       } catch (error) {
         console.log(error)
       }
