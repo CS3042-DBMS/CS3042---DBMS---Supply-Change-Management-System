@@ -10,7 +10,7 @@ router.get('/signup',authController.signup_get)
 router.post('/signup', authController.signup_post)
 
 // log in view access route
-router.get('/login', authController.login_get)
+router.get('/', authController.login_get)
 
 // login route
 router.post('/login', authController.login_post)
