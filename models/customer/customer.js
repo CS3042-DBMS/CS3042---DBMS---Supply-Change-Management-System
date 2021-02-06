@@ -1,9 +1,10 @@
 let pool = require('../../database/connection');
 const jwt = require('jsonwebtoken');
+const {decodeToken} = require('../../middleware/authMiddleware') // add this middle ware to authenticate without login
+
 
 module.exports= class Customer {
     static getmenu(request) {
-       
         return new Promise((resolve, reject) => {
             pool.query("CALL getMenu()",   
                 (error, results, fields) => {
@@ -17,22 +18,32 @@ module.exports= class Customer {
       
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     static add_to_cart(request){
         console.log('request'+request)
         // get the token from request
-        const token = request.cookies.jwt;
-        console.log(token)
+        const decodedToken = decodeToken(request)
 
-        // if token available decode it
-        let decodedToken;
-        if(token){
-        decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
-            if(err){
-                res.redirect('/')
-            }
-			return decodedToken
-        })
-        }
 
         console.log(decodedToken);
         
@@ -59,20 +70,8 @@ module.exports= class Customer {
     static getCart(request) {
         console.log('request'+request)
         // get the token from request
-        const token = request.cookies.jwt;
-        console.log(token)
-
-        // if token available decode it
-        let decodedToken;
-        if(token){
-        decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
-            if(err){
-                res.redirect('/')
-            }
-			return decodedToken
-        })
-        }
-
+        const decodedToken = decodeToken(request)
+        
         console.log(decodedToken);
         
         // extract the email
@@ -95,19 +94,8 @@ module.exports= class Customer {
     static getTotalPrice(request) {
         console.log('request'+request)
         // get the token from request
-        const token = request.cookies.jwt;
-        console.log(token)
+        const decodedToken = decodeToken(request)
 
-        // if token available decode it
-        let decodedToken;
-        if(token){
-        decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
-            if(err){
-                res.redirect('/')
-            }
-			return decodedToken
-        })
-        }
 
         console.log(decodedToken);
         
@@ -131,19 +119,8 @@ module.exports= class Customer {
     static removeCartItem(request) {
         console.log('request'+request)
         // get the token from request
-        const token = request.cookies.jwt;
-        console.log(token)
+        const decodedToken = decodeToken(request)
 
-        // if token available decode it
-        let decodedToken;
-        if(token){
-        decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
-            if(err){
-                res.redirect('/')
-            }
-			return decodedToken
-        })
-        }
 
         console.log(decodedToken);
         
@@ -165,23 +142,24 @@ module.exports= class Customer {
         })
       
     }
+
+
+
+
+
+
+
+
+
+
+
+
     static createOrder(request) {
         return new Promise((resolve, reject) => {
             console.log('request'+request)
             // get the token from request
-            const token = request.cookies.jwt;
-            console.log(token)
-    
-            // if token available decode it
-            let decodedToken;
-            if(token){
-            decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
-                if(err){
-                    res.redirect('/')
-                }
-                return decodedToken
-            })
-            }
+            const decodedToken = decodeToken(request)
+
     
             console.log(decodedToken);
             
