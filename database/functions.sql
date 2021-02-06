@@ -1,7 +1,7 @@
 create function get_max_order_id()
  returns integer
   return
-   (select max(order_id) from Order);
+   (select max(order_id) from `Order`);
    
 DELIMITER //
 CREATE FUNCTION create_cus(
