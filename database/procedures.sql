@@ -22,6 +22,15 @@ BEGIN
     commit;
 END$$
 
+-- get list of orders corresponding to his store 
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `view_orders`(email VARCHAR(100))
+BEGIN
+    
+    select * from `order` join `route` using (route_id) natural left outer join `order_schedule` where store_id in (select `store_id` from store_manager where `email` = email);
+    
+END
+//
 
 -- check user existense and if exist return pw and type
 DELIMITER // 

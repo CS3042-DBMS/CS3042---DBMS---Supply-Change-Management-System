@@ -8,10 +8,13 @@ const {requireAuthCustomer,requireAuthManager,requireAuthEmployee} = require('..
 
 
 const customerFunctions = require('./customer');
+const storeManagerFunctions = require('./storemanager');
 const authRoutes = require('./authroutes/authroute')
 
 // customer routes
 router.use('/customer_func', requireAuthCustomer,customerFunctions);
+//store manager routes
+router.use('/storemanager',storeManagerFunctions);  // parameter 2 and 3 should be changed
 // autentication routes
 router.use('/',authRoutes)
 
