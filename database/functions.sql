@@ -1,8 +1,10 @@
-create function get_max_order_id()
+DELIMITER //
+create function get_max_order_id(id int(10))
  returns integer
   return
-   (select max(order_id) from `Order`);
-   
+   (select max(order_id) from `Order` where customer_id=id);
+ //
+
 DELIMITER //
 CREATE FUNCTION create_cus(
 	email varchar(100),
@@ -21,4 +23,18 @@ CREATE FUNCTION create_cus(
   END IF;
   RETURN FALSE;
   END
+//
+
+DELIMITER //
+create function quant_price(email varchar(100))
+ returns integer
+  return
+   (select sum(Product.unit_price*Cart.quantity) as total_price from Cart left join Product on Cart.product_id=Product.product_id where Cart.customer_id in (select customer_id from Customer where Customer.email=email));
+//
+
+DELIMITER //
+create function quant_capacity(email varchar(100))
+ returns integer
+  return
+   (select sum(Product.unit_capacity*Cart.quantity) as total_price from Cart left join Product on Cart.product_id=Product.product_id where Cart.customer_id in (select customer_id from Customer where Customer.email=email));
 //
