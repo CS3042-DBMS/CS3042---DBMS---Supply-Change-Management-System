@@ -37,26 +37,60 @@ function requireAuthCustomer(req,res,next){
         res.redirect('/')
     }
 }
+//auth driver
 
+function requireAuthDriver(req,res,next){
+
+    // get the token from cookie
+    const token = req.cookies.jwt;
+
+    // token exist then deocde it
+    if(token){
+        const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
+            if(err){
+
+                // any error redirect to login
+                res.redirect('/')
+                return
+            }
+
+            // return decoded token
+            return decodedToken
+        })
+        if(decodedToken.type === 'driver'){
+
+            // driver authenticate by middle ware and excute next function
+            console.log(decodedToken)
+            next();
+        }
+        else{
+
+            res.redirect('/')
+        }
+    }
+    else{
+        res.redirect('/')
+    }
+}
 // auth manager
 function requireAuthManager(req,res,next){
 
     const token = req.cookies.jwt;
     if(token){
-        const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
-            if(err){
-                res.redirect('/')
-                return
+            const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
+                if(err){
+                    res.redirect('/')
+                    return
+                }
+                return decodedToken
+            })
+            if(decodedToken.type === 'manager'){
+                console.log(decodedToken)
+                next();
             }
-            return decodedToken
-        })
-        if(decodedToken.type === 'manager'){
-            console.log(decodedToken)
-            next();
-        }
-        else{
-            res.redirect('/')
-        }
+            else{
+                res.redirect('/')
+            }
     }
     else{
         res.redirect('/')
@@ -88,4 +122,4 @@ function requireAuthEmployee(req,res,next){
     }
 }
 
-module.exports = {requireAuthCustomer,requireAuthManager,requireAuthEmployee};
+module.exports = {requireAuthCustomer,requireAuthManager,requireAuthEmployee,requireAuthDriver};

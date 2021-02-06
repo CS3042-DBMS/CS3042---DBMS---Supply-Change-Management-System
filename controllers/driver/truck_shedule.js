@@ -1,25 +1,20 @@
 let pool = require('../../database/connection');
-const {validateAddToCart} = require('../../validation/add_to_cart');
 const bcrypt = require('bcrypt');
-const Customer = require('../../models/customer/customer');
+const Driver = require('../../models/driver/driver');
 
-async function getMenu(request,response){
+async function getTruckShedule(request,response){
     try {
-        const res = await Customer.getmenu();
+        const res = await Driver.getTruckShedule();
         const result = JSON.parse(JSON.stringify(res[0]))
-        
-
-        response.render('customer/itemList',{result: result});
+        response.render('driver/truck_shedule',{result: result});
         
     } catch (error) {
-        
         response.send(error.message);
         
     }
 }
-    async function addToCart(request,response) {
+    async function addToJob(request,response) {
         // 1 means cart
-        const {error} = validateAddToCart(request.body);
         // if(error){
         //     return response.status(400).send(error.message);
         //     }
@@ -28,7 +23,7 @@ async function getMenu(request,response){
                 if(error){
                      return response.status(400).send(error.message);}
                     
-                else{ await Customer.add_to_cart(request);}
+                else{ await Driver.addToJob(request);}
                
             
         
@@ -45,5 +40,5 @@ async function getMenu(request,response){
 
 
 
-exports.getMenu = getMenu;
-exports.addToCart=addToCart;
+exports.getTruckShedule = getTruckShedule;
+exports.addToJob=addToJob;

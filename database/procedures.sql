@@ -46,6 +46,13 @@ $$
 
 DELIMITER
 $$
+ CREATE OR REPLACE  PROCEDURE getTruckShedule()
+   BEGIN 
+   SELECT  * FROM  truck_schedule;END
+$$
+
+DELIMITER
+$$
  CREATE OR REPLACE  PROCEDURE getcart()
    BEGIN 
     SELECT Cart.product_id, Product.product_name, Product.unit_price, Cart.quantity FROM Cart LEFT  JOIN Product on Product.product_id= Cart.product_id; END
