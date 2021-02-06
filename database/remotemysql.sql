@@ -31,19 +31,13 @@ CREATE TABLE `Product` (
   PRIMARY KEY (`product_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `Cart` (
-  `customer_id` int(10) NOT NULL,
-  `purchased` boolean NOT NULL,
-  PRIMARY KEY (`cart_id`)
---   FOREIGN KEY (`customer_id`) REFERENCES `Customer` ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE `Cart_addition` (
-  `cart_id` int(10) NOT NULL ,
+  `customer_id` int(10) NOT NULL ,
   `product_id` int(10) NOT NULL,
   `quantity` int(10) NOT NULL CHECK (`quantity` > 0),
   PRIMARY KEY (`customer_id`, `product_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `Order` (
   `order_id` int(10) NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) NOT NULL,
@@ -51,6 +45,8 @@ CREATE TABLE `Order` (
   `state` varchar(10) NOT NULL,
   `date_and_time_of_placement` datetime NOT NULL,
   `delivery_address` varchar(1000) NOT NULL,
+  `price` numeric(8,2)  NOT NULL,
+  `capacity` int(100) not null,
   PRIMARY KEY (`order_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -74,7 +70,6 @@ CREATE TABLE `Customer` (
   `email` varchar(100) NOT NULL,
   `contact_number` varchar(50) NOT NULL,
   PRIMARY KEY (`customer_id`)
-  -- FOREIGN KEY(`email`) REFERENCES `User` ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `User` (
@@ -92,8 +87,6 @@ CREATE TABLE `Manager` (
   `email` varchar(100) NOT NULL,
   `contact_number` int(10) NOT NULL,
   PRIMARY KEY (`manager_id`)
---   FOREIGN KEY (`email`) REFERENCES `User` ON DELETE CASCADE ON UPDATE CASCADE
-
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Store_Manager` (
@@ -103,7 +96,6 @@ CREATE TABLE `Store_Manager` (
   `email` varchar(100) NOT NULL,
   `contact_number` int(10) NOT NULL,
   PRIMARY KEY (`store_manager_id`)
---   FOREIGN KEY (`email`) REFERENCES `User` ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Driver` (
@@ -113,8 +105,6 @@ CREATE TABLE `Driver` (
   `email` varchar(100) NOT NULL,
   `contact_number` varchar(10) NOT NULL,
   PRIMARY KEY (`driver_id`)
---   FOREIGN KEY (`store_id`) REFERENCES `store` ON DELETE CASCADE ON UPDATE CASCADE,
---   FOREIGN KEY (`email`) REFERENCES `User` ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Driver_Assistant` (
@@ -124,8 +114,6 @@ CREATE TABLE `Driver_Assistant` (
   `email` varchar(100) NOT NULL,
   `contact_number` int(10) NOT NULL,
   PRIMARY KEY (`assitant_id`)
---   FOREIGN KEY (`store_id`) REFERENCES `store` ON DELETE CASCADE ON UPDATE CASCADE,
---    FOREIGN KEY (`email`) REFERENCES `User` ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Store` (
@@ -155,7 +143,6 @@ CREATE TABLE `Route` (
   `route_name` varchar(30) NOT NULL,
   `description` varchar(2000) NOT NULL,
   PRIMARY KEY (`route_id`)
---   FOREIGN KEY (`store_id`) REFERENCES `Store` ON  UPDATE CASCADE ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Truck` (
@@ -163,7 +150,6 @@ CREATE TABLE `Truck` (
   `store_id` int(10) NOT NULL,
   `licence_number` varchar(30) NOT NULL,
   PRIMARY KEY (`truck_id`)
---   FOREIGN KEY (`store_id`) REFERENCES `Store` ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Railway` (
@@ -177,7 +163,6 @@ CREATE TABLE `Railway_schedule` (
   `time_schedule` datetime NOT NULL,
   `available_capacity` int(5) NOT NULL CHECK (`available_capacity` > 0),
   PRIMARY KEY (`train_name`, `time_schedule`)
---   FOREIGN KEY (`train_name`) REFERENCES `Railway` ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -186,8 +171,6 @@ CREATE TABLE `Order_Assign` (
   `train_name` varchar(30) NOT NULL,
   `time_schedule` datetime NOT NULL,
   PRIMARY KEY (`order_id`)
---   FOREIGN KEY (`train_name`,`time_schedule`) REFERENCES `Railway_schedule` ON DELETE CASCADE ON UPDATE CASCADE
-  
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
