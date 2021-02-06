@@ -1,6 +1,7 @@
 let pool = require('../../database/connection');
 const bcrypt = require('bcrypt');
 const Customer = require('../../models/customer/customer');
+const {validateCutomerOrder} = require('../../validation/validate_cutomer_order');
 
 async function getCart(request,response){
     try {
@@ -29,6 +30,35 @@ async function removeCartItem(request,response){
     
     
 }
+async function createOrder(request,response){
+    const {error} = validateCutomerOrder(request.body);
+    if(error){
+        return response.status(400).send(error.message);
+    }
+
+    try {
+        await Customer.createOrder(request);
+        
+    } catch (error) {
+       return  response.status(400).send(error.message);
+    }
+
+    response.redirect('view');
+
+}
+async function getRoutes(request,response){
+    try {
+        const res = await Customer.getRoutes();
+        const result = JSON.parse(JSON.stringify(res[0]))
+        response.render('customer/order',{result: result });
+        
+    } catch (error) {
+        response.send(error.message);
+        
+    }
+}
 
 exports.getCart = getCart;
 exports.removeCartItem=removeCartItem;
+exports.createOrder=createOrder;
+exports.getRoutes=getRoutes;
