@@ -31,7 +31,7 @@ CREATE TABLE `Product` (
   PRIMARY KEY (`product_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `Cart_addition` (
+CREATE TABLE `Cart` (
   `customer_id` int(10) NOT NULL ,
   `product_id` int(10) NOT NULL,
   `quantity` int(10) NOT NULL CHECK (`quantity` > 0),

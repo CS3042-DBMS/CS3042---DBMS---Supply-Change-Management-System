@@ -83,6 +83,39 @@ module.exports= class Customer {
         })
       
     }
+    static createOrder(request) {
+        return new Promise((resolve, reject) => {
+            pool.query("CALL create_order (?,?)",
+                [
+                    request.body.route_id,
+                    request.body.address
+                    
+    
+                ],
+                function (error, results, fields) {
+                    if (error) {
+                        reject(error);
+                    };
+                    resolve(console.log("entered sucessfully"));
+                }
+            )
+        })
+    
+      
+    }
+    static getRoutes() {
+        return new Promise((resolve, reject) => {
+            pool.query("CALL getRoutes()",
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+                    resolve(results);
+                }
+            )
+        })
+      
+    }
     
 
 }
