@@ -5,7 +5,7 @@ const {validateCutomerOrder} = require('../../validation/validate_cutomer_order'
 
 async function getCart(request,response){
     try {
-        const res = await Customer.getCart();
+        const res = await Customer.getCart(request);
         const res2 = await Customer.getTotalPrice(request);
         const result = JSON.parse(JSON.stringify(res[0]));
         const total = JSON.parse(JSON.stringify(res2[0]));

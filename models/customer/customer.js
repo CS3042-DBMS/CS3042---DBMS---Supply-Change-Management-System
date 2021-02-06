@@ -1,9 +1,11 @@
 let pool = require('../../database/connection');
+const jwt = require('jsonwebtoken');
 
 module.exports= class Customer {
-    static getmenu() {
+    static getmenu(request) {
+       
         return new Promise((resolve, reject) => {
-            pool.query("CALL getMenu()",
+            pool.query("CALL getMenu()",   
                 (error, results, fields) => {
                     if (error) {
                         reject(error);
@@ -16,10 +18,30 @@ module.exports= class Customer {
     }
 
     static add_to_cart(request){
+        console.log('request'+request)
+        // get the token from request
+        const token = request.cookies.jwt;
+        console.log(token)
+
+        // if token available decode it
+        let decodedToken;
+        if(token){
+        decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
+            if(err){
+                res.redirect('/')
+            }
+			return decodedToken
+        })
+        }
+
+        console.log(decodedToken);
+        
+        // extract the email
+        const email = decodedToken.email;
         return new Promise((resolve,reject) =>{
-            pool.query("CALL add_to_cart(?,?)",
+            pool.query("CALL add_to_cart(?,?,?)",
             [
-                
+                email,
                 request.body.prod,
                 request.body.quantity
             ],
@@ -35,11 +57,31 @@ module.exports= class Customer {
         
     }
     static getCart(request) {
+        console.log('request'+request)
+        // get the token from request
+        const token = request.cookies.jwt;
+        console.log(token)
+
+        // if token available decode it
+        let decodedToken;
+        if(token){
+        decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
+            if(err){
+                res.redirect('/')
+            }
+			return decodedToken
+        })
+        }
+
+        console.log(decodedToken);
+        
+        // extract the email
+        const email = decodedToken.email;
         return new Promise((resolve, reject) => {
-            pool.query("CALL getcart()",
-                // [
-                //     // request.userEmail
-                // ],
+            pool.query("CALL getcart(?)",
+                [
+                    email
+                ],
                 (error, results, fields) => {
                     if (error) {
                         reject(error);
@@ -51,11 +93,31 @@ module.exports= class Customer {
       
     }
     static getTotalPrice(request) {
+        console.log('request'+request)
+        // get the token from request
+        const token = request.cookies.jwt;
+        console.log(token)
+
+        // if token available decode it
+        let decodedToken;
+        if(token){
+        decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
+            if(err){
+                res.redirect('/')
+            }
+			return decodedToken
+        })
+        }
+
+        console.log(decodedToken);
+        
+        // extract the email
+        const email = decodedToken.email;
         return new Promise((resolve, reject) => {
-            pool.query("CALL totalPrice()",
-                // [
-                //     // request.userEmail,
-                // ],
+            pool.query("CALL totalPrice(?)",
+                [
+                    email,
+                ],
                 (error, results, fields) => {
                     if (error) {
                         reject(error);
@@ -67,10 +129,30 @@ module.exports= class Customer {
       
     }
     static removeCartItem(request) {
+        console.log('request'+request)
+        // get the token from request
+        const token = request.cookies.jwt;
+        console.log(token)
+
+        // if token available decode it
+        let decodedToken;
+        if(token){
+        decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
+            if(err){
+                res.redirect('/')
+            }
+			return decodedToken
+        })
+        }
+
+        console.log(decodedToken);
+        
+        // extract the email
+        const email = decodedToken.email;
         return new Promise((resolve, reject) => {
-            pool.query("CALL removeCartItem(?)",
+            pool.query("CALL removeCartItem(?,?)",
                 [
-                 
+                    email,
                     request.body.prod
                 ],
                 (error, results, fields) => {
@@ -85,8 +167,29 @@ module.exports= class Customer {
     }
     static createOrder(request) {
         return new Promise((resolve, reject) => {
-            pool.query("CALL create_order (?,?)",
+            console.log('request'+request)
+            // get the token from request
+            const token = request.cookies.jwt;
+            console.log(token)
+    
+            // if token available decode it
+            let decodedToken;
+            if(token){
+            decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
+                if(err){
+                    res.redirect('/')
+                }
+                return decodedToken
+            })
+            }
+    
+            console.log(decodedToken);
+            
+            // extract the email
+            const email = decodedToken.email;
+            pool.query("CALL create_order (?,?,?)",
                 [
+                    email,
                     request.body.route_id,
                     request.body.address
                     

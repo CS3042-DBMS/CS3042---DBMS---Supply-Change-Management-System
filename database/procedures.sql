@@ -1,24 +1,24 @@
 DELIMITER $$
-CREATE OR REPLACE PROCEDURE `add_to_cart`(`product_id` int(10),`quantity` int(10))
+CREATE OR REPLACE PROCEDURE `add_to_cart`(`email` VARCHAR (100) ,`product_id` int(10),`quantity` int(10))
 BEGIN
+    DECLARE id int;
     set AUTOCOMMIT = 0;
+    SELECT customer_id into id from Customer where email=email;
     INSERT INTO `Cart` (`customer_id`,`product_id`,`quantity`) VALUES 
-    (5,product_id,quantity);
+    (id,product_id,quantity);
     commit;
 END$$
 
 DELIMITER $$
-CREATE OR REPLACE PROCEDURE `create_order`(`route_id` int(10),`address` varchar(1000))
+CREATE OR REPLACE PROCEDURE `create_order`(`email` VARCHAR (100) ,`route_id` int(10),`address` varchar(1000))
 BEGIN
-     DECLARE total_price numeric;
-     DECLARE total_capacity int;
+    DECLARE id int;
     set AUTOCOMMIT = 0;
-    select sum(prod_price) INTO total_price from quant_price;
-    select sum(prod_capacity) INTO total_capacity from quant_capacity;
+    SELECT customer_id into id from Customer where email=email;
     INSERT INTO `Order` (`customer_id`,`route_id`,`state`,`date_and_time_of_placement`,`delivery_address`,`price`,`capacity`) VALUES 
-    (5,route_id,'new',now(),address,total_price,total_capacity);
-    INSERT INTO `Order_Addition` (order_id,product_id,quantity) SELECT get_max_order_id(),Cart.product_id,Cart.quantity from `Cart`;
-    DELETE  from `Cart`;
+    (id,route_id,'new',now(),address,quant_price(email),quant_capacity(email));
+    INSERT INTO `Order_Addition` (order_id,product_id,quantity) SELECT get_max_order_id(id),Cart.product_id,Cart.quantity from `Cart`where Cart.customer_id=id;
+    DELETE  from `Cart` where customer_id=id;
     commit;
 END$$
 
@@ -46,23 +46,23 @@ $$
 
 DELIMITER
 $$
- CREATE OR REPLACE  PROCEDURE getcart()
+ CREATE OR REPLACE  PROCEDURE getcart(email VARCHAR (100))
    BEGIN 
-    SELECT Cart.product_id, Product.product_name, Product.unit_price, Cart.quantity FROM Cart LEFT  JOIN Product on Product.product_id= Cart.product_id; END
+    SELECT Cart.product_id, Product.product_name, Product.unit_price, Cart.quantity FROM Cart LEFT  JOIN Product on Product.product_id= Cart.product_id where Cart.customer_id in (select customer_id from Customer where email=email); END
 $$
 
 DELIMITER
 $$
- CREATE OR REPLACE  PROCEDURE totalPrice()
+ CREATE OR REPLACE  PROCEDURE totalPrice(email VARCHAR (100))
    BEGIN 
-     select sum(prod_price) as total_price from quant_price; END
+    select sum(Product.unit_price*Cart.quantity) as total_price from Cart left join Product on Cart.product_id=Product.product_id where Cart.customer_id in (select customer_id from Customer where email=email); END
 $$
 
 DELIMITER
 $$
- CREATE OR REPLACE  PROCEDURE removeCartItem(product int(10))
+ CREATE OR REPLACE  PROCEDURE removeCartItem(email VARCHAR (100),product int(10))
    BEGIN 
-   DELETE FROM Cart where Cart.product_id= product LIMIT 1; END
+   DELETE FROM Cart where Cart.customer_id in (select customer_id from Customer where email=email) and Cart.product_id= product LIMIT 1; END
 $$
 
 
