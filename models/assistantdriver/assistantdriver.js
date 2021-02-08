@@ -1,6 +1,6 @@
 let pool = require('../../database/connection');
 
-module.exports= class Driver {
+module.exports= class AssistantDriver {
     static gettruckschedule() {
         return new Promise((resolve, reject) => {
             pool.query("CALL gettruckschedule()",
