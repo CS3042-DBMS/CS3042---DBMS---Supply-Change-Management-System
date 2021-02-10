@@ -100,3 +100,34 @@ $$
    SELECT Product.product_name,Order_Addition.product_id,count(Order_Addition.product_id) as number_of_orders from Product,Order_Addition WHERE Product.product_id=Order_Addition.product_id group by Order_Addition.product_id ORDER by number_of_orders desc limit 10;END
 $$
 
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `assignOrders`(IN `id` INT(10), IN `train_name` VARCHAR(30), IN `time_schedule` DATETIME)
+BEGIN 
+INSERT INTO order_assign VALUES(id,train_name,time_schedule);
+UPDATE `order` set state='Assigned' WHERE order_id=id;
+UPDATE railway_schedule SET available_capacity = available_capacity - (SELECT capacity FROM `order` WHERE order_id = id);
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getMenu`()
+BEGIN 
+   SELECT  * FROM  product;END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `viewOrders`()
+    DETERMINISTIC
+BEGIN 
+	SELECT order_id, route_id, date_and_time_of_placement, date_delivered, delivery_address, state FROM `order`;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `viewTrain`()
+    DETERMINISTIC
+BEGIN 
+	SELECT * FROM `railway_schedule`;
+END$$
+DELIMITER ;
