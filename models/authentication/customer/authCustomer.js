@@ -14,13 +14,13 @@ class AuthCustomer{
      * @param {cusDetails} req - details of the customer including hashed password
      * 
      */
-    async registerCustomer(pool,req,res,...cusDetails){
+    async registerCustomer(pool,res,req,...cusDetails){
 
         
             return new Promise((resolve, reject) => {
                 pool.getConnection(function(err, connection) {
 
-                let { name,address,city,hash,email } = cusDetails[0];
+                let { name,contact_no,hash,email,type, } = cusDetails[0];
 
                 if (err) {
                     res.status(500).send('Internal Server Error')
@@ -29,9 +29,9 @@ class AuthCustomer{
                 } // not connected!
                 
                 // Use the connection
-                connection.query(`INSERT INTO customer (customer_name,customer_address,city,password,email) VALUES (?,?,?,?,?)`,[name,address,city,hash,email], function (error, results, fields) {
-                    // console.log(results);
-                    // console.log(fields);
+                connection.query(`SELECT create_cus(?,?,?,?,?)`,[email,contact_no,hash,type,name], function (error, results, fields) {
+                    console.log(results);
+                    console.log(fields);
 
                 // When done with the connection, release it.
                     connection.release();
@@ -39,11 +39,9 @@ class AuthCustomer{
                 // Handle error after the release.
                     if (error) {
                         reject(error)
-                        throw error;
                     }
 
                     resolve(results) ;
-
                 // Don't use the connection here, it has been returned to the pool.
                 });
             });

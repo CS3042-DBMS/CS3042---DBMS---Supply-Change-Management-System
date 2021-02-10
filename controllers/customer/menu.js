@@ -7,7 +7,7 @@ async function getMenu(request,response){
     try {
         const res = await Customer.getmenu();
         const result = JSON.parse(JSON.stringify(res[0]))
-        response.render('customer/menu',{result: result});
+        response.render('customer/itemList',{result: result });
         
     } catch (error) {
         response.send(error.message);
@@ -21,17 +21,11 @@ async function getMenu(request,response){
         //     return response.status(400).send(error.message);
         //     }
         try {
-          
-            if(request.body.method_type ==2){
-                await Customer.add_to_cart();
-    
-    
-               }
-            else if(request.body.method_type ==1){
+                if(request.body.method_type ==1){
                 if(error){
                      return response.status(400).send(error.message);}
                     
-                else{ await Customer.add_to_cartAddition(request);}
+                else{ await Customer.add_to_cart(request);}
                
             
         
