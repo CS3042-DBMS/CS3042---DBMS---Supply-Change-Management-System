@@ -27,4 +27,34 @@ module.exports = class Manager{
             })
         })
     }
+
+    static assignOrders(request){
+        return new Promise((resolve,reject) => {
+            // console.log(request.body.train_name,
+            //     request.body.time_schedule,
+            //     request.body.order_id);
+            // pool.query("INSERT INTO order_assign VALUES(?,?,?)",[
+            //     request.body.order_id,
+            //     request.body.train_name,
+            //     request.body.time_schedule
+               
+            // ], (error,results, fields) => {
+            //     if(error){
+            //         reject(error);
+            //     };
+            //     resolve(results);
+            // })
+            pool.query("CALL assignOrders(?,?,?)",[
+                request.body.order_id,
+                request.body.train_name,
+                request.body.time_schedule
+               
+            ], (error,results, fields) => {
+                if(error){
+                    reject(error);
+                };
+                resolve(results);
+            })
+        })        
+    }
 }

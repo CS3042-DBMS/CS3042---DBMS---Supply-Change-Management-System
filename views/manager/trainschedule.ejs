@@ -18,6 +18,8 @@
                   <th>Date</th>
                   <th>Time</th>
                   <th>Available Capacity</th> 
+                  <th>Orders</th> 
+                  <th>Assign</th> 
                              
               </tr>
               
@@ -27,6 +29,28 @@
                   <td><%= item.time_schedule.substring(0,10)  %></td>
                   <td><%= item.time_schedule.substring(11,16)  %></td>
                   <td><%= item.available_capacity %></td>
+                  
+                    <td>
+                        <form action="/manager_func/trainschedule/assign" method="post">
+                            <input type="text" name="train_name" value= '<%= item.train_name %>' hidden>
+                            <input type="datetime" name="time_schedule" value= '<%= item.time_schedule %>' hidden>
+                            <select name="order_id" id="orderlist" style="background: rgb(0, 255, 55);padding:4px 20px 4px 20px;">
+                              
+                            <% order_list.forEach(item => {%>
+                              <% if(item.state === "Not Assigned") { %>
+                              <option value="<%= item.order_id  %>" ><%= item.order_id  %></option>
+                              <% } %>                       
+                              <% }); %> 
+                            </select>                          
+                        
+                    </td>
+                    <td><button id ="saveStatus" type="submit" style="background: rgb(0, 255, 55);border-radius: 7px;" >Assign</button>
+                    </form>
+                    </td>
+                        
+                      
+                  
+                  
                 </tr>
               <% }); %> 
     

@@ -4,5 +4,4 @@ const trainshed = require('./trains');
 router.use('/orders',orders);
 router.use('/trainschedule',trainshed);
 
-
 module.exports = router

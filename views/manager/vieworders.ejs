@@ -21,34 +21,42 @@
               <th>Placement Date</th>
               <th>Delivery Date</th>
               <th>Address</th>
-              <th>State</th>
-              <th>Save</th>  
+              <!-- <th>State</th> -->
+               
                          
           </tr>
           <%  %>
           <% result.forEach(item => {%>
+            <% if(item.state === "Not Assigned") { %>
             <tr>
-              <td><%= item.order_id %></td>
+              <td id="orderId"><%= item.order_id %></td>
               <td><%= item.route_id %></td>
               <td><%= item.date_and_time_of_placement.substring(0,10) %></td>
               <td><%= item.date_delivered.substring(0,10) %></td>
               <td><%= item.delivery_address  %></td>
-              <td><select name="Status" id="selectStatus" style="background: rgb(0, 255, 55);">
+              <!-- <td><select name="Status" id="selectStatus" style="background: rgb(0, 255, 55);">
                 <% if(item.state === "Not Assigned"){ %>
-                  <option id="second" value="Assigned" >Assigned</option>
+                  <option id="second" value= "Assigned" >Assigned</option>
                   <option id="first" value="Not Assigned" selected>Not Assigned</option>
                 <% } else if(item.state === "Assigned"){ %>
-                  <option id="second" value="Assigned" selected>Assigned</option>
+                  <option id="second" value= "Assigned" selected>Assigned</option>
                   <option id="first" value="Not Assigned" >Not Assigned</option>
                 <% } %>      
-              </select></td>
-              <td><button id ="saveStatus" style="background: rgb(0, 255, 55);border-radius: 7px;" >Save</button></td>
+              </select></td> -->
             </tr>
-            
+            <% } %>
           <% }); %> 
 
       </tbody>
     </table>
   </div> 
+  <!-- <script>
+    function myFunction() {
+      var d = document.getElementById("orderId").innerHTML;
+      var e = document.getElementById("selectStatus").value;
+      console.log(d);
+      console.log(e);
+    }
+    </script> -->
 </body>
 </html>
