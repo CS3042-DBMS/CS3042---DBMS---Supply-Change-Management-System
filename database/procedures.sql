@@ -84,3 +84,19 @@ $$
    BEGIN 
    SELECT  route_id,route_name FROM `Route`;END
 $$
+
+DELIMITER
+$$
+ CREATE OR REPLACE  PROCEDURE getcustomer_order_report()
+   BEGIN 
+   SELECT  Order.state,Order.order_id,Order.customer_id,substring(Order.date_and_time_of_placement,1,10) as date_of_placement,Order.route_id,Order.price,order.capacity,Order_Addition.product_id,Order_Addition.quantity FROM `Order`,`Order_Addition` where Order.order_id=Order_Addition.order_id ORDER BY Order.state;END
+$$
+
+
+DELIMITER
+$$
+ CREATE OR REPLACE  PROCEDURE items_with_most_orders()
+   BEGIN 
+   SELECT Product.product_name,Order_Addition.product_id,count(Order_Addition.product_id) as number_of_orders from Product,Order_Addition WHERE Product.product_id=Order_Addition.product_id group by Order_Addition.product_id ORDER by number_of_orders desc limit 10;END
+$$
+
