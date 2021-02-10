@@ -14,11 +14,13 @@ CREATE OR REPLACE PROCEDURE `create_order`(`email` VARCHAR (100) ,`route_id` int
 BEGIN
     DECLARE id int;
     set AUTOCOMMIT = 0;
+
     SELECT customer_id into id from Customer where Customer.email=email;
     INSERT INTO `Order` (`customer_id`,`route_id`,`state`,`date_and_time_of_placement`,`delivery_address`,`price`,`capacity`) VALUES 
     (id,route_id,'new',now(),address,quant_price(email),quant_capacity(email));
     INSERT INTO `Order_Addition` (order_id,product_id,quantity) SELECT get_max_order_id(id),Cart.product_id,Cart.quantity from `Cart`where Cart.customer_id=id;
     DELETE  from `Cart` where customer_id=id;
+
     commit;
 END$$
 
@@ -50,7 +52,8 @@ DELIMITER
 $$
  CREATE OR REPLACE  PROCEDURE getMenu()
    BEGIN 
-   SELECT  * FROM  Product;END
+   SELECT  * FROM  Product;
+   END
 $$
 
 DELIMITER

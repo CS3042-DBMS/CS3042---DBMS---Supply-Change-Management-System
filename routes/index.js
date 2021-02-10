@@ -8,6 +8,11 @@ const {requireAuthCustomer,requireAuthManager,requireAuthEmployee} = require('..
 
 
 const customerFunctions = require('./customer');
+
+const managerFunctions = require('./manager');
+
+
+router.use('/manager_func',managerFunctions);
 const storeManagerFunctions = require('./storemanager');
 const ManagerFunctions = require('./manager');
 const authRoutes = require('./authroutes/authroute')
@@ -20,5 +25,6 @@ router.use('/storemanager',storeManagerFunctions);  // parameter 2 and 3 should 
 router.use('/manager_func',ManagerFunctions);
 // autentication routes
 router.use('/',authRoutes)
+
 
 module.exports = router
