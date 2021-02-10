@@ -17,27 +17,6 @@ module.exports= class Customer {
         })
       
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     static add_to_cart(request){
         console.log('request'+request)
@@ -142,17 +121,6 @@ module.exports= class Customer {
         })
       
     }
-
-
-
-
-
-
-
-
-
-
-
 
     static createOrder(request) {
         return new Promise((resolve, reject) => {
