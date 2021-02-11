@@ -31,6 +31,15 @@ CREATE TABLE `Product` (
   PRIMARY KEY (`product_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `Customer` (
+  `customer_id` int(10) NOT NULL AUTO_INCREMENT,
+  `customer_type` varchar(30) NOT NULL,
+  `customer_name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `contact_number` varchar(50) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `Cart` (
   `customer_id` int(10) NOT NULL ,
   `product_id` int(10) NOT NULL,
@@ -63,14 +72,7 @@ CREATE TABLE `Order_Schedule` (
   PRIMARY KEY (`order_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `Customer` (
-  `customer_id` int(10) NOT NULL AUTO_INCREMENT,
-  `customer_type` varchar(30) NOT NULL,
-  `customer_name` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `contact_number` varchar(50) NOT NULL,
-  PRIMARY KEY (`customer_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE `User` (
   `email` varchar(100) NOT NULL ,

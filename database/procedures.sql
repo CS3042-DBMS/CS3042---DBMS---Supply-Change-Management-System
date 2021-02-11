@@ -101,7 +101,7 @@ $$
 $$
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `assignOrders`(IN `id` INT(10), IN `train_name` VARCHAR(30), IN `time_schedule` DATETIME)
+CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `assignOrders`(IN `id` INT(10), IN `train_name` VARCHAR(30), IN `time_schedule` DATETIME)
 BEGIN 
 INSERT INTO order_assign VALUES(id,train_name,time_schedule);
 UPDATE `order` set state='Assigned' WHERE order_id=id;
@@ -110,14 +110,14 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getMenu`()
+CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `getMenu`()
 BEGIN 
    SELECT  * FROM  product;END$$
 DELIMITER ;
 
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `viewOrders`()
+CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `viewOrdersList`()
     DETERMINISTIC
 BEGIN 
 	SELECT order_id, route_id, date_and_time_of_placement, date_delivered, delivery_address, state FROM `order`;
@@ -125,7 +125,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `viewTrain`()
+CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `viewTrain`()
     DETERMINISTIC
 BEGIN 
 	SELECT * FROM `railway_schedule`;

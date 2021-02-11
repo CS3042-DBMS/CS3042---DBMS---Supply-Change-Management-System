@@ -3,7 +3,7 @@ let pool = require('../../database/connection');
 module.exports = class Manager{
     static viewOrders(){
         return new Promise((resolve, reject) => {
-            pool.query("CALL viewOrders()",
+            pool.query("CALL viewOrdersList()",
                 (error, results, fields) => {
                     if (error) {
                         reject(error);
