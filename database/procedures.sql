@@ -17,7 +17,7 @@ BEGIN
 
     SELECT customer_id into id from Customer where Customer.email=email;
     INSERT INTO `Order` (`customer_id`,`route_id`,`state`,`date_and_time_of_placement`,`delivery_address`,`price`,`capacity`) VALUES 
-    (id,route_id,'new',now(),address,quant_price(email),quant_capacity(email));
+    (id,route_id,'Not Assigned',now(),address,quant_price(email),quant_capacity(email));
     INSERT INTO `Order_Addition` (order_id,product_id,quantity) SELECT get_max_order_id(id),Cart.product_id,Cart.quantity from `Cart`where Cart.customer_id=id;
     DELETE  from `Cart` where customer_id=id;
 
@@ -26,7 +26,7 @@ END$$
 
 -- get list of orders corresponding to his store 
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `view_orders`(email VARCHAR(100))
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `view_orders`(email VARCHAR(100))
 BEGIN
     
     select * from `order` join `route` using (route_id) natural left outer join `order_schedule` where store_id in (select `store_id` from store_manager where `email` = email);
@@ -107,12 +107,6 @@ INSERT INTO order_assign VALUES(id,train_name,time_schedule);
 UPDATE `order` set state='Assigned to Train' WHERE order_id=id;
 UPDATE railway_schedule SET available_capacity = available_capacity - (SELECT capacity FROM `order` WHERE order_id = id) WHERE `railway_schedule`.`train_name` = train_name AND `railway_schedule`.`time_schedule` = time_schedule;
 END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `getMenu`()
-BEGIN 
-   SELECT  * FROM  product;END$$
 DELIMITER ;
 
 

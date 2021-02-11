@@ -17,7 +17,7 @@
     <div class='cartTable'>
          <div class="cart sbox">
           <a href="/customer_func/cart/view">
-            <button type="button" class="btn btn-dark">Back</button>
+            <button type="button" class="btn btn-dark" style="margin-left: 10px;">Back</button>
           </a>
          </div>
 
@@ -27,12 +27,12 @@
                 <form action="/customer_func/cart/order" method="POST">
                     <div class="row">
                         <label for="route">Route ID</label>
-                        <input type="number"  name="route_id">
+                        <input type="number"  name="route_id" required="required">
                     </div>
                     <br>
                     <div class="row">
                         <label for="route">Delivery Address</label>
-                        <input type="text"  name="address">
+                        <input type="text"  name="address" required="required">
                     </div>
                  <br>
                     <div class="row">
