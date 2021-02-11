@@ -51,7 +51,7 @@ CREATE TABLE `Order` (
   `order_id` int(10) NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) NOT NULL,
   `route_id` int(10) NOT NULL,
-  `state` varchar(10) NOT NULL,
+  `state` varchar(30) NOT NULL,
   `date_and_time_of_placement` datetime NOT NULL,
   `delivery_address` varchar(1000) NOT NULL,
   `price` numeric(8,2)  NOT NULL,

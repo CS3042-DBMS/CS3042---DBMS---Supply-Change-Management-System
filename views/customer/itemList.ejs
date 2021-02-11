@@ -25,9 +25,9 @@
   </div>
   <div class='cartTable'>
     <a href="/customer_func/cart/view">
-      <button type="button" class="btn btn-dark" style="margin-bottom: 10px;">View Cart</button>
+      <button type="button" class="btn btn-dark" style="margin-bottom: 10px;margin-left: 10px;">View Cart</button>
     </a>
-    <button id='logout' type="button" class="btn btn-danger" style="margin-bottom: 10px;">Logout</button>
+    <button id='logout' type="button" class="btn btn-danger" style="margin-bottom: 10px;margin-left: 10px;">Logout</button>
 
     <div>
       <table class="table table-hover bg-warning">
@@ -59,7 +59,7 @@
                 <form action="/customer_func/menu/view" method="post">
                   <input type="text" name="prod" value='<%= item.product_id %>' hidden>
                   <input type="text" name="method_type" value='<%= 1 %>' hidden>
-                  <input type="number" name="quantity">
+                  <input type="number" name="quantity" required="required">
                   <button><input type="submit" value="add"></button>
                 </form>
               </td>
