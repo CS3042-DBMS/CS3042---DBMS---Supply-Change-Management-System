@@ -104,8 +104,8 @@ DELIMITER $$
 CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `assignOrders`(IN `id` INT(10), IN `train_name` VARCHAR(30), IN `time_schedule` DATETIME)
 BEGIN 
 INSERT INTO order_assign VALUES(id,train_name,time_schedule);
-UPDATE `order` set state='Assigned' WHERE order_id=id;
-UPDATE railway_schedule SET available_capacity = available_capacity - (SELECT capacity FROM `order` WHERE order_id = id);
+UPDATE `order` set state='Assigned to Train' WHERE order_id=id;
+UPDATE railway_schedule SET available_capacity = available_capacity - (SELECT capacity FROM `order` WHERE order_id = id) WHERE `railway_schedule`.`train_name` = train_name AND `railway_schedule`.`time_schedule` = time_schedule;
 END$$
 DELIMITER ;
 
@@ -120,7 +120,7 @@ DELIMITER $$
 CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `viewOrdersList`()
     DETERMINISTIC
 BEGIN 
-	SELECT order_id, route_id, date_and_time_of_placement, date_delivered, delivery_address, state FROM `order`;
+	SELECT order_id, route_id, date_and_time_of_placement, delivery_address, state FROM `order`;
 END$$
 DELIMITER ;
 
