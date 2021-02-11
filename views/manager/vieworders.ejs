@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/manager.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/manager.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <title>ManagerView</title>
 
@@ -19,7 +19,7 @@
               <th>Order ID</th>
               <th>Route </th>
               <th>Placement Date</th>
-              <th>Delivery Date</th>
+              <!-- <th>Delivery Date</th> -->
               <th>Address</th>
               <!-- <th>State</th> -->
                
@@ -32,7 +32,7 @@
               <td id="orderId"><%= item.order_id %></td>
               <td><%= item.route_id %></td>
               <td><%= item.date_and_time_of_placement.substring(0,10) %></td>
-              <td><%= item.date_delivered.substring(0,10) %></td>
+              
               <td><%= item.delivery_address  %></td>
               <!-- <td><select name="Status" id="selectStatus" style="background: rgb(0, 255, 55);">
                 <% if(item.state === "Not Assigned"){ %>
