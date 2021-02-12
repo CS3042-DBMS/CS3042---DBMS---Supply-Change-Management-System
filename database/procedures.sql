@@ -125,3 +125,21 @@ BEGIN
 	SELECT * FROM `railway_schedule`;
 END$$
 DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `viewQuarterlySalesReport`()
+    DETERMINISTIC
+BEGIN
+
+CREATE OR REPLACE VIEW quarterly_sales_report AS (select `product`.`product_id` AS `product_id`,`product`.`product_name` AS `product_name`, (`order_addition`.`quantity`*`product`.`unit_price`) AS `total`,QUARTER(`order`.`date_and_time_of_placement`) AS `date_and_time_of_placement`,`product`.`unit_price` AS `unit_price` from ((`product` natural join `order_addition`) natural join `order`));
+
+CREATE OR REPLACE VIEW `quarter_sales` AS (select `quarterly_sales_report`.`product_id` AS `product_id`, `quarterly_sales_report`.`product_name` AS `product_name`,sum(`quarterly_sales_report`.`total`) AS `sales`,`quarterly_sales_report`.`date_and_time_of_placement` AS `quarter` from `quarterly_sales_report` group by `quarterly_sales_report`.`product_id`,`quarterly_sales_report`.`date_and_time_of_placement`);
+
+CREATE OR REPLACE VIEW quarter1 AS SELECT * FROM quarter_sales WHERE quarter = 1;
+CREATE OR REPLACE VIEW quarter2 AS SELECT * FROM quarter_sales WHERE quarter = 2;
+CREATE OR REPLACE VIEW quarter3 AS SELECT * FROM quarter_sales WHERE quarter = 3;
+CREATE OR REPLACE VIEW quarter4 AS SELECT * FROM quarter_sales WHERE quarter = 4;
+
+SELECT DISTINCT qurater_sales.product_id,qurater_sales.product_name,IFNULL(quarter1.sales,0) AS quarter1 ,IFNULL(quarter2.sales,0) AS quarter2, IFNULL(quarter3.sales,0) AS quarter3, IFNULL(quarter4.sales,0) AS quarter4 FROM qurater_sales LEFT JOIN quarter1 USING (product_id) LEFT JOIN quarter2 USING (product_id) LEFT JOIN quarter3 USING (product_id) LEFT JOIN quarter4 USING (product_id);
+END$$
+DELIMITER ;
