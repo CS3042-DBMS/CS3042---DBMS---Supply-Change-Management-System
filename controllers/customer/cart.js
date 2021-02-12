@@ -42,9 +42,9 @@ async function createOrder(request,response){
     } catch (error) {
        return  response.status(400).send(error.message);
     }
-
-    response.redirect('view');
-
+    response.redirect('/customer_func/menu/view');
+    
+        
 }
 async function getRoutes(request,response){
     try {
