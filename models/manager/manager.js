@@ -2,12 +2,8 @@ let pool = require('../../database/connection');
 
 module.exports = class Manager{
     static viewQuarterlySalesReport(){
-        return new Promise((resolve,reject) => {
-            const query_code = "CREATE OR REPLACE VIEW quarterly_sales_report AS"+
-            "SELECT ";
-            
-
-            pool.query(query_code,
+        return new Promise((resolve, reject) => {
+            pool.query("CALL viewQuarterlySalesReport()",
                 (error, results, fields) => {
                     if (error) {
                         reject(error);
@@ -18,7 +14,7 @@ module.exports = class Manager{
 
                 }
             )
-        });
+        })
     }
 
     static viewOrders(){

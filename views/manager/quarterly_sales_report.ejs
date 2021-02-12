@@ -20,13 +20,42 @@
         </thead>
         <tbody>
             <tr>
-                <th>Product</th>
+                <th>Product ID</th>
+                <th>Product Name</th>
                 <th>Quarter 1</th>
                 <th>Quarter 2</th>
                 <th>Quarter 3</th>
                 <th>Quarter 4</th>
             </tr>
-            
+
+            <% report.forEach(item=> {%>
+                <tr>
+                    <td>
+                        <%= item.product_id %>
+                    </td>
+                    <td>
+                        <%= item.product_name %>
+                    </td>
+
+                    <td>
+                            <%= item.quarter1 %>
+                    </td>                  
+
+                    <td>
+                            <%= item.quarter2 %>
+                    </td>                  
+ 
+                    <td>
+                            <%= item.quarter3 %>
+                    </td>                  
+
+                    <td>
+                            <%= item.quarter4 %>
+                    </td>                  
+                        
+
+                </tr>
+                <% }); %>  
         </tbody>
       </table>
 
