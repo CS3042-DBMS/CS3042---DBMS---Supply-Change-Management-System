@@ -131,8 +131,9 @@ $$
  CREATE OR REPLACE  PROCEDURE get_confirmed_orders(email VARCHAR (100))
    BEGIN 
    select `Order`.order_id, substring(Order.date_and_time_of_placement,1,10) as date_of_placement,substring(Order.date_and_time_of_placement,12,8) as time_of_placement, Order.route_id,Order.price,Product.product_name,Order_Addition.quantity FROM `Order` left join Order_Addition using(order_id) left join Product using(product_id) where Order.customer_id in (select Customer.customer_id from Customer where Customer.email=email) ORDER BY date_of_placement desc,time_of_placement desc;
-   END
-$$
+END $$
+DELIMITER ;
+
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `viewQuarterlySalesReport`()
@@ -151,3 +152,4 @@ CREATE OR REPLACE VIEW quarter4 AS SELECT * FROM quarter_sales WHERE quarter = 4
 SELECT DISTINCT qurater_sales.product_id,qurater_sales.product_name,IFNULL(quarter1.sales,0) AS quarter1 ,IFNULL(quarter2.sales,0) AS quarter2, IFNULL(quarter3.sales,0) AS quarter3, IFNULL(quarter4.sales,0) AS quarter4 FROM qurater_sales LEFT JOIN quarter1 USING (product_id) LEFT JOIN quarter2 USING (product_id) LEFT JOIN quarter3 USING (product_id) LEFT JOIN quarter4 USING (product_id);
 END$$
 DELIMITER ;
+

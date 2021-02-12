@@ -1,5 +1,4 @@
 let pool = require('../../database/connection');
-const jwt = require('jsonwebtoken');
 const {decodeToken} = require('../../middleware/authMiddleware') // add this middle ware to authenticate without login
 
 
@@ -166,5 +165,30 @@ module.exports= class Customer {
       
     }
     
+    static getConfirmed(request) {
+        const decodedToken = decodeToken(request)
+
+    
+            console.log(decodedToken);
+            
+            // extract the email
+            const email = decodedToken.email;
+        return new Promise((resolve, reject) => {
+            pool.query("CALL get_confirmed_orders(?)",
+            [
+                email,
+               
+
+            ],
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+                    resolve(results);
+                }
+            )
+        })
+      
+    }
 
 }
