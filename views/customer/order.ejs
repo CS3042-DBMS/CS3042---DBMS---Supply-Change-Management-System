@@ -22,24 +22,6 @@
          </div>
 
     <div class="container">
-     <br>
-            <div class="form">
-                <form action="/customer_func/cart/order" method="POST">
-                    <div class="row">
-                        <label for="route">Route ID</label>
-                        <input type="number"  name="route_id" required="required">
-                    </div>
-                    <br>
-                    <div class="row">
-                        <label for="route">Delivery Address</label>
-                        <input type="text"  name="address" required="required">
-                    </div>
-                 <br>
-                    <div class="row">
-                        <input type="submit" value="Confirm Order">
-                    </div>
-                </form>
-        </div>
         <br>
         <div>
             <table class="table table-hover bg-warning">
@@ -49,6 +31,7 @@
                     <tr>
                         <th>Route ID</th>
                         <th>Route Name</th>
+                        <th>Delivery Address</th>
                         
                       
                     </tr>
@@ -57,6 +40,17 @@
                          
                               <td><%= route.route_id %></td>
                               <td><%= route.route_name %></td>
+                              <td>
+                                <form action="/customer_func/cart/order" method="POST">
+                                  
+                                    <input type="int" name="route_id" value= '<%= route.route_id %>' hidden>
+                                    <input type="text"  name="address" required="required" style="width: 500px;">
+                              </td>   
+                              <td>
+                                  <button class="btn btn-dark" type="submit" style="border-radius: 7px;"  >
+                                    Confirm Order</button>
+                                </form>
+                              </td>
                             
                              
                              

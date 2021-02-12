@@ -125,3 +125,11 @@ BEGIN
 	SELECT * FROM `railway_schedule`;
 END$$
 DELIMITER ;
+
+DELIMITER
+$$
+ CREATE OR REPLACE  PROCEDURE get_confirmed_orders(email VARCHAR (100))
+   BEGIN 
+   SELECT  `Order`.order_id, substring(Order.date_and_time_of_placement,1,10) as date_of_placement,substring(Order.date_and_time_of_placement,12,8) as time_of_placement, Order.route_id,Order.price, Product.product_name ,Order_Addition.quantity FROM `Order`,`Order_Addition`,`Customer`,`Product` where Order_Addition.product_id=Product.product_id and Order.order_id=Order_Addition.order_id and Customer.email=email ORDER BY date_of_placement desc,time_of_placement desc;
+   END
+$$
