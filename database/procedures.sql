@@ -126,6 +126,14 @@ BEGIN
 END$$
 DELIMITER ;
 
+DELIMITER
+$$
+ CREATE OR REPLACE  PROCEDURE get_confirmed_orders(email VARCHAR (100))
+   BEGIN 
+   select `Order`.order_id, substring(Order.date_and_time_of_placement,1,10) as date_of_placement,substring(Order.date_and_time_of_placement,12,8) as time_of_placement, Order.route_id,Order.price,Product.product_name,Order_Addition.quantity FROM `Order` left join Order_Addition using(order_id) left join Product using(product_id) where Order.customer_id in (select Customer.customer_id from Customer where Customer.email=email) ORDER BY date_of_placement desc,time_of_placement desc;
+   END
+$$
+
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `viewQuarterlySalesReport`()
     DETERMINISTIC
