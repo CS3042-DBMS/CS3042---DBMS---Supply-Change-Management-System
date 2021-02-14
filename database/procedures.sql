@@ -149,7 +149,7 @@ CREATE OR REPLACE VIEW quarter2 AS SELECT * FROM quarter_sales WHERE quarter = 2
 CREATE OR REPLACE VIEW quarter3 AS SELECT * FROM quarter_sales WHERE quarter = 3;
 CREATE OR REPLACE VIEW quarter4 AS SELECT * FROM quarter_sales WHERE quarter = 4;
 
-SELECT DISTINCT qurater_sales.product_id,qurater_sales.product_name,IFNULL(quarter1.sales,0) AS quarter1 ,IFNULL(quarter2.sales,0) AS quarter2, IFNULL(quarter3.sales,0) AS quarter3, IFNULL(quarter4.sales,0) AS quarter4 FROM qurater_sales LEFT JOIN quarter1 USING (product_id) LEFT JOIN quarter2 USING (product_id) LEFT JOIN quarter3 USING (product_id) LEFT JOIN quarter4 USING (product_id);
+SELECT DISTINCT quarter_sales.product_id,quarter_sales.product_name,IFNULL(quarter1.sales,0) AS quarter1 ,IFNULL(quarter2.sales,0) AS quarter2, IFNULL(quarter3.sales,0) AS quarter3, IFNULL(quarter4.sales,0) AS quarter4 FROM quarter_sales LEFT JOIN quarter1 USING (product_id) LEFT JOIN quarter2 USING (product_id) LEFT JOIN quarter3 USING (product_id) LEFT JOIN quarter4 USING (product_id);
 END$$
 DELIMITER ;
 
