@@ -9,6 +9,17 @@ BEGIN
     commit;
 END$$
 
+
+
+DELIMITER
+$$
+ CREATE OR REPLACE  PROCEDURE getcart()
+   BEGIN 
+    SELECT Cart.product_id, Product.product_name, Product.unit_price, Cart.quantity FROM Cart LEFT  JOIN Product on Product.product_id= Cart.product_id; END
+$$
+
+
+
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE `create_order`(`email` VARCHAR (100) ,`route_id` int(10),`address` varchar(1000))
 BEGIN
@@ -58,10 +69,23 @@ $$
 
 DELIMITER
 $$
+
+ CREATE OR REPLACE  PROCEDURE gettruckschedule()
+   BEGIN 
+   SELECT  * FROM  truck_schedule;END
+ $$                                                   
+
+ DELIMITER
+$$                                                   
  CREATE OR REPLACE  PROCEDURE getcart(email VARCHAR (100))
    BEGIN 
     SELECT Cart.product_id, Product.product_name, Product.unit_price, Cart.quantity FROM Cart LEFT  JOIN Product on Product.product_id= Cart.product_id where Cart.customer_id in (select customer_id from Customer where Customer.email=email); END
+
 $$
+
+
+
+
 
 DELIMITER
 $$
@@ -76,6 +100,8 @@ $$
    BEGIN 
    DELETE FROM Cart where Cart.customer_id in (select customer_id from Customer where Customer.email=email) and Cart.product_id= product LIMIT 1; END
 $$
+
+
 
 
 DELIMITER

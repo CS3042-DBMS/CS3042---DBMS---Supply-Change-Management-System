@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {requireAuthCustomer,requireAuthManager,requireAuthEmployee} = require('../middleware/authMiddleware') // add this middle ware to authenticate without login
+const {requireAuthCustomer,requireAuthManager,requireAuthEmployee,requireAuthDriver,requireAuthAssistantDriver} = require('../middleware/authMiddleware') // add this middle ware to authenticate without login
 
 // protect customer routes - add requireAuthCustomer middleware
 // protect manager routes - add requireAuthManager middleware
@@ -8,23 +8,27 @@ const {requireAuthCustomer,requireAuthManager,requireAuthEmployee} = require('..
 
 
 const customerFunctions = require('./customer');
-
+const driverFunctions = require('./driver');
+const assistantdriverFunctions = require('./assistantdriver');
 const managerFunctions = require('./manager');
-
-
-router.use('/manager_func',managerFunctions);
 const storeManagerFunctions = require('./storemanager');
-const ManagerFunctions = require('./manager');
 const authRoutes = require('./authroutes/authroute')
 
+//manager routes
+router.use('/manager_func',managerFunctions);
 // customer routes
 router.use('/customer_func', requireAuthCustomer,customerFunctions);
+// driver routes
+router.use('/driver_func',driverFunctions);
+router.use('/assistant_driver_func',assistantdriverFunctions);
+
+
 //store manager routes
 router.use('/storemanager',storeManagerFunctions);  // parameter 2 and 3 should be changed
-//manager routes
-router.use('/manager_func',ManagerFunctions);
+
 // autentication routes
 router.use('/',authRoutes)
+
 
 
 module.exports = router

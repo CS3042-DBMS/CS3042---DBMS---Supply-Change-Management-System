@@ -47,6 +47,7 @@ CREATE TABLE `Cart` (
   PRIMARY KEY (`customer_id`, `product_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
 CREATE TABLE `Order` (
   `order_id` int(10) NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) NOT NULL,
