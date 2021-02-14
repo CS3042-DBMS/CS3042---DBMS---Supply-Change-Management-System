@@ -1,7 +1,7 @@
 let pool = require('../../database/connection');
 
 module.exports= class StoreManager {
-    static getorders() {
+    static getorders(request) {
         return new Promise((resolve, reject) => {
             pool.query("CALL view_orders('sapumal@gmail.com')",
                 (error, results, fields) => {
