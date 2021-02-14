@@ -175,6 +175,15 @@ CREATE TABLE `Order_Assign` (
   PRIMARY KEY (`order_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `quarterly_sales_report` (
+  `product_id` int(10) NOT NULL,
+  `product_name` varchar(50) NOT NULL,
+  `total` decimal(8,2) DEFAULT NULL,
+  `date_and_time_of_placement` int(1) NOT NULL,
+  `unit_price` decimal(40,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 
 ALTER TABLE `Customer`
   ADD CONSTRAINT `Customer_ibfk_1` FOREIGN KEY (`email`) REFERENCES `User` (`email`) ON DELETE RESTRICT ON UPDATE RESTRICT;

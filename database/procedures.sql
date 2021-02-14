@@ -136,11 +136,13 @@ DELIMITER ;
 
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `viewQuarterlySalesReport`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `viewQuarterlySalesReport`(IN `select_year` INT)
     DETERMINISTIC
 BEGIN
 
-CREATE OR REPLACE VIEW quarterly_sales_report AS (select `product`.`product_id` AS `product_id`,`product`.`product_name` AS `product_name`, (`order_addition`.`quantity`*`product`.`unit_price`) AS `total`,QUARTER(`order`.`date_and_time_of_placement`) AS `date_and_time_of_placement`,`product`.`unit_price` AS `unit_price` from ((`product` natural join `order_addition`) natural join `order`));
+DELETE FROM quarterly_sales_report;
+
+REPLACE INTO quarterly_sales_report (select `product`.`product_id` AS `product_id`,`product`.`product_name` AS `product_name`, (`order_addition`.`quantity`*`product`.`unit_price`) AS `total`,QUARTER(`order`.`date_and_time_of_placement`) AS `date_and_time_of_placement`,`product`.`unit_price` AS `unit_price` from ((`product` natural join `order_addition`) natural join `order`) WHERE YEAR(`date_and_time_of_placement`) = select_year);
 
 CREATE OR REPLACE VIEW `quarter_sales` AS (select `quarterly_sales_report`.`product_id` AS `product_id`, `quarterly_sales_report`.`product_name` AS `product_name`,sum(`quarterly_sales_report`.`total`) AS `sales`,`quarterly_sales_report`.`date_and_time_of_placement` AS `quarter` from `quarterly_sales_report` group by `quarterly_sales_report`.`product_id`,`quarterly_sales_report`.`date_and_time_of_placement`);
 
