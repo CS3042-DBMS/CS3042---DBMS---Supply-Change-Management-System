@@ -31,7 +31,16 @@ CREATE TABLE `Product` (
   PRIMARY KEY (`product_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `Cart_addition` (
+CREATE TABLE `Customer` (
+  `customer_id` int(10) NOT NULL AUTO_INCREMENT,
+  `customer_type` varchar(30) NOT NULL,
+  `customer_name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `contact_number` varchar(50) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `Cart` (
   `customer_id` int(10) NOT NULL ,
   `product_id` int(10) NOT NULL,
   `quantity` int(10) NOT NULL CHECK (`quantity` > 0),
@@ -43,7 +52,7 @@ CREATE TABLE `Order` (
   `order_id` int(10) NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) NOT NULL,
   `route_id` int(10) NOT NULL,
-  `state` varchar(10) NOT NULL,
+  `state` varchar(30) NOT NULL,
   `date_and_time_of_placement` datetime NOT NULL,
   `delivery_address` varchar(1000) NOT NULL,
   `price` numeric(8,2)  NOT NULL,
@@ -64,14 +73,7 @@ CREATE TABLE `Order_Schedule` (
   PRIMARY KEY (`order_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `Customer` (
-  `customer_id` int(10) NOT NULL AUTO_INCREMENT,
-  `customer_type` varchar(30) NOT NULL,
-  `customer_name` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `contact_number` varchar(50) NOT NULL,
-  PRIMARY KEY (`customer_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE `User` (
   `email` varchar(100) NOT NULL ,
@@ -197,6 +199,10 @@ ALTER TABLE `Driver_Assistant`
 
 ALTER TABLE `Store_Manager`
   ADD CONSTRAINT `Store_Manager_ibfk_1` FOREIGN KEY (`email`) REFERENCES `User` (`email`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `store_manager` 
+ADD FOREIGN KEY (`email`) REFERENCES `user`(`email`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `store_manager` 
+ADD FOREIGN KEY (`store_id`) REFERENCES `store`(`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `Railway_schedule`
   ADD CONSTRAINT `Railway_schedule_ibfk_1` FOREIGN KEY (`train_name`) REFERENCES `Railway` (`train_name`) ON DELETE RESTRICT ON UPDATE RESTRICT;

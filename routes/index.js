@@ -8,17 +8,27 @@ const {requireAuthCustomer,requireAuthManager,requireAuthEmployee,requireAuthDri
 
 
 const customerFunctions = require('./customer');
-
 const driverFunctions = require('./driver');
 const assistantdriverFunctions = require('./assistantdriver');
+const managerFunctions = require('./manager');
+const storeManagerFunctions = require('./storemanager');
 const authRoutes = require('./authroutes/authroute')
 
+//manager routes
+router.use('/manager_func',managerFunctions);
 // customer routes
 router.use('/customer_func', requireAuthCustomer,customerFunctions);
 // driver routes
 router.use('/driver_func',driverFunctions);
 router.use('/assistant_driver_func',assistantdriverFunctions);
+
+
+//store manager routes
+router.use('/storemanager',storeManagerFunctions);  // parameter 2 and 3 should be changed
+
 // autentication routes
 router.use('/',authRoutes)
-//ssd
+
+
+
 module.exports = router

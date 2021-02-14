@@ -3,37 +3,44 @@
 
 const jwt = require('jsonwebtoken');
 
-// auth customer
-function requireAuthCustomer(req,res,next){
-
-    // get the token from cookie
+function decodeToken(req){
+     // get the token from cookie
     const token = req.cookies.jwt;
 
     // token exist then deocde it
     if(token){
         const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
             if(err){
-
-                // any error redirect to login
-                res.redirect('/')
-                return
+                return null
             }
-
             // return decoded token
             return decodedToken
         })
-        if(decodedToken.type === 'customer'){
+        return decodedToken
+        
+    }
+    else{
+        return null
+    }
+}
 
-            // customer authenticate by middle ware and excute next function
-            console.log(decodedToken)
+// auth customer
+function requireAuthCustomer(req,res,next){
+
+    // get the token from cookie
+    const decodedtoken = decodeToken(req);
+
+    if(decodedtoken){
+        console.log(decodedtoken)
+        
+        if(decodedtoken.type === 'customer'){
+            console.log(decodedtoken)
             next();
         }
         else{
-
             res.redirect('/')
         }
-    }
-    else{
+    }else{
         res.redirect('/')
     }
 }
@@ -73,6 +80,7 @@ function requireAuthDriver(req,res,next){
     }
 }
 
+
 //auth assistant driver
 function requireAuthAssistantDriver(req,res,next){
 
@@ -96,14 +104,14 @@ function requireAuthAssistantDriver(req,res,next){
 
             // assistant driver authenticate by middle ware and excute next function
             console.log(decodedToken)
+
             next();
         }
         else{
 
             res.redirect('/')
         }
-    }
-    else{
+    }else{
         res.redirect('/')
     }
 }
@@ -135,27 +143,23 @@ function requireAuthManager(req,res,next){
 // auth employee
 function requireAuthEmployee(req,res,next){
 
-    const token = req.cookies.jwt;
-    if(token){
-        const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
-            if(err){
-                res.redirect('/')
-                return
-            }
-            return decodedToken
-        })
+    // get the token from cookie
+    const decodedtoken = decodeToken(req);
 
-        if(decodedToken.type === 'employee'){
-            console.log(decodedToken)
+    if(decodedtoken){
+        console.log(decodedtoken)
+        
+        if(decodedtoken.type === 'employee'){
+            console.log(decodedtoken)
             next();
         }
         else{
             res.redirect('/')
         }
-    }
-    else{
+    }else{
         res.redirect('/')
     }
 }
 
-module.exports = {requireAuthCustomer,requireAuthManager,requireAuthEmployee,requireAuthDriver,requireAuthAssistantDriver};
+module.exports = {requireAuthCustomer,requireAuthManager,requireAuthEmployee,requireAuthDriver,requireAuthAssistantDriver,decodeToken};
+

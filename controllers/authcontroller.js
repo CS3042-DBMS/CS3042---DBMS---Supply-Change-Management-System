@@ -75,19 +75,14 @@ module.exports.login_get = (req,res) => {
             if(err){
                 //if anny error occured then redirect to login
                 res.redirect('/')
-
             }
-
             if(decodedToken.type === "customer"){
-
                 res.redirect("/customer_func/menu/view")
             }else if (decodedToken.type === "manager"){
-
                 // <=================== TODO =======================>
                 // redircet to manager original
 
             }else if(decodedToken.type === "employee"){
-
                 // <=================== TODO =======================>
                 // redirdect to employee original
                 
@@ -96,9 +91,9 @@ module.exports.login_get = (req,res) => {
             }
         })
     }
-    
     res.render('login/index')
 }
+
 
 /****
  * TODO
@@ -172,8 +167,6 @@ module.exports.login_post = (req,res) => {
         password
     } = req.body;
 
-    
-
     // *************** TODO - Validating ************* //
 
     // check if user exist
@@ -218,4 +211,14 @@ module.exports.login_post = (req,res) => {
             res.status(400).json({error:'check password or email again'})
             console.log('[error] - invalid login attempt - contoller/authcontroller '+err.sqlMessage);
     })
+}
+
+// logout route
+module.exports.logout_get = (req,res) => {
+    res.cookie('jwt','',{ maxAge:99})
+    res.status(201).json({
+                        message:'logout success',
+                        error:false,
+                        redirect:"/"
+                })
 }
