@@ -12,12 +12,12 @@
 </head>
 <body>
     <div class="pageTitle">
-    <h1 class="col-md-12" style=" font-family: 'Lucida Handwriting';">Quarterly Sales Report</h1> 
+    <h1 class="col-md-12" style=" font-family: 'Lucida Handwriting';">Quarterly Sales Report <span id="yeartag"><%= year %></span></h1> 
     </div>
 
     <br>
     <form action="/manager_func/sales_reports/view" method="post">
-    <h4> Select Year:  <select name="selectyear" id="">
+    <h4> Select Year:  <select name="selectyear" id="selectyear">
         <option value=" ">  </option>
         <% for(i = 2019;i < 2030;i++){ %>
         <option value=" <%= i %>">
@@ -25,7 +25,7 @@
         </option>
         <% }%>
     </select>
-    <button class="btn btn-dark" id ="saveStatus" type="submit" style="border-radius: 7px;margin-bottom: 7px;" >Confirm</button></h4>
+    <button class="btn btn-dark" id ="saveStatus"  type="submit" style="border-radius: 7px;margin-bottom: 7px;" >Confirm</button></h4>
     
     </form>
 
@@ -51,19 +51,19 @@
                         <%= item.product_name %>
                     </td>
 
-                    <td>
+                    <td>Rs.
                             <%= item.quarter1 %>
                     </td>                  
 
-                    <td>
+                    <td>Rs.
                             <%= item.quarter2 %>
                     </td>                  
  
-                    <td>
+                    <td>Rs.
                             <%= item.quarter3 %>
                     </td>                  
 
-                    <td>
+                    <td>Rs.
                             <%= item.quarter4 %>
                     </td>                  
                         
@@ -75,4 +75,5 @@
 
 
 </body>
+
 </html>

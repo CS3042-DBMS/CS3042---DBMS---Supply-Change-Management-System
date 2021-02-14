@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <title>Sales Report</title>
+</head>
+<body>
+    <div class="pageTitle">
+    <h1 class="col-md-12" style=" font-family: 'Lucida Handwriting';">Sales Report</h1> 
+    </div>
+
+    <br>
+    
+        <h4>Category: 
+    <select name="category" id="selection">
+        <option value="1">&nbsp;Route&nbsp;&nbsp;</option>
+        <option value="2">&nbsp;City&nbsp;&nbsp;</option>
+    </select>
+    <button class="btn btn-dark" id ="saveStatus"  style="border-radius: 7px;margin-bottom: 7px;" >Confirm</button>
+    </h4>
+
+    <div id="routeTable">
+    <h3>Routes</h3>
+    <table class="table table-hover bg-warning"  >
+        <thead>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Route</th>
+                <th>City</th>
+                <th>Amount</th>
+            </tr>
+            <% report.forEach(item=> {%>
+                <tr>
+                    <td>
+                        <%= item.route_name %>
+                    </td>
+                    <td>
+                        <%= item.branch %>
+                    </td>  
+                    <td>Rs. 
+                        <%= item.amount %> 
+                    </td>  
+                </tr>
+            <% });%>                
+            
+
+        </tbody>
+      </table>
+    </div>
+        <div id="cityTable" style="display: none;">
+      <h3>City</h3>
+      <table class="table table-hover bg-warning" >
+        <thead>
+        </thead>
+        <tbody>
+            <tr>
+                <th>City</th>
+                <th>Amount</th>
+            </tr>
+            <% city_result.forEach(item=> {%>
+                <tr>
+                    <td>
+                        <%= item.branch %>
+                    </td>  
+                    <td>Rs. 
+                        <%= item.amount %> 
+                    </td>  
+                </tr>
+            <% });%>                
+            
+
+        </tbody>
+      </table>
+    </div>
+
+</body>
+<script>
+document.getElementById("routeTable").style.display = 'block';
+document.getElementById("cityTable").style.display = 'none';    
+document.getElementById("saveStatus").addEventListener("click", function() {
+
+    if(document.getElementById("selection").value == '2' ){
+        document.getElementById("cityTable").style.display = 'block';
+        document.getElementById("routeTable").style.display = 'none';
+    }
+    else if(document.getElementById("selection").value == '1' ){
+        document.getElementById("routeTable").style.display = 'block';
+        document.getElementById("cityTable").style.display = 'none';
+    }
+});
+</script>
+</html>
