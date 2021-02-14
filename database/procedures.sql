@@ -181,3 +181,16 @@ SELECT DISTINCT quarter_sales.product_id,quarter_sales.product_name,IFNULL(quart
 END$$
 DELIMITER ;
 
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `viewSalesReport`()
+    DETERMINISTIC
+SELECT DISTINCT route_id, route_name,branch,SUM(price) AS amount FROM (route NATURAL JOIN store) LEFT JOIN `order` USING(route_id) GROUP BY route_id$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `viewSalesReportCity`()
+    DETERMINISTIC
+SELECT DISTINCT branch,SUM(price) AS amount FROM (route NATURAL JOIN store) LEFT JOIN `order` USING(route_id) GROUP BY branch$$
+DELIMITER ;
+
