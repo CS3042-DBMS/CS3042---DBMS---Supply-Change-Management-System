@@ -4,6 +4,6 @@ const router = express.Router();
 
 
 router.get('/view',viewQuarterlySalesReport );
-
+router.post('/view',viewQuarterlySalesReport );
 
 module.exports = router;

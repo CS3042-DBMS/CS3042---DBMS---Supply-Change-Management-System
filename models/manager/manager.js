@@ -1,9 +1,10 @@
 let pool = require('../../database/connection');
 
 module.exports = class Manager{
-    static viewQuarterlySalesReport(){
+    static viewQuarterlySalesReport(request){
+        const select_year = 2020;
         return new Promise((resolve, reject) => {
-            pool.query("CALL viewQuarterlySalesReport()",
+            pool.query("CALL viewQuarterlySalesReport(?)",[request.body.selectyear],
                 (error, results, fields) => {
                     if (error) {
                         reject(error);
