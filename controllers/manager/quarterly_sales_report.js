@@ -8,7 +8,7 @@ async function viewQuarterlySalesReport(request,response){
     try {
         const result = await Manager.viewQuarterlySalesReport(request);
         const jsresult = JSON.parse(JSON.stringify(result[0]));
-        response.render('manager/quarterly_sales_report',{report: jsresult});
+        response.render('manager/quarterly_sales_report',{report: jsresult, year: request.body.selectyear});
     }
     catch(error){
         response.send(error.message);
