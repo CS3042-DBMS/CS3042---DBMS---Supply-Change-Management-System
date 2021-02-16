@@ -12,7 +12,7 @@ var pool  = mysql.createPool({
 });
 
 pool.on('acquire', function (connection) {
-  //console.log('Connection %d acquired', connection.threadId);
+  console.log('Connection %d acquired', connection.threadId);
 });
 
 pool.on('connection', function (connection) {

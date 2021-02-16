@@ -50,24 +50,13 @@ function requireAuthDriver(req,res,next){
 
     // get the token from cookie
     const token = req.cookies.jwt;
+ if(decodedtoken){
+        console.log(decodedtoken)
+        
+        if(decodedtoken.type === 'Manager'){
+            console.log(decodedtoken)
 
-    // token exist then deocde it
-    if(token){
-        const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
-            if(err){
-
-                // any error redirect to login
-                res.redirect('/')
-                return
-            }
-
-            // return decoded token
-            return decodedToken
-        })
-        if(decodedToken.type === 'driver'){
-
-            // driver authenticate by middle ware and excute next function
-            console.log(decodedToken)
+    
             next();
         }
         else{
@@ -116,32 +105,46 @@ function requireAuthAssistantDriver(req,res,next){
     }
 }
 
-// auth manager
-function requireAuthManager(req,res,next){
 
-    const token = req.cookies.jwt;
-    if(token){
-            const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
-                if(err){
-                    res.redirect('/')
-                    return
-                }
-                return decodedToken
-            })
-            if(decodedToken.type === 'manager'){
-                console.log(decodedToken)
-                next();
-            }
-            else{
-                res.redirect('/')
-            }
-    }
-    else{
-        res.redirect('/')
-    }
-}
-// auth employee
-function requireAuthEmployee(req,res,next){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// auth assistant
+function requireAuthStoreManager(req,res,next){
 
     // get the token from cookie
     const decodedtoken = decodeToken(req);
@@ -149,7 +152,7 @@ function requireAuthEmployee(req,res,next){
     if(decodedtoken){
         console.log(decodedtoken)
         
-        if(decodedtoken.type === 'employee'){
+        if(decodedtoken.type === 'S_Manager'){
             console.log(decodedtoken)
             next();
         }
@@ -161,5 +164,50 @@ function requireAuthEmployee(req,res,next){
     }
 }
 
-module.exports = {requireAuthCustomer,requireAuthManager,requireAuthEmployee,requireAuthDriver,requireAuthAssistantDriver,decodeToken};
+// auth assistant
+function requireAuthDriver(req,res,next){
+
+    // get the token from cookie
+    const decodedtoken = decodeToken(req);
+
+    if(decodedtoken){
+        console.log(decodedtoken)
+        
+        if(decodedtoken.type === 'driver'){
+            console.log(decodedtoken)
+            next();
+        }
+        else{
+            res.redirect('/')
+        }
+    }else{
+        res.redirect('/')
+    }
+}
+
+
+
+// auth assistant
+function requireAuthAssistant(req,res,next){
+
+
+    // get the token from cookie
+    const decodedtoken = decodeToken(req);
+
+    if(decodedtoken){
+        console.log(decodedtoken)
+        
+        if(decodedtoken.type === 'assistant'){
+            console.log(decodedtoken)
+            next();
+        }
+        else{
+            res.redirect('/')
+        }
+    }else{
+        res.redirect('/')
+    }
+}
+
+module.exports = {requireAuthCustomer,requireAuthManager,requireAuthStoreManager,requireAuthDriver,requireAuthAssistant,decodeToken};
 
