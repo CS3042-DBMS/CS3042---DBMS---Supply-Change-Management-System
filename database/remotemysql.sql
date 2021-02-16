@@ -184,6 +184,8 @@ CREATE TABLE `quarterly_sales_report` (
   `unit_price` decimal(40,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+ALTER TABLE `quarterly_sales_report`
+  ADD PRIMARY KEY (`product_id`,`product_name`,`date_and_time_of_placement`);
 
 
 ALTER TABLE `Customer`
