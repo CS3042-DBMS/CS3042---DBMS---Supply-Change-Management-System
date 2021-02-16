@@ -49,19 +49,8 @@ BEGIN
 END
 //
 
--- check user existense and if exist return pw and type
-DELIMITER // 
-CREATE OR REPLACE PROCEDURE User(  IN email VARCHAR(100))
-	BEGIN
-        IF EXISTS (SELECT user.email FROM user 
-        WHERE user.email = email) THEN
-			SELECT password,type FROM user WHERE user.email = email;
-		ELSE 
-			SIGNAL SQLSTATE '45000'
-			SET MESSAGE_TEXT = 'No such User in the database';
-		END IF;
-    END
-//
+
+
 
 DELIMITER
 $$
@@ -187,7 +176,7 @@ END$$
 DELIMITER ;
 -- geting eligible assistants for the next job
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_assistants`(`r_id` INT(10),`d_time` DATETIME, `st_id` INT(10) )
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `get_assistants`(`r_id` INT(10),`d_time` DATETIME, `st_id` INT(10) )
 BEGIN
 	DECLARE round_trip_time TIME;
     SET AUTOCOMMIT = 0;
@@ -215,7 +204,7 @@ END$$
 DELIMITER
 -- geting eligible drivers for the next job
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_drivers`( `r_id` INT(10),`d_time` DATETIME , `st_id` INT(10) )
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `get_drivers`( `r_id` INT(10),`d_time` DATETIME , `st_id` INT(10) )
 BEGIN
 	DECLARE round_trip_time TIME;
     SET AUTOCOMMIT = 0;
@@ -236,9 +225,58 @@ BEGIN
 END$$
 DELIMITER
 
+
+
+
+DELIMITER $$
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `viewSalesReport`()
+    DETERMINISTIC
+SELECT DISTINCT route_id, route_name,branch,SUM(price) AS amount FROM (route NATURAL JOIN store) LEFT JOIN `order` USING(route_id) GROUP BY route_id$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `viewSalesReportCity`()
+    DETERMINISTIC
+SELECT DISTINCT branch,SUM(price) AS amount FROM (route NATURAL JOIN store) LEFT JOIN `order` USING(route_id) GROUP BY branch$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE or replace DEFINER=`root`@`localhost` PROCEDURE `User` (IN `email` VARCHAR(100))  BEGIN
+        DECLARE u_type VARCHAR(10);
+        DECLARE pw VARCHAR(300);
+        IF EXISTS (SELECT user.email FROM user 
+        WHERE user.email = email) THEN
+			SELECT type INTO u_type FROM user WHERE user.email = email;
+			IF ( u_type = 'S_Manager' ) THEN
+				WITH general_user AS
+					(SELECT * FROM user WHERE user.email = email)
+                SELECT * FROM general_user NATURAL JOIN store_manager;    
+			ELSEIF ( u_type = 'driver' ) THEN
+				WITH general_user AS
+					(SELECT *  FROM user WHERE user.email = email)
+				SELECT * FROM general_user NATURAL JOIN driver;
+            ELSEIF ( u_type = 'Manager' ) THEN
+				WITH general_user AS
+					(SELECT password,type,email FROM user WHERE user.email = email)
+				SELECT * FROM general_user NATURAL JOIN manager;        
+			ELSEIF ( u_type = 'assistant' ) THEN
+				WITH general_user AS
+					(SELECT * FROM user WHERE user.email = email)
+				SELECT * FROM general_user NATURAL JOIN driver_assistant;
+            ELSEIF ( u_type = 'customer' ) THEN
+				WITH general_user AS
+					(SELECT password,type,email FROM user WHERE user.email = email)
+				SELECT * FROM general_user NATURAL JOIN customer;    
+		END IF;	
+		ELSE 
+			SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'No such User in the database';
+		END IF;
+    END$$
+DELIMITER ;
 -- assign assitnt and driver to a job
 DELIMITER$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `assign_driver_and_assistant`(`s_id` INT(10),`r_id` INT(10),`d_time` DATETIME, `date` DATETIME,`t_id` INT(10), `a_id` INT(10),`d_id` INT(10),`st_id` INT(10) )
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `assign_driver_and_assistant`(`s_id` INT(10),`r_id` INT(10),`d_time` DATETIME, `date` DATETIME,`t_id` INT(10), `a_id` INT(10),`d_id` INT(10),`st_id` INT(10) )
 BEGIN
 
 	DECLARE id_of_new_schedule INT(10);
@@ -383,18 +421,4 @@ BEGIN
 
     commit;
 END$$
-DELIMITER
-
-
-DELIMITER $$
-CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `viewSalesReport`()
-    DETERMINISTIC
-SELECT DISTINCT route_id, route_name,branch,SUM(price) AS amount FROM (route NATURAL JOIN store) LEFT JOIN `order` USING(route_id) GROUP BY route_id$$
 DELIMITER ;
-
-DELIMITER $$
-CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `viewSalesReportCity`()
-    DETERMINISTIC
-SELECT DISTINCT branch,SUM(price) AS amount FROM (route NATURAL JOIN store) LEFT JOIN `order` USING(route_id) GROUP BY branch$$
-DELIMITER ;
-
