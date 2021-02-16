@@ -1,3 +1,7 @@
+create index customer_email on Customer(email);
+create index dirver_email on Driver(email);
+create index assistant_email on Driver_Assistant(email);
+
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE `add_to_cart`(`email` VARCHAR (100) ,`product_id` int(10),`quantity` int(10))
 BEGIN
@@ -69,11 +73,16 @@ $$
 
 DELIMITER
 $$
-
- CREATE OR REPLACE  PROCEDURE gettruckschedule()
-   BEGIN 
-   SELECT  * FROM  truck_schedule;END
- $$                                                   
+CREATE OR REPLACE  PROCEDURE getDrivertruckschedule()
+  
+    SELECT truck_schedule.schedule_id,truck_schedule.date,truck_schedule.departure_time,truck_schedule.route_id,route.route_name,truck_schedule.truck_id,order_schedule.order_id,`order`.delivery_address,`order`.price from truck_schedule LEFT JOIN order_schedule USING(schedule_id) LEFT JOIN `order` USING(order_id),route where route.route_id=truck_schedule.route_id and truck_schedule.date>=now();
+ $$    
+ DELIMITER
+$$
+CREATE OR REPLACE  PROCEDURE getAssistanttruckschedule()
+  
+    SELECT truck_schedule.schedule_id,truck_schedule.date,truck_schedule.departure_time,truck_schedule.route_id,route.route_name,truck_schedule.truck_id,order_schedule.order_id,`order`.delivery_address,`order`.price from truck_schedule LEFT JOIN order_schedule USING(schedule_id) LEFT JOIN `order` USING(order_id),route where route.route_id=truck_schedule.route_id and truck_schedule.date>=now();
+ $$                                                    
 
  DELIMITER
 $$                                                   
@@ -82,10 +91,6 @@ $$
     SELECT Cart.product_id, Product.product_name, Product.unit_price, Cart.quantity FROM Cart LEFT  JOIN Product on Product.product_id= Cart.product_id where Cart.customer_id in (select customer_id from Customer where Customer.email=email); END
 
 $$
-
-
-
-
 
 DELIMITER
 $$
@@ -162,7 +167,7 @@ DELIMITER ;
 
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `viewQuarterlySalesReport`(IN `select_year` INT)
+CREATE or replace DEFINER=`root`@`localhost` PROCEDURE `viewQuarterlySalesReport`(IN `select_year` INT)
     DETERMINISTIC
 BEGIN
 
@@ -183,13 +188,13 @@ DELIMITER ;
 
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `viewSalesReport`()
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `viewSalesReport`()
     DETERMINISTIC
 SELECT DISTINCT route_id, route_name,branch,SUM(price) AS amount FROM (route NATURAL JOIN store) LEFT JOIN `order` USING(route_id) GROUP BY route_id$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `viewSalesReportCity`()
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `viewSalesReportCity`()
     DETERMINISTIC
 SELECT DISTINCT branch,SUM(price) AS amount FROM (route NATURAL JOIN store) LEFT JOIN `order` USING(route_id) GROUP BY branch$$
 DELIMITER ;

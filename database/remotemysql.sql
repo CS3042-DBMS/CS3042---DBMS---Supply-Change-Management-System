@@ -187,7 +187,6 @@ CREATE TABLE `quarterly_sales_report` (
 ALTER TABLE `quarterly_sales_report`
   ADD PRIMARY KEY (`product_id`,`product_name`,`date_and_time_of_placement`);
 
-
 ALTER TABLE `Customer`
   ADD CONSTRAINT `Customer_ibfk_1` FOREIGN KEY (`email`) REFERENCES `User` (`email`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 

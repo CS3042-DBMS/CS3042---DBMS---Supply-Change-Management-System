@@ -3,7 +3,7 @@ let pool = require('../../database/connection');
 module.exports= class Driver {
     static gettruckschedule() {
         return new Promise((resolve, reject) => {
-            pool.query("CALL gettruckschedule()",
+            pool.query("CALL getDrivertruckschedule()",
                 (error, results, fields) => {
                     if (error) {
                         reject(error);
