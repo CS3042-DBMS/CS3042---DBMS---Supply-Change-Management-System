@@ -6,10 +6,24 @@ async function getOrders(request,response){
         const orders = await StoreManager.getorders(request)
         const result = JSON.parse(JSON.stringify(orders[0]))
         response.render('storemanager/orderList',{result: result});
-        // response.send(orders)
     } catch (e) {
 
     }
 }
 
-exports.getOrders = getOrders;
+async function getOrder(request,response){
+    try{
+         const order = await StoreManager.getorder(request.params.id)
+         const result = JSON.parse(JSON.stringify(order[0]))
+         response.render('storemanager/editTruckSchedule',{result: result});
+        //  response.send(result)
+    } catch (e) {
+
+    }
+}
+
+// exports.getOrders = getOrders;
+module.exports = {
+    getOrders,
+    getOrder
+}

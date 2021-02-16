@@ -31,23 +31,22 @@
             <tbody>
                 <tr>
                     <th>Order State</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
                     <th>Delivery Address</th>
                     <th>Delivery Route</th>
                     <th>Customer Contact No</th>
                     <th>Schedule ID</th>
+                    <th>Edit</th>
                   
                 </tr>
                 <% result.forEach(item => {%>
                   <tr>
                     <td><%= item.state %></td>
-                    <td><%= item.product_name %></td>
-                    <td><%= item.quantity %></td>
                     <td><%= item.delivery_address %></td>
                     <td><%= item.route_name %></td>
                     <td><%= item.contact_number %></td>
-                    <td><%= item.schedule_id %></td>
+                    <!-- <td><%= item.schedule_id %></td> -->
+                    <td><%= (!item.schedule_id)? 'Not assigned' : item.schedule_id %></td>
+                    <td><a href="../../storemanager/order/editorder/<%=item.order_id%>">Change Schedule</a></td>
                   </tr>
                 <% }); %> 
                 
