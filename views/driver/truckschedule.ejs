@@ -13,8 +13,9 @@
 </head>
 <body>
   <div class="pageTitle">
-    <h1 class="col-md-12" style=" font-family: 'Lucida Handwriting';">Driver Truck Schedule</h1> 
+    <h1 class="col-md-12" style=" font-family: 'Lucida Handwriting';">Driver-Upcoming Truck Schedules</h1> 
 </div>
+<b><p style="color: brown;">#Order id, delivery address and Price are written on order parcels</p></b>
 <div class='driver_truckschedule_table'>
      
     <!--<div class="col-md-12">
@@ -26,24 +27,35 @@
             </thead>
             <tbody>
                 <tr>
-                    
-                    <th>Date</th>
-                    <th>Departure Time</th>
-                    <th>Assistant ID</th>
-                    <th>Driver ID</th>
-                    <th>Route ID</th>
-                  
-                </tr>
-                <% result.forEach(item => {%>
-                  <tr>
-                    <td><%= item.date %></td>
-                    <td><%= item.departure_time %></td>
-                    <td><%= item.assistant_id %></td>
-                    <td><%= item.driver_id %></td>
-                    <td><%= item.route_id %></td>
-                    
-                  </tr>
-                <% }); %> 
+                  <th>Date</th>
+                  <th>Departure Time</th>
+                  <th>Route ID</th>
+                  <th>Route Name</th>
+                  <th>Truck ID</th>
+                  <th>Order ID and Delivery address and Order Price</th>
+                  <th>Time to finish the route</th>
+              </tr>
+              <% var off_id;%>
+              <% var i=0;%>
+              <% while ( i<result.length){%>
+                              <tr>
+                                  <% off_id=result[i].schedule_id;%>
+                                  <td><%= result[i].date %></td>
+                                  <td><%= result[i].departure_time %></td>
+                                  <td><%= result[i].route_id %></td>
+                                  <td><%= result[i].route_name %></td>
+                                  <td><%= result[i].truck_id %></td>
+                                  <td>
+                                      <% while (off_id==result[i].schedule_id) {%>
+                                          <p><%= result[i].order_id%> ---- <%= result[i].delivery_address%>----Rs.<%= result[i].price%></p>
+                                        
+                                          <% i++;%>
+                                          <% if (i>=result.length){break;}%>
+                                      <% }%>
+                                  </td>            
+              </tr>
+              <% }; %>
+              
                 
             </tbody>
           </table>
