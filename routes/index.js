@@ -8,9 +8,8 @@ const {requireAuthCustomer,requireAuthManager,requireAuthStoreManager,requireAut
 // protect store manager routes - add requireAuthStoreManager middleware
 // protect driver routes - add requireAuthDriver middleware
 const customerFunctions = require('./customer');
-const storeManagerFunctions = require('./storemanager');
-const ManagerFunctions = require('./manager');
-const authRoutes = require('./authroutes/authroute')
+const assistantdriverFunctions = require('./assistantdriver');
+const driverFunctions = require('./driver');
 const managerFunctions = require('./manager');
 const storeManagerFunctions = require('./storemanager');
 const authRoutes = require('./authroutes/authroute');
