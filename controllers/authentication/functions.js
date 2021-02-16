@@ -132,37 +132,37 @@ class AuthServices {
                     
                     case 'Manager':
                         // redirect to Manager home page
-                        isInitialLogin ? res.redirect("/customer_func/menu/view") : res.status(201).json({
+                        isInitialLogin ? res.redirect("/manager_func/orders/viewOrders") : res.status(201).json({
                             message:'login success',
                             error:false,
-                            redirect:"/customer_func/menu/view"
+                            redirect:"/manager_func/orders/viewOrders"
                     })
                     break;
 
                     case 'S_Manager':
                         // redirect to Manager home page
-                        isInitialLogin ? res.redirect("/storemanager/createschedule") : res.status(201).json({
+                        isInitialLogin ? res.redirect("/storemanager/createschedule/") : res.status(201).json({
                             message:'login success',
                             error:false,
-                            redirect:"/storemanager/createschedule"
+                            redirect:"/storemanager/createschedule/"
                     })
                     break;
 
                     case 'assistant':
                         // redirect to employee home page
-                        isInitialLogin ? res.redirect("/customer_func/menu/view") : res.status(201).json({
+                        isInitialLogin ? res.redirect("/assistant_driver_func/truckschedule/view") : res.status(201).json({
                             message:'login success',
                             error:false,
-                            redirect:"/customer_func/menu/view"
+                            redirect:"/assistant_driver_func/truckschedule/view"
                     })
                     break;
 
                     case 'driver':
                         // redirect to employee home page
-                        isInitialLogin ? res.redirect("/customer_func/menu/view") : res.status(201).json({
+                        isInitialLogin ? res.redirect("/driver_func/truckschedule/view") : res.status(201).json({
                             message:'login success',
                             error:false,
-                            redirect:"/customer_func/menu/view"
+                            redirect:"/driver_func/truckschedule/view"
                     })
                     break;
                 
