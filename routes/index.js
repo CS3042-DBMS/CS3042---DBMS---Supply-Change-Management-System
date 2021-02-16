@@ -12,8 +12,9 @@ const {requireAuthCustomer,requireAuthManager,requireAuthStoreManager,requireAut
 
 const customerFunctions = require('./customer');
 const driverFunctions = require('./driver');
+const storeManagerFunctions = require('./storemanager');
+const ManagerFunctions = require('./manager');
 const assistantdriverFunctions = require('./assistantdriver');
-const managerFunctions = require('./manager');
 
 // manager routes
 router.use('/manager_func',requireAuthManager,managerFunctions);
