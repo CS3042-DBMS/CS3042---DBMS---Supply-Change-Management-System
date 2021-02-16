@@ -1,9 +1,59 @@
 let pool = require('../../database/connection');
 
 module.exports = class Manager{
+
+    static viewSalesReportCity(){
+        return new Promise((resolve, reject) => {
+            pool.query("CALL viewSalesReportCity()",
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+
+                    //console.log(results);
+                    resolve(results);
+
+                }
+            )
+        })      
+    }
+
+    static viewSalesReport(){
+        return new Promise((resolve, reject) => {
+            pool.query("CALL viewSalesReport()",
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+
+                    //console.log(results);
+                    resolve(results);
+
+                }
+            )
+        })       
+    }
+
+    static viewQuarterlySalesReport(request){
+        const select_year = 2020;
+        return new Promise((resolve, reject) => {
+            pool.query("CALL viewQuarterlySalesReport(?)",[request.body.selectyear],
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+
+                    //console.log(results);
+                    resolve(results);
+
+                }
+            )
+        })
+    }
+
     static viewOrders(){
         return new Promise((resolve, reject) => {
-            pool.query("CALL viewOrders()",
+            pool.query("CALL viewOrdersList()",
                 (error, results, fields) => {
                     if (error) {
                         reject(error);

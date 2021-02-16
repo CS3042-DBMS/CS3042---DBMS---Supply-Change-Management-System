@@ -49,6 +49,15 @@ CREATE TABLE `Product` (
   PRIMARY KEY (`product_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `Customer` (
+  `customer_id` int(10) NOT NULL AUTO_INCREMENT,
+  `customer_type` varchar(30) NOT NULL,
+  `customer_name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `contact_number` varchar(50) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `Cart` (
   `customer_id` int(10) NOT NULL ,
   `product_id` int(10) NOT NULL,
@@ -56,11 +65,12 @@ CREATE TABLE `Cart` (
   PRIMARY KEY (`customer_id`, `product_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
 CREATE TABLE `Order` (
   `order_id` int(10) NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) NOT NULL,
   `route_id` int(10) NOT NULL,
-  `state` varchar(10) NOT NULL,
+  `state` varchar(30) NOT NULL,
   `date_and_time_of_placement` datetime NOT NULL,
   `delivery_address` varchar(1000) NOT NULL,
   `price` numeric(8,2)  NOT NULL,
@@ -114,6 +124,7 @@ CREATE TABLE `assistant_rosters` (
   KEY `assistant_rosters_ibfk_2` (`schedule_id`),
   CONSTRAINT `assistant_rosters_ibfk_1` FOREIGN KEY (`assistant_id`) REFERENCES `driver_assistant` (`assitant_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+=======
 
 
 CREATE TABLE `User` (
@@ -233,6 +244,16 @@ CREATE TABLE `Order_Assign` (
   PRIMARY KEY (`order_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `quarterly_sales_report` (
+  `product_id` int(10) NOT NULL,
+  `product_name` varchar(50) NOT NULL,
+  `total` decimal(8,2) DEFAULT NULL,
+  `date_and_time_of_placement` int(1) NOT NULL,
+  `unit_price` decimal(40,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `quarterly_sales_report`
+  ADD PRIMARY KEY (`product_id`,`product_name`,`date_and_time_of_placement`);
 
 ALTER TABLE `Customer`
   ADD CONSTRAINT `Customer_ibfk_1` FOREIGN KEY (`email`) REFERENCES `User` (`email`) ON DELETE RESTRICT ON UPDATE RESTRICT;

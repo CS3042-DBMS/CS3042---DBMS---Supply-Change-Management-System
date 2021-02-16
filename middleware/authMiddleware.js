@@ -44,27 +44,101 @@ function requireAuthCustomer(req,res,next){
         res.redirect('/')
     }
 }
+//auth driver
 
-// auth manager
-function requireAuthManager(req,res,next){
+function requireAuthDriver(req,res,next){
 
     // get the token from cookie
-    const decodedtoken = decodeToken(req);
-
-    if(decodedtoken){
+    const token = req.cookies.jwt;
+ if(decodedtoken){
         console.log(decodedtoken)
         
         if(decodedtoken.type === 'Manager'){
             console.log(decodedtoken)
+
+    
             next();
         }
         else{
+
+            res.redirect('/')
+        }
+    }
+    else{
+        res.redirect('/')
+    }
+}
+
+
+//auth assistant driver
+function requireAuthAssistantDriver(req,res,next){
+
+    // get the token from cookie
+    const token = req.cookies.jwt;
+
+    // token exist then deocde it
+    if(token){
+        const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
+            if(err){
+
+                // any error redirect to login
+                res.redirect('/')
+                return
+            }
+
+            // return decoded token
+            return decodedToken
+        })
+        if(decodedToken.type === 'assistantdriver'){
+
+            // assistant driver authenticate by middle ware and excute next function
+            console.log(decodedToken)
+
+            next();
+        }
+        else{
+
             res.redirect('/')
         }
     }else{
         res.redirect('/')
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -116,6 +190,7 @@ function requireAuthDriver(req,res,next){
 // auth assistant
 function requireAuthAssistant(req,res,next){
 
+
     // get the token from cookie
     const decodedtoken = decodeToken(req);
 
@@ -135,3 +210,4 @@ function requireAuthAssistant(req,res,next){
 }
 
 module.exports = {requireAuthCustomer,requireAuthManager,requireAuthStoreManager,requireAuthDriver,requireAuthAssistant,decodeToken};
+
