@@ -1,67 +1,12 @@
 
 
-let pool = require('../database/connection');
+let pool = require('../../database/connection');
 const bcrypt = require('bcrypt');
-const AuthCustomer = require('../models/authentication/customer/authCustomer').getAuthCustomerInstance();
-const LogInUser = require('../models/authentication/user/loginUser').getLoginUserInstance();
+const AuthCustomer = require('../../models/authentication/customer/authCustomer').getAuthCustomerInstance();
+const LogInUser = require('../../models/authentication/user/loginUser').getLoginUserInstance();
+const AuthServices = require('./functions').getAuthServicesInstance();
 const jwt = require('jsonwebtoken');
 
-// password compare with hash
-async function checkPassword(hash,password) {
- 
-        return new Promise((resolve, reject) => {
-            try {
-                const match = bcrypt.compare(password, hash); // compare hash
-                resolve(match);
-            } catch (error) {
-                reject(error)
-            }
-        }
-        )
-}
-
-// redirecting function
-function redirect(res,userType){
-    switch (userType) {
-                case 'customer':
-                    // redirect to cutomer home page
-                    res.status(201).json({
-                        message:'login success',
-                        error:false,
-                        redirect:"/customer_func/menu/view"
-                })
-                    break;
-                
-                case 'Manager':
-                    // redirect to Manager home page
-                    res.status(201).json({
-                        message:'login success',
-                        error:false,
-                        redirect:"/customer_func/menu/view"
-                })
-                break;
-
-                case 'employee':
-                    // redirect to employee home page
-                    res.status(201).json({
-                        message:'login success',
-                        error:false,
-                        redirect:"/customer_func/menu/view"
-                })
-                break;
-            
-                default:
-                    break;
-            }
-}
-
-// creating token function
-const expire = 3 * 24 * 60 * 60
-function createToken(email,type){
-    return jwt.sign({email,type}, 'secret',{
-        expiresIn: expire
-    })
-}
 
 module.exports.signup_get = (req,res) => {
     res.render('signup-customer/index')
@@ -71,23 +16,13 @@ module.exports.login_get = (req,res) => {
 
     const token = req.cookies.jwt;
     if(token){
-        const decodedToken = jwt.verify(token,'secret',(err,decodedToken) => {
+        jwt.verify(token,'secret',(err,decodedToken) => {
             if(err){
                 //if anny error occured then redirect to login
                 res.redirect('/')
-            }
-            if(decodedToken.type === "customer"){
-                res.redirect("/customer_func/menu/view")
-            }else if (decodedToken.type === "manager"){
-                // <=================== TODO =======================>
-                // redircet to manager original
-
-            }else if(decodedToken.type === "employee"){
-                // <=================== TODO =======================>
-                // redirdect to employee original
-                
             }else{
-                res.render('login/index')
+                // redirect to login
+                AuthServices.redirect(res,decodedToken.type,true);
             }
         })
     }
@@ -97,10 +32,10 @@ module.exports.login_get = (req,res) => {
 
 /****
  * TODO
- *  - need to validate request data
- *  - check user exist prior to create new entry in db 
- *  - error handling
- *  - login function
+ *  - need to validate request data - done
+ *  - check user exist prior to create new entry in db  - done
+ *  - error handling- done
+ *  - login function - done
  */
 
 module.exports.signup_post = (req,res) => {
@@ -155,10 +90,10 @@ module.exports.signup_post = (req,res) => {
 }
 /****
  * TODO
- *  - need to validate request data
- *  - check if user exist
- *  - if user exist then get type of the user
- *  - error handling
+ *  - need to validate request data - done
+ *  - check if user exist - done
+ *  - if user exist then get type of the user - done
+ *  - error handling - done
  */
 
 module.exports.login_post = (req,res) => {
@@ -166,6 +101,7 @@ module.exports.login_post = (req,res) => {
         email,
         password
     } = req.body;
+        console.log(email)
 
     // *************** TODO - Validating ************* //
 
@@ -173,27 +109,27 @@ module.exports.login_post = (req,res) => {
     LogInUser.getUserInfo(pool,res,req,{email})
     .then(data => {
 
-        // user exist , type and password arrived
-
+        // user exist , type and hashed password arrived from database
         let userType = data[0][0].type;
         let hash = data[0][0].password;
+        let user = AuthServices.extractData(userType,data);
 
-        checkPassword(hash,password)
+        AuthServices.checkPassword(hash,password)
         .then(matched => {
 
-            console.log('hash compare done ' + matched)
+            console.log('hash compare done -' + matched)
 
             if(matched){
 
                 // creatting token
-                const token = createToken(email,userType)
+                const token = AuthServices.createToken(user)
 
                 // httpOnly means this token cannot change by frontend javascript code
-                res.cookie('jwt', token , { httpOnly : true,maxAge:expire * 1000})
+                res.cookie('jwt', token , { httpOnly : true,maxAge:AuthServices.expire * 1000})
 
 
                 // redirection
-                redirect(res,userType)
+                AuthServices.redirect(res,userType,false)
             }
 
         }).catch(err => {
@@ -209,12 +145,13 @@ module.exports.login_post = (req,res) => {
         // if user not in the database db throws INVALID_LOGIN exception
         if(err.sqlMessage === 'INVALID_LOGIN')
             res.status(400).json({error:'check password or email again'})
-            console.log('[error] - invalid login attempt - contoller/authcontroller '+err.sqlMessage);
+            console.log('[error] - invalid login attempt - contoller/authcontroller '+err);
     })
 }
 
 // logout route
 module.exports.logout_get = (req,res) => {
+    // delete auth jwt cookie to logout
     res.cookie('jwt','',{ maxAge:99})
     res.status(201).json({
                         message:'logout success',

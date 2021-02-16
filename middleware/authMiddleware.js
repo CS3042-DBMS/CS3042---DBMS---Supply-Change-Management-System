@@ -54,7 +54,7 @@ function requireAuthManager(req,res,next){
     if(decodedtoken){
         console.log(decodedtoken)
         
-        if(decodedtoken.type === 'manager'){
+        if(decodedtoken.type === 'Manager'){
             console.log(decodedtoken)
             next();
         }
@@ -65,8 +65,12 @@ function requireAuthManager(req,res,next){
         res.redirect('/')
     }
 }
-// auth employee
-function requireAuthEmployee(req,res,next){
+
+
+
+
+// auth assistant
+function requireAuthStoreManager(req,res,next){
 
     // get the token from cookie
     const decodedtoken = decodeToken(req);
@@ -74,7 +78,7 @@ function requireAuthEmployee(req,res,next){
     if(decodedtoken){
         console.log(decodedtoken)
         
-        if(decodedtoken.type === 'employee'){
+        if(decodedtoken.type === 'S_Manager'){
             console.log(decodedtoken)
             next();
         }
@@ -86,4 +90,48 @@ function requireAuthEmployee(req,res,next){
     }
 }
 
-module.exports = {requireAuthCustomer,requireAuthManager,requireAuthEmployee,decodeToken};
+// auth assistant
+function requireAuthDriver(req,res,next){
+
+    // get the token from cookie
+    const decodedtoken = decodeToken(req);
+
+    if(decodedtoken){
+        console.log(decodedtoken)
+        
+        if(decodedtoken.type === 'driver'){
+            console.log(decodedtoken)
+            next();
+        }
+        else{
+            res.redirect('/')
+        }
+    }else{
+        res.redirect('/')
+    }
+}
+
+
+
+// auth assistant
+function requireAuthAssistant(req,res,next){
+
+    // get the token from cookie
+    const decodedtoken = decodeToken(req);
+
+    if(decodedtoken){
+        console.log(decodedtoken)
+        
+        if(decodedtoken.type === 'assistant'){
+            console.log(decodedtoken)
+            next();
+        }
+        else{
+            res.redirect('/')
+        }
+    }else{
+        res.redirect('/')
+    }
+}
+
+module.exports = {requireAuthCustomer,requireAuthManager,requireAuthStoreManager,requireAuthDriver,requireAuthAssistant,decodeToken};
