@@ -18,8 +18,6 @@ const assistantdriverFunctions = require('./assistantdriver');
 
 // manager routes
 router.use('/manager_func',requireAuthManager,managerFunctions);
-//manager routes
-router.use('/manager_func',managerFunctions);
 // customer routes
 router.use('/customer_func', requireAuthCustomer,customerFunctions);
 //store manager routes
