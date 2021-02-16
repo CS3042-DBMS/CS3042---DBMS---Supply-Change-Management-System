@@ -185,7 +185,26 @@ function requireAuthDriver(req,res,next){
     }
 }
 
+// auth manager
+function requireAuthManager(req,res,next){
 
+    // get the token from cookie
+    const decodedtoken = decodeToken(req);
+
+    if(decodedtoken){
+        console.log(decodedtoken)
+        
+        if(decodedtoken.type === 'Manager'){
+            console.log(decodedtoken)
+            next();
+        }
+        else{
+            res.redirect('/')
+        }
+    }else{
+        res.redirect('/')
+    }
+}
 
 // auth assistant
 function requireAuthAssistant(req,res,next){
