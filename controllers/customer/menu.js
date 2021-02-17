@@ -7,9 +7,12 @@ async function getMenu(request,response){
     try {
         const res = await Customer.getmenu();
         const result = JSON.parse(JSON.stringify(res[0]))
+
         response.render('customer/itemList',{result: result });
+
         
     } catch (error) {
+        
         response.send(error.message);
         
     }
