@@ -131,7 +131,7 @@ END$$
 DELIMITER ;
 -- geting eligible assistants for the next job
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_assistants`(`r_id` INT(10),`d_time` DATETIME, `st_id` INT(10) )
+CREATE OR REPLACE PROCEDURE `get_assistants`(`r_id` INT(10),`d_time` DATETIME, `st_id` INT(10) )
 BEGIN
 	DECLARE round_trip_time TIME;
     SET AUTOCOMMIT = 0;
@@ -159,7 +159,7 @@ END$$
 DELIMITER
 -- geting eligible drivers for the next job
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_drivers`( `r_id` INT(10),`d_time` DATETIME , `st_id` INT(10) )
+CREATE OR REPLACE PROCEDURE `get_drivers`( `r_id` INT(10),`d_time` DATETIME , `st_id` INT(10) )
 BEGIN
 	DECLARE round_trip_time TIME;
     SET AUTOCOMMIT = 0;
@@ -182,7 +182,7 @@ DELIMITER
 
 -- assign assitnt and driver to a job
 DELIMITER$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `assign_driver_and_assistant`(`s_id` INT(10),`r_id` INT(10),`d_time` DATETIME, `date` DATETIME,`t_id` INT(10), `a_id` INT(10),`d_id` INT(10),`st_id` INT(10) )
+CREATE OR REPLACE PROCEDURE `assign_driver_and_assistant`(`s_id` INT(10),`r_id` INT(10),`d_time` DATETIME, `date` DATETIME,`t_id` INT(10), `a_id` INT(10),`d_id` INT(10),`st_id` INT(10) )
 BEGIN
 
 	DECLARE id_of_new_schedule INT(10);
