@@ -29,6 +29,23 @@ SET time_zone = "+00:00";
 -- Database: `cs3042-dbms`
 --
 -- --------------------------------------------------------
+CREATE TABLE `railway` (
+  `train_name` varchar(30) NOT NULL,
+  `max_capacity` int(5) NOT NULL CHECK (`max_capacity` > 0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `railway`
+  ADD PRIMARY KEY (`train_name`);
+
+
+CREATE TABLE `railway_schedule` (
+  `train_name` varchar(30) NOT NULL,
+  `time_schedule` datetime NOT NULL,
+  `available_capacity` int(5) NOT NULL CHECK (`available_capacity` > 0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `railway_schedule`
+  ADD PRIMARY KEY (`train_name`,`time_schedule`);
 
 
 CREATE TABLE `Product` (
@@ -189,18 +206,6 @@ CREATE TABLE `Truck` (
   PRIMARY KEY (`truck_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `Railway` (
-  `train_name` varchar(30) NOT NULL,
-  `max_capacity` int(5) NOT NULL CHECK (`max_capacity` > 0),
-  PRIMARY KEY (`train_name`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `Railway_schedule` (
-  `train_name` varchar(30) NOT NULL,
-  `time_schedule` datetime NOT NULL,
-  `available_capacity` int(5) NOT NULL CHECK (`available_capacity` > 0),
-  PRIMARY KEY (`train_name`, `time_schedule`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 CREATE TABLE `Order_Assign` (
@@ -244,9 +249,6 @@ ALTER TABLE `Driver_Assistant`
 ALTER TABLE `Store_Manager`
   ADD CONSTRAINT `Store_Manager_ibfk_1` FOREIGN KEY (`email`) REFERENCES `User` (`email`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `Store_Manager_ibfk_2` FOREIGN KEY (`store_id`) REFERENCES `store`(`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `Railway_schedule`
-  ADD CONSTRAINT `Railway_schedule_ibfk_1` FOREIGN KEY (`train_name`) REFERENCES `Railway` (`train_name`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE `Order_Assign`
   ADD CONSTRAINT `Order_Assign_schedule_ibfk_1` FOREIGN KEY (`train_name`,`time_schedule`) REFERENCES `Railway_schedule` (`train_name`,`time_schedule`) ON DELETE RESTRICT ON UPDATE RESTRICT;

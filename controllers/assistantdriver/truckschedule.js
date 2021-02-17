@@ -4,7 +4,7 @@ const AssistantDriver = require('../../models/assistantdriver/assistantdriver');
 
 async function gettruckschedule(request,response){
     try {
-        const res = await AssistantDriver.gettruckschedule();
+        const res = await AssistantDriver.gettruckschedule(request);
         const result = JSON.parse(JSON.stringify(res[0]))
         
 

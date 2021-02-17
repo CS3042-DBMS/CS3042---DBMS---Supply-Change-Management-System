@@ -4,7 +4,7 @@ const Driver = require('../../models/driver/driver');
 
 async function gettruckschedule(request,response){
     try {
-        const res = await Driver.gettruckschedule();
+        const res = await Driver.gettruckschedule(request);
         const result = JSON.parse(JSON.stringify(res[0]))
         
 

@@ -51,36 +51,36 @@ END
 
 
 
-
-DELIMITER
-$$
+--display items to customers
+DELIMITER $$
  CREATE OR REPLACE  PROCEDURE getMenu()
    BEGIN 
    SELECT  * FROM  Product;
    END
 $$
 
-DELIMITER
-$$
-CREATE OR REPLACE  PROCEDURE getDrivertruckschedule()
-  
-    SELECT truck_schedule.schedule_id,truck_schedule.date,truck_schedule.departure_time,truck_schedule.route_id,route.route_name,truck_schedule.truck_id,order_schedule.order_id,`order`.delivery_address,`order`.price from truck_schedule LEFT JOIN order_schedule USING(schedule_id) LEFT JOIN `order` USING(order_id),route where route.route_id=truck_schedule.route_id and truck_schedule.date>=now();
- $$    
- DELIMITER
-$$
-CREATE OR REPLACE  PROCEDURE getAssistanttruckschedule()
-  
-    SELECT truck_schedule.schedule_id,truck_schedule.date,truck_schedule.departure_time,truck_schedule.route_id,route.route_name,truck_schedule.truck_id,order_schedule.order_id,`order`.delivery_address,`order`.price from truck_schedule LEFT JOIN order_schedule USING(schedule_id) LEFT JOIN `order` USING(order_id),route where route.route_id=truck_schedule.route_id and truck_schedule.date>=now();
- $$                                                    
 
- DELIMITER
-$$                                                   
+DELIMITER $$
+CREATE OR REPLACE  PROCEDURE getDrivertruckschedule(email VARCHAR(100))
+  
+    SELECT truck_schedule.schedule_id,substring(truck_schedule.departure_time,1,10) as date,substring(truck_schedule.departure_time,12,8) as departure_time,truck_schedule.route_id,`route`.route_name,truck_schedule.truck_id,order_schedule.order_id,`order`.delivery_address,`order`.price,`route`.trip_time from `route` right join truck_schedule using(route_id) LEFT JOIN order_schedule USING(schedule_id) LEFT JOIN `order` USING(order_id) where truck_schedule.driver_id in (select driver_id from Driver where Driver.email=email) and truck_schedule.departure_time>=now();
+ $$   
+
+
+ DELIMITER $$
+CREATE OR REPLACE  PROCEDURE getAssistanttruckschedule(email VARCHAR(100))
+  sELECT truck_schedule.schedule_id,substring(truck_schedule.departure_time,1,10) as date,substring(truck_schedule.departure_time,12,8) as departure_time,truck_schedule.route_id,`route`.route_name,truck_schedule.truck_id,order_schedule.order_id,`order`.delivery_address,`order`.price,`route`.trip_time from `route` right join truck_schedule using(route_id) LEFT JOIN order_schedule USING(schedule_id) LEFT JOIN `order` USING(order_id) where truck_schedule.assistant_id in (select assistant_id from Driver_Assistant where Driver_Assistant.email=email) and truck_schedule.departure_time>=now();
+$$                                                    
+
+
+ DELIMITER $$                                                   
  CREATE OR REPLACE  PROCEDURE getcart(email VARCHAR (100))
    BEGIN 
     SELECT Cart.product_id, Product.product_name, Product.unit_price, Cart.quantity FROM Cart LEFT  JOIN Product on Product.product_id= Cart.product_id where Cart.customer_id in (select customer_id from Customer where Customer.email=email); END
 
 $$
 
+--get total price of the cart
 DELIMITER
 $$
  CREATE OR REPLACE  PROCEDURE totalPrice(email VARCHAR (100))
@@ -96,14 +96,13 @@ $$
 $$
 
 
-
-
 DELIMITER
 $$
  CREATE OR REPLACE  PROCEDURE getRoutes()
    BEGIN 
-   SELECT  route_id,route_name FROM `Route`;END
+   SELECT  route_id,route_name,`description` FROM `Route`;END
 $$
+
 
 DELIMITER
 $$
@@ -138,6 +137,7 @@ BEGIN
 END$$
 DELIMITER ;
 
+
 DELIMITER $$
 CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `viewTrain`()
     DETERMINISTIC
@@ -146,6 +146,7 @@ BEGIN
 END$$
 DELIMITER ;
 
+--display confirmed orders to customers
 DELIMITER
 $$
  CREATE OR REPLACE  PROCEDURE get_confirmed_orders(email VARCHAR (100))
@@ -174,6 +175,8 @@ CREATE OR REPLACE VIEW quarter4 AS SELECT * FROM quarter_sales WHERE quarter = 4
 SELECT DISTINCT quarter_sales.product_id,quarter_sales.product_name,IFNULL(quarter1.sales,0) AS quarter1 ,IFNULL(quarter2.sales,0) AS quarter2, IFNULL(quarter3.sales,0) AS quarter3, IFNULL(quarter4.sales,0) AS quarter4 FROM quarter_sales LEFT JOIN quarter1 USING (product_id) LEFT JOIN quarter2 USING (product_id) LEFT JOIN quarter3 USING (product_id) LEFT JOIN quarter4 USING (product_id);
 END$$
 DELIMITER ;
+
+
 -- geting eligible assistants for the next job
 DELIMITER $$
 CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `get_assistants`(`r_id` INT(10),`d_time` DATETIME, `st_id` INT(10) )
@@ -201,7 +204,9 @@ BEGIN
     
     commit;
 END$$
-DELIMITER
+DELIMITER;
+
+
 -- geting eligible drivers for the next job
 DELIMITER $$
 CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `get_drivers`( `r_id` INT(10),`d_time` DATETIME , `st_id` INT(10) )
@@ -220,10 +225,10 @@ BEGIN
     FROM departure_times_of_drivers 
 		LEFT OUTER JOIN route USING(route_id)
 		WHERE  (schedule_id IS NULL) OR TIMEDIFF( d_time ,TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),departure_time))  ) > '06:00:00' 
-		AND departure_times_of_drivers.store_id = s_id  AND  worked_hours + HOUR(round_trip_time) < 40;
+		AND departure_times_of_drivers.store_id = st_id  AND  worked_hours + HOUR(round_trip_time) < 40;
     commit;
 END$$
-DELIMITER
+DELIMITER;
 
 
 
