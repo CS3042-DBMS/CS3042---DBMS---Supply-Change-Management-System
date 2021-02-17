@@ -31,14 +31,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
 CREATE TABLE `Product` (
   `product_id` int(10) NOT NULL AUTO_INCREMENT,
   `product_name` varchar(50) NOT NULL,
@@ -47,15 +39,6 @@ CREATE TABLE `Product` (
   `unit_capacity` int(100) NOT NULL CHECK (`unit_capacity` > 0),
   `unit_price` numeric(8,2) NOT NULL CHECK (`unit_price` > 0),
   PRIMARY KEY (`product_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `Customer` (
-  `customer_id` int(10) NOT NULL AUTO_INCREMENT,
-  `customer_type` varchar(30) NOT NULL,
-  `customer_name` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `contact_number` varchar(50) NOT NULL,
-  PRIMARY KEY (`customer_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Cart` (
@@ -95,7 +78,7 @@ CREATE TABLE `Customer` (
   `customer_id` int(10) NOT NULL AUTO_INCREMENT,
   `customer_type` varchar(30) NOT NULL,
   `customer_name` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `email` varchar(300) NOT NULL,
   `contact_number` varchar(50) NOT NULL,
   PRIMARY KEY (`customer_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -107,10 +90,7 @@ CREATE TABLE `driver_rosters` (
   `schedule_id` int(10) DEFAULT NULL,
   `worked_hours` int(10) DEFAULT 0,
   `working_hours` int(10) DEFAULT 0,
-  PRIMARY KEY (`driver_id`),
-  KEY `driver_id` (`driver_id`),
-  KEY `schedule_id` (`schedule_id`),
-  CONSTRAINT `driver_rosters_ibfk_2` FOREIGN KEY (`driver_id`) REFERENCES `driver` (`driver_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`driver_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- assistant rosters
@@ -120,11 +100,8 @@ CREATE TABLE `assistant_rosters` (
   `worked_hours` int(10) DEFAULT 0,
   `consecutive_schedules` int(10) DEFAULT 0,
   `working_hours` int(100) DEFAULT 0,
-  PRIMARY KEY (`assistant_id`),
-  KEY `assistant_rosters_ibfk_2` (`schedule_id`),
-  CONSTRAINT `assistant_rosters_ibfk_1` FOREIGN KEY (`assistant_id`) REFERENCES `driver_assistant` (`assitant_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`assistant_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-=======
 
 
 CREATE TABLE `User` (
@@ -168,7 +145,7 @@ CREATE TABLE `Driver_Assistant` (
   `assistant_name` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `contact_number` int(10) NOT NULL,
-  PRIMARY KEY (`assitant_id`)
+  PRIMARY KEY (`assistant_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Store` (
@@ -190,19 +167,8 @@ CREATE TABLE `truck_schedule` (
   `driver_id` int(10) NOT NULL,
   `route_id` int(10) NOT NULL,
   `store_id` int(10) NOT NULL,
-  PRIMARY KEY (`schedule_id`),
-  KEY `Truck_Schedule_ibfk_1` (`assistant_id`),
-  KEY `Truck_Schedule_ibfk_2` (`route_id`),
-  KEY `Truck_Schedule_ibfk_3` (`truck_id`),
-  KEY `Truck_Schedule_ibfk_4` (`driver_id`),
-  CONSTRAINT `truck_schedule_ibfk_1` FOREIGN KEY (`driver_id`) REFERENCES `driver` (`driver_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `truck_schedule_ibfk_2` FOREIGN KEY (`route_id`) REFERENCES `route` (`route_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `truck_schedule_ibfk_3` FOREIGN KEY (`assistant_id`) REFERENCES `driver_assistant` (`assitant_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `truck_schedule_ibfk_4` FOREIGN KEY (`truck_id`) REFERENCES `truck` (`truck_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`schedule_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1014 DEFAULT CHARSET=utf8mb4;
-
-
-
 
 CREATE TABLE `route` (
   `route_id` int(10) NOT NULL AUTO_INCREMENT,
@@ -276,11 +242,8 @@ ALTER TABLE `Driver_Assistant`
   ADD CONSTRAINT `Driver_Assistant_ibfk_2` FOREIGN KEY (`store_id`) REFERENCES `Store` (`store_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE `Store_Manager`
-  ADD CONSTRAINT `Store_Manager_ibfk_1` FOREIGN KEY (`email`) REFERENCES `User` (`email`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE `store_manager` 
-ADD FOREIGN KEY (`email`) REFERENCES `user`(`email`) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE `store_manager` 
-ADD FOREIGN KEY (`store_id`) REFERENCES `store`(`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `Store_Manager_ibfk_1` FOREIGN KEY (`email`) REFERENCES `User` (`email`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `Store_Manager_ibfk_2` FOREIGN KEY (`store_id`) REFERENCES `store`(`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `Railway_schedule`
   ADD CONSTRAINT `Railway_schedule_ibfk_1` FOREIGN KEY (`train_name`) REFERENCES `Railway` (`train_name`) ON DELETE RESTRICT ON UPDATE RESTRICT;
@@ -292,54 +255,22 @@ ALTER TABLE `Order`
   ADD CONSTRAINT `Order_ibfk_1` FOREIGN KEY (`route_id`) REFERENCES `Route` (`route_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE `Truck_Schedule` 
-  ADD CONSTRAINT `Truck_Schedule_ibfk_1` FOREIGN KEY (`assistant_id`) REFERENCES `Driver_Assistant`(`assitant_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `Truck_Schedule_ibfk_2` FOREIGN KEY (`route_id`) REFERENCES `Route` (`route_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `Truck_Schedule_ibfk_3` FOREIGN KEY (`truck_id`) REFERENCES `Truck` (`truck_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `Truck_Schedule_ibfk_4` FOREIGN KEY (`driver_id`) REFERENCES `Driver` (`driver_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `Truck_Schedule_ibfk_1` FOREIGN KEY (`assistant_id`) REFERENCES `Driver_Assistant`(`assistant_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Truck_Schedule_ibfk_2` FOREIGN KEY (`route_id`) REFERENCES `Route` (`route_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Truck_Schedule_ibfk_3` FOREIGN KEY (`truck_id`) REFERENCES `Truck` (`truck_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Truck_Schedule_ibfk_4` FOREIGN KEY (`driver_id`) REFERENCES `Driver` (`driver_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `Order_Schedule`
   ADD CONSTRAINT `Order_Schedule_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `Order` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
     ADD CONSTRAINT `Order_Schedule__ibfk_2` FOREIGN KEY (`schedule_id`) REFERENCES `Truck_Schedule` (`schedule_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE `driver_rosters`
+  ADD CONSTRAINT `driver_rosters_ibfk_1` FOREIGN KEY (`driver_id`) REFERENCES `Driver` (`driver_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `assistant_rosters`
+ ADD CONSTRAINT `assistant_rosters_ibfk_1` FOREIGN KEY (`assistant_id`) REFERENCES `Driver_Assistant` (`assistant_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `User`(  IN email VARCHAR(100))
-BEGIN
-        DECLARE u_type VARCHAR(10);
-        DECLARE pw VARCHAR(300);
-        IF EXISTS (SELECT user.email FROM user 
-        WHERE user.email = email) THEN
-			SELECT type INTO u_type FROM user WHERE user.email = email;
-			IF ( u_type = 'S_Manager' ) THEN
-				WITH general_user AS
-					(SELECT * FROM user WHERE user.email = email)
-                SELECT * FROM general_user NATURAL JOIN store_manager;    
-			ELSEIF ( u_type = 'driver' ) THEN
-				WITH general_user AS
-					(SELECT *  FROM user WHERE user.email = email)
-				SELECT * FROM general_user NATURAL JOIN driver;
-            ELSEIF ( u_type = 'Manager' ) THEN
-				WITH general_user AS
-					(SELECT password,type,email FROM user WHERE user.email = email)
-				SELECT * FROM general_user NATURAL JOIN manager;        
-			ELSEIF ( u_type = 'assistant' ) THEN
-				WITH general_user AS
-					(SELECT * FROM user WHERE user.email = email)
-				SELECT * FROM general_user NATURAL JOIN driver_assistant;
-            ELSEIF ( u_type = 'customer' ) THEN
-				WITH general_user AS
-					(SELECT password,type,email FROM user WHERE user.email = email)
-				SELECT * FROM general_user NATURAL JOIN customer;    
-		END IF;	
-		ELSE 
-			SIGNAL SQLSTATE '45000'
-			SET MESSAGE_TEXT = 'No such User in the database';
-		END IF;
-    END
     
-insert into `product`(`product_name`,`product_type`,`description`,`unit_capacity`,`unit_price`) VALUES('promate single rule CR pages 80','stationary','available book types are single rule, double rule, square rule: no of pages 40,80,120,160:CR and exercise:promate and atlas',15,115);
-insert into `product`(`product_name`,`product_type`,`description`,`unit_capacity`,`unit_price`) VALUES('promate double rule CR pages 80','stationary','available book types are single rule, double rule, square rule: no of pages 40,80,120,160:CR and exercise:promate and atlas',15,115);
-insert into `product`(`product_name`,`product_type`,`description`,`unit_capacity`,`unit_price`) VALUES('promate square rule CR pages 80','stationary','available book types are single rule, double rule, square rule: no of pages 40,80,120,160:CR and exercise:promate and atlas',15,115);
-
 -- getting trip full fill time
 SELECT TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),TIMESTAMPADD(SECOND,SECOND (trip_time),departure_time))) FROM `cs3042-dbms`.truck_schedule NATURAL JOIN route;
