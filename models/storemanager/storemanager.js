@@ -29,6 +29,20 @@ module.exports= class StoreManager {
       
     }
 
+    static updateorder(request) {  // request is the integer value of order_id
+        return new Promise((resolve, reject) => {
+            pool.query("CALL update_order("+request.body.order_id+","+request.body.schedule_id+")",
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+                    resolve(results);
+                }
+            )
+        })
+      
+    }
+
 
 
     static add_to_cart(request){

@@ -22,8 +22,21 @@ async function getOrder(request,response){
     }
 }
 
+async function updateOrder(request,response){
+    try{
+         const order = await StoreManager.updateorder(request)
+         const store_id = JSON.parse(JSON.stringify(order[0]))[0].store_id
+         const orders = await StoreManager.getorders(store_id)
+         const result = JSON.parse(JSON.stringify(orders[0]))
+         response.render('storemanager/updatedOrderList',{result: result});
+    } catch (e) {
+
+    }
+}
+
 // exports.getOrders = getOrders;
 module.exports = {
     getOrders,
-    getOrder
+    getOrder,
+    updateOrder
 }
