@@ -276,7 +276,9 @@ CREATE or replace DEFINER=`root`@`localhost` PROCEDURE `User` (IN `email` VARCHA
 DELIMITER ;
 -- assign assitnt and driver to a job
 DELIMITER$$
-CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `assign_driver_and_assistant`(`s_id` INT(10),`r_id` INT(10),`d_time` DATETIME, `date` DATETIME,`t_id` INT(10), `a_id` INT(10),`d_id` INT(10),`st_id` INT(10) )
+                                                                                  
+CREATE OR REPLACE PROCEDURE `assign_driver_and_assistant`(`s_id` INT(10),`r_id` INT(10),`d_time` DATETIME, `date` DATETIME,`t_id` INT(10), `a_id` INT(10),`d_id` INT(10),`st_id` INT(10) )
+
 BEGIN
 
 	DECLARE id_of_new_schedule INT(10);
