@@ -31,6 +31,7 @@
                     <tr>
                         <th>Route ID</th>
                         <th>Route Name</th>
+                        <th>Route Description</th>
                         <th>Delivery Address</th>
                         
                       
@@ -40,6 +41,7 @@
                          
                               <td><%= route.route_id %></td>
                               <td><%= route.route_name %></td>
+                              <td><%= route.description %></td>
                               <td>
                                 <form action="/customer_func/cart/order" method="POST">
                                   

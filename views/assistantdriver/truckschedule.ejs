@@ -37,8 +37,9 @@
                   <th>Route ID</th>
                   <th>Route Name</th>
                    <th>Truck ID</th>
+                   <th>Time to finish the route</th>
                   <th>Order ID and delivery_address and Order Price</th>
-                  <th>Time to finish the route</th>
+                  
               </tr>
               <% var off_id;%>
               <% var i=0;%>
@@ -50,6 +51,7 @@
                                   <td><%= result[i].route_id %></td>
                                   <td><%= result[i].route_name %></td>
                                   <td><%= result[i].truck_id %></td>
+                                  <td><%= result[i].trip_time %></td> 
                                   <td>
                                       <% while (off_id==result[i].schedule_id) {%>
                                           <p><%= result[i].order_id%> ---- <%= result[i].delivery_address%>----Rs.<%= result[i].price%></p>
