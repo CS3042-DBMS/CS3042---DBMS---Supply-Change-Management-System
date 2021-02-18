@@ -431,3 +431,39 @@ BEGIN
     commit;
 END$$
 DELIMITER ;
+
+DELIMITER $$
+
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `update_order`(IN `orderID` INT, IN `scheduleID` INT)
+BEGIN
+    update `order` set `state` = 'Assigned to truck' where (`order_id` = orderID and `order_id` <> 0);  
+    insert into `order_schedule` (order_id, schedule_id) values (orderID, scheduleID) on duplicate key update `order_id` = orderID , `schedule_id` = scheduleID;
+    select store_id from `order` join `route` using (route_id) where (`order_id` = orderID);
+    
+END$$
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `view_order`(IN `orderID` INT(100))
+    NO SQL
+BEGIN
+    
+   select order_id,state,product_name,quantity,delivery_address,route_name,contact_number,schedule_id from `order` 
+   join `route` using (route_id) join `customer` 
+   using (customer_id) join `order_addition` using (order_id) join `product` using (product_id) left outer join `order_schedule` using (order_id)  where `order_id` = orderID and `state` <> "new";
+    
+END$$
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `view_orders`(IN `email` VARCHAR(100))
+BEGIN
+    
+   select order_id,state,delivery_address,route_name,contact_number,schedule_id from `order` 
+   join `route` using (route_id) join `customer` 
+   using (customer_id)  left outer join `order_schedule` using (order_id)  where store_id in (select `store_id` from store_manager where `email` = email) and `state` <> "new";
+    
+END$$
+DELIMITER ;
