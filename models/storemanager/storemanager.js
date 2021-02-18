@@ -2,12 +2,11 @@ let pool = require('../../database/connection');
 
 let SM;
 module.exports= class StoreManager {
-
-    static getStoreManagerInstance(){
+  static getStoreManagerInstance(){
         return SM ? SM : new StoreManager();
     }
-    
-    static getorders() {
+  
+    static getorders(request) {
         return new Promise((resolve, reject) => {
             pool.query("CALL view_orders('sapumal@gmail.com')",
                 (error, results, fields) => {
@@ -20,6 +19,36 @@ module.exports= class StoreManager {
         })
       
     }
+
+    static getorder(request) {  // request is the integer value of order_id
+        return new Promise((resolve, reject) => {
+            pool.query("CALL view_order("+request+")",
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+                    resolve(results);
+                }
+            )
+        })
+      
+    }
+
+    static updateorder(request) {  // request is the integer value of order_id
+        return new Promise((resolve, reject) => {
+            pool.query("CALL update_order("+request.body.order_id+","+request.body.schedule_id+")",
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+                    resolve(results);
+                }
+            )
+        })
+      
+    }
+
+
 
     static add_to_cart(request){
         return new Promise((resolve,reject) =>{

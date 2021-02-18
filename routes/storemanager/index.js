@@ -5,6 +5,5 @@ const cart = require('./schedule');
 
 router.use('/createschedule',createschedule); // creating truck schedules
 router.use('/order',order);
-//router.use('/schedule',schedule);
 
 module.exports = router
