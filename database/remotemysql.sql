@@ -34,8 +34,6 @@ CREATE TABLE `railway` (
   `max_capacity` int(5) NOT NULL CHECK (`max_capacity` > 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-ALTER TABLE `railway`
-  ADD PRIMARY KEY (`train_name`);
 
 
 CREATE TABLE `railway_schedule` (
@@ -44,8 +42,7 @@ CREATE TABLE `railway_schedule` (
   `available_capacity` int(5) NOT NULL CHECK (`available_capacity` > 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-ALTER TABLE `railway_schedule`
-  ADD PRIMARY KEY (`train_name`,`time_schedule`);
+
 
 
 CREATE TABLE `Product` (
@@ -223,8 +220,22 @@ CREATE TABLE `quarterly_sales_report` (
   `unit_price` decimal(40,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+ALTER TABLE `railway`
+  ADD PRIMARY KEY (`train_name`);
+
+ALTER TABLE `railway_schedule`
+  ADD PRIMARY KEY (`train_name`,`time_schedule`);
+
+
+
+ALTER TABLE `railway_schedule`
+  ADD CONSTRAINT `railway_schedule_ibfk_1` FOREIGN KEY (`train_name`) REFERENCES `railway` (`tain_name`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
 ALTER TABLE `quarterly_sales_report`
   ADD PRIMARY KEY (`product_id`,`product_name`,`date_and_time_of_placement`);
+
+
 
 ALTER TABLE `Customer`
   ADD CONSTRAINT `Customer_ibfk_1` FOREIGN KEY (`email`) REFERENCES `User` (`email`) ON DELETE RESTRICT ON UPDATE RESTRICT;
@@ -276,3 +287,4 @@ ALTER TABLE `assistant_rosters`
     
 -- getting trip full fill time
 SELECT TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),TIMESTAMPADD(SECOND,SECOND (trip_time),departure_time))) FROM `cs3042-dbms`.truck_schedule NATURAL JOIN route;
+

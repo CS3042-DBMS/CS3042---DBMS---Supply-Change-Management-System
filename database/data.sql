@@ -150,12 +150,18 @@ INSERT INTO `railway` (`train_name`, `max_capacity`) VALUES
 ('Udarata Manike - Colombo', 250);
 
 INSERT INTO `railway_schedule` (`train_name`, `time_schedule`, `available_capacity`) VALUES
-('Colombo Commuter', '2021-02-18 08:00:00', 300),
+('Colombo Commuter', '2021-02-18 08:00:00', 270),
 ('Connected Train - Matara', '2021-02-18 05:00:00', 500),
 ('Intercity - Colombo', '2021-02-18 15:00:00', 250),
 ('Podi Menike - Badulla', '2021-02-18 08:55:00', 400),
 ('Udarata Manike - Badulla', '2021-02-18 11:10:00', 420),
-('Udarata Manike - Colombo', '2021-02-18 13:10:00', 250);
+('Udarata Manike - Colombo', '2021-02-18 13:10:00', 250),
+('Colombo Commuter', '2021-02-19 08:00:00', 300),
+('Connected Train - Matara', '2021-02-19 05:00:00', 500),
+('Intercity - Colombo', '2021-02-19 15:00:00', 250),
+('Podi Menike - Badulla', '2021-02-19 08:55:00', 400),
+('Udarata Manike - Badulla', '2021-02-19 11:10:00', 420),
+('Udarata Manike - Colombo', '2021-02-19 13:10:00', 250);
 
 INSERT INTO `order` (`order_id`, `customer_id`, `route_id`, `state`, `date_and_time_of_placement`, `delivery_address`, `price`, `capacity`) VALUES
 (1, 6, 10, 'Assigned to Train', '2021-02-17 20:54:04', 'No10,Elliot road,Galle', '3000.00', 30);

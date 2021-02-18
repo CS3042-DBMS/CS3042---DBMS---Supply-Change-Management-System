@@ -62,14 +62,14 @@ $$
 
 DELIMITER $$
 CREATE OR REPLACE  PROCEDURE getDrivertruckschedule(email VARCHAR(100))
-  
-    SELECT truck_schedule.schedule_id,substring(truck_schedule.departure_time,1,10) as date,substring(truck_schedule.departure_time,12,8) as departure_time,truck_schedule.route_id,`route`.route_name,truck_schedule.truck_id,order_schedule.order_id,`order`.delivery_address,`order`.price,`route`.trip_time from `route` right join truck_schedule using(route_id) LEFT JOIN order_schedule USING(schedule_id) LEFT JOIN `order` USING(order_id) where truck_schedule.driver_id in (select driver_id from Driver where Driver.email=email) and truck_schedule.departure_time>=now();
+
+SELECT truck_schedule.schedule_id,substring(truck_schedule.departure_time,1,10) as date,substring(truck_schedule.departure_time,12,8) as departure_time,truck_schedule.route_id,`route`.route_name,truck_schedule.truck_id,order_schedule.order_id,`order`.delivery_address,`order`.price,`route`.trip_time from `route` right join truck_schedule using(route_id) right JOIN order_schedule USING(schedule_id) LEFT JOIN `order` USING(order_id) where truck_schedule.driver_id in (select driver_id from Driver where Driver.email=email) and truck_schedule.departure_time>=now();
  $$   
 
 
  DELIMITER $$
 CREATE OR REPLACE  PROCEDURE getAssistanttruckschedule(email VARCHAR(100))
-  sELECT truck_schedule.schedule_id,substring(truck_schedule.departure_time,1,10) as date,substring(truck_schedule.departure_time,12,8) as departure_time,truck_schedule.route_id,`route`.route_name,truck_schedule.truck_id,order_schedule.order_id,`order`.delivery_address,`order`.price,`route`.trip_time from `route` right join truck_schedule using(route_id) LEFT JOIN order_schedule USING(schedule_id) LEFT JOIN `order` USING(order_id) where truck_schedule.assistant_id in (select assistant_id from Driver_Assistant where Driver_Assistant.email=email) and truck_schedule.departure_time>=now();
+  SELECT truck_schedule.schedule_id,substring(truck_schedule.departure_time,1,10) as date,substring(truck_schedule.departure_time,12,8) as departure_time,truck_schedule.route_id,`route`.route_name,truck_schedule.truck_id,order_schedule.order_id,`order`.delivery_address,`order`.price,`route`.trip_time from `route` right join truck_schedule using(route_id) right JOIN order_schedule USING(schedule_id) LEFT JOIN `order` USING(order_id) where truck_schedule.assistant_id in (select assistant_id from Driver_Assistant where Driver_Assistant.email=email) and truck_schedule.departure_time>=now();
 $$                                                    
 
 
@@ -142,7 +142,7 @@ DELIMITER $$
 CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `viewTrain`()
     DETERMINISTIC
 BEGIN 
-	SELECT * FROM `railway_schedule`;
+	SELECT * FROM `railway_schedule` where time_schedule>=now() order by time_schedule;
 END$$
 DELIMITER ;
 
