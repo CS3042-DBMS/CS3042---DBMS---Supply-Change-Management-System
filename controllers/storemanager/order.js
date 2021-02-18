@@ -8,9 +8,11 @@ async function getOrders(request,response){
 
     // extract the email
     const email = decodedToken.email;
+    console.log(decodedToken.store_manager_name);
     try {
         const orders = await StoreManager.getorders(request,email)
         const result = JSON.parse(JSON.stringify(orders[0]))
+        console.log(result)
         response.render('storemanager/orderList',{result: result});
     } catch (e) {
 

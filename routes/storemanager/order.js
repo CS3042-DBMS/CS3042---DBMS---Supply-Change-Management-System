@@ -13,7 +13,7 @@ router.get('/editorder/:id',getOrder);
 //     console.log(req)
 //     res.send(req.body)
 // });
-router.post('/editorder/',updateOrder);
+router.post('/getorders/',updateOrder);
 // router.put('/getorders/:id',updateOrder)
 
 module.exports = router;

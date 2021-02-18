@@ -12,8 +12,11 @@
     <title>Edit Schedule</title>
 </head>
 <body>
+  <div class="row" style="margin-left: 10px;"> <h3><i>Hi Customer</i></h3>
+    <button id='logout' type="button" class="btn btn-danger" style="margin-left: 80%;">Logout</button>
+  </div>
 <div class="data-form" >
-  <form method="POST" action="../../order/editorder/">
+  <form method="POST" action="../../order/getorders/">
     <h2>Edit Schedule:</h2>
     <label for="order_id">Order ID</label>
     <input class="form-control" type="text" name="order_id" id="input_order_id" value="<%=
@@ -48,3 +51,26 @@ result[0].schedule_id %>" autofocus>
     <button type="submit">Update</button>
   </form>
 </div>
+<script>
+  const logout = document.getElementById('logout')
+
+  logout.addEventListener('click', () => {
+    console.log('logout');
+    try {
+
+      fetch("/logout", {
+        method: "get",
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+
+      }).then(response => {
+        return response.json()
+      }).then(data => {
+        window.location.href = data.redirect;
+      })
+
+    } catch (e) {
+      console.log(e)
+    }
+  })
+</script>

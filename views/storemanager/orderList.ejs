@@ -16,9 +16,12 @@
     <h1 class="col-md-12" style=" font-family: 'Lucida Handwriting';">Order List</h1> 
 </div>
 <div class='cartTable'>  <!--change-->
+  <div class="row" style="margin-left: 10px;"> <h3><i>Hi  Store Manager</i></h3>
+    <button id='logout' type="button" class="btn btn-danger" style="margin-left: 80%;">Logout</button>
+    </div>
      <div class="cart sbox">   <!--change-->
-      <a href="/customer_func/cart/view">  <!--change-->
-        <button type="button" class="btn btn-dark">View Cart</button>  <!--change-->
+      <a href="/storemanager/createschedule">  <!--change-->
+        <button type="button" class="btn btn-dark">View Truck Schedules</button>  <!--change-->
       </a>
      </div>
     <!--<div class="col-md-12">
@@ -31,6 +34,7 @@
             <tbody>
                 <tr>
                     <th>Order State</th>
+                    <th>Remaining Days</th>
                     <th>Delivery Address</th>
                     <th>Delivery Route</th>
                     <th>Customer Contact No</th>
@@ -41,6 +45,7 @@
                 <% result.forEach(item => {%>
                   <tr>
                     <td><%= item.state %></td>
+                    <td><%= item.remaining_days <=0 ? 'late by '+ Math.abs(item.remaining_days) + ' days' : item.remaining_days %></td>
                     <td><%= item.delivery_address %></td>
                     <td><%= item.route_name %></td>
                     <td><%= item.contact_number %></td>
@@ -56,4 +61,28 @@
           
     </div>
 </div>
+
+<script>
+  const logout = document.getElementById('logout')
+
+  logout.addEventListener('click', () => {
+    console.log('logout');
+    try {
+
+      fetch("/logout", {
+        method: "get",
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+
+      }).then(response => {
+        return response.json()
+      }).then(data => {
+        window.location.href = data.redirect;
+      })
+
+    } catch (e) {
+      console.log(e)
+    }
+  })
+</script>
     

@@ -461,9 +461,9 @@ DELIMITER $$
 CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `view_orders`(IN `email` VARCHAR(100))
 BEGIN
     
-   select order_id,state,delivery_address,route_name,contact_number,schedule_id from `order` 
+  select order_id,timestampdiff(DAY,now(),timestampadd(DAY, 7, date_and_time_of_placement)) as remaining_days ,state,delivery_address,route_name,contact_number,schedule_id,store_id from `order` 
    join `route` using (route_id) join `customer` 
-   using (customer_id)  left outer join `order_schedule` using (order_id)  where store_id in (select `store_id` from store_manager where `email` = email) and `state` <> "new";
+   using (customer_id)  left outer join `order_schedule` using (order_id)  where store_id in (select `store_id` from store_manager where store_manager.`email` = Email) and `state` <> "new";
     
 END$$
 DELIMITER ;
