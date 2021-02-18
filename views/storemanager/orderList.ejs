@@ -46,7 +46,7 @@
                     <td><%= item.contact_number %></td>
                     <!-- <td><%= item.schedule_id %></td> -->
                     <td><%= (!item.schedule_id)? 'Not assigned' : item.schedule_id %></td>
-                    <td><a href="../../storemanager/order/editorder/<%=item.order_id%>">Change Schedule</a></td>
+                    <td><a href="/storemanager/order/editorder/<%=item.order_id%>">Change Schedule</a></td>
                   </tr>
                 <% }); %> 
                 

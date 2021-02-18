@@ -28,7 +28,7 @@ async function updateOrder(request,response){
          const store_id = JSON.parse(JSON.stringify(order[0]))[0].store_id
          const orders = await StoreManager.getorders(store_id)
          const result = JSON.parse(JSON.stringify(orders[0]))
-         response.render('storemanager/updatedOrderList',{result: result});
+         response.render('storemanager/orderList',{result: result});
     } catch (e) {
 
     }
