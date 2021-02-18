@@ -141,10 +141,10 @@ class AuthServices {
 
                     case 'S_Manager':
                         // redirect to Manager home page
-                        isInitialLogin ? res.redirect("/storemanager/createschedule/") : res.status(201).json({
+                        isInitialLogin ? res.redirect("/storemanager/order/getorders") : res.status(201).json({
                             message:'login success',
                             error:false,
-                            redirect:"/storemanager/createschedule/"
+                            redirect:"/storemanager/order/getorders"
                     })
                     break;
 
