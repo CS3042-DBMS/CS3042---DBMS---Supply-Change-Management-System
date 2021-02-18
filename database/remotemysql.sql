@@ -209,7 +209,7 @@ CREATE TABLE `Truck` (
 
 
 CREATE TABLE `Order_Assign` (
-  `order_id` int(10) NOT NULL AUTO_INCREMENT,
+  `order_id` int(10) NOT NULL,
   `train_name` varchar(30) NOT NULL,
   `time_schedule` datetime NOT NULL,
   PRIMARY KEY (`order_id`)
