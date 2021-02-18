@@ -6,9 +6,9 @@ module.exports= class StoreManager {
         return SM ? SM : new StoreManager();
     }
   
-    static getorders(request) {
+    static getorders(request,email) {
         return new Promise((resolve, reject) => {
-            pool.query("CALL view_orders('sapumal@gmail.com')",
+            pool.query("CALL view_orders(?)",[email],
                 (error, results, fields) => {
                     if (error) {
                         reject(error);
