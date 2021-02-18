@@ -89,7 +89,7 @@ module.exports.create_new_schedule_post = (req,res) => {
         res.status(302).json({
                         message:'schedule creation success',
                         error:false,
-                        redirect:"/storemanager/createschedule/viewschedules"
+                        redirect:"/storemanager/createschedule/"
                 })
 
     })
