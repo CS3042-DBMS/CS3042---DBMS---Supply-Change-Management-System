@@ -286,3 +286,43 @@ ALTER TABLE `assistant_rosters`
 -- getting trip full fill time
 SELECT TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),TIMESTAMPADD(SECOND,SECOND (trip_time),departure_time))) FROM `cs3042-dbms`.truck_schedule NATURAL JOIN route;
 
+-- event
+CREATE DEFINER=`root`@`localhost` EVENT `e_weekly` ON SCHEDULE EVERY 7 DAY STARTS '2021-02-08 00:00:00' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Clear weekly worked hours of drivers and assitants' DO BEGIN
+        UPDATE `assistant_rosters` SET `worked_hours`= 0 WHERE 1;
+        UPDATE `driver_rosters` SET `worked_hours`= 0 WHERE 1;
+      END
+
+-- triggers
+
+-- trigger
+CREATE TRIGGER `d_r_update_trigger` AFTER INSERT ON `driver_assistant`
+ FOR EACH ROW BEGIN
+	IF NOT EXISTS (SELECT driver_id FROM driver_rosters WHERE driver_id = NEW.driver_id) THEN
+		INSERT INTO `cs3042-dbms`.`driver_rosters`
+      (`driver_id`,
+      `schedule_id`,
+      `worked_hours`,
+      `working_hours`)
+      VALUES (NEW.driver_id,null,0,0)
+
+		END IF;
+END
+
+CREATE TRIGGER `a_r_update_trigger` AFTER INSERT ON `driver_assistant`
+ FOR EACH ROW BEGIN
+	IF NOT EXISTS (SELECT assistant_id FROM assistant_rosters WHERE assistant_id = NEW.assistant_id) THEN
+		INSERT INTO `cs3042-dbms`.`assistant_rosters`
+		(`assistant_id`,
+		`schedule_id`,
+		`worked_hours`,
+		`consecutive_schedules`,
+		`working_hours`)
+				VALUES
+				( NEW.assistant_id ,
+				NULL,
+				0,
+				0,
+				0);
+		END IF;
+END
+
