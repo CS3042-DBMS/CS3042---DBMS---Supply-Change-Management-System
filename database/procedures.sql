@@ -177,6 +177,367 @@ END$$
 DELIMITER ;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- geting eligible assistants for the next job
 DELIMITER $$
 CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `get_assistants`(`r_id` INT(10),`d_time` DATETIME, `st_id` INT(10) )
@@ -184,10 +545,12 @@ BEGIN
 	DECLARE round_trip_time TIME;
     SET AUTOCOMMIT = 0;
     SELECT trip_time INTO round_trip_time FROM route WHERE route_id = r_id;
-    WITH departure_times_of_assistants AS
-    (SELECT assistant_rosters.assistant_id,departure_time,route_id,worked_hours,consecutive_schedules,schedule_id,store_id FROM assistant_rosters LEFT OUTER JOIN truck_schedule USING(schedule_id)),
+    WITH assistants AS
+    (SELECT * FROM assistant_rosters LEFT OUTER JOIN driver_assistant USING( assistant_id )),
+    departure_times_of_assistants AS
+    (SELECT assistants.assistant_id,departure_time,route_id,worked_hours,consecutive_schedules,schedule_id,assistants.store_id FROM assistants LEFT OUTER JOIN truck_schedule USING(schedule_id)),
     assistant_for_next_job AS
-    (SELECT assistant_id,worked_hours,consecutive_schedules,schedule_id,
+    (SELECT departure_times_of_assistants.assistant_id,worked_hours,consecutive_schedules,schedule_id,
     TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),departure_time)) AS trip_fullfill_time,
     TIMEDIFF(d_time,TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),departure_time)) )   
     AS time_to_next_trip,departure_times_of_assistants.store_id,
@@ -195,13 +558,12 @@ BEGIN
 	AS new_weekly_working_hrs
     FROM departure_times_of_assistants 
     LEFT OUTER JOIN route USING(route_id))
-    SELECT * FROM assistant_for_next_job WHERE (schedule_id IS NULL ) OR (    time_to_next_trip > '00:00:00' 
+    SELECT * FROM assistant_for_next_job WHERE (schedule_id IS NULL AND assistant_for_next_job.store_id = st_id) OR (    time_to_next_trip > '00:00:00' 
     AND  worked_hours + HOUR(round_trip_time)  < 60
     AND consecutive_schedules < 3 AND assistant_for_next_job.store_id = st_id) OR (    time_to_next_trip > '06:00:00' 
     AND assistant_for_next_job.store_id = st_id
     AND  worked_hours + HOUR(round_trip_time)  < 60
     );
-    
     commit;
 END$$
 DELIMITER;
@@ -214,8 +576,10 @@ BEGIN
 	DECLARE round_trip_time TIME;
     SET AUTOCOMMIT = 0;
     SELECT trip_time INTO round_trip_time FROM route WHERE route_id = r_id;
-    WITH departure_times_of_drivers AS
-    (SELECT driver_rosters.driver_id,departure_time,route_id,worked_hours,schedule_id,store_id FROM driver_rosters LEFT OUTER JOIN truck_schedule USING(schedule_id))
+    WITH ids AS
+        (SELECT* FROM driver_rosters LEFT OUTER JOIN driver USING( driver_id )),
+     departure_times_of_drivers AS
+    (SELECT ids.driver_id,departure_time,route_id,worked_hours,schedule_id,ids.store_id FROM ids LEFT OUTER JOIN truck_schedule USING(schedule_id))
     SELECT driver_id,worked_hours,schedule_id,route_id,
 		TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),departure_time)) AS trip_fullfill_time,
 		TIMEDIFF(  d_time , TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),departure_time)) )   
@@ -224,7 +588,7 @@ BEGIN
 	AS new_weekly_working_hrs
     FROM departure_times_of_drivers 
 		LEFT OUTER JOIN route USING(route_id)
-		WHERE  (schedule_id IS NULL) OR TIMEDIFF( d_time ,TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),departure_time))  ) > '06:00:00' 
+		WHERE  (schedule_id IS NULL AND departure_times_of_drivers.store_id = st_id) OR TIMEDIFF( d_time ,TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),departure_time))  ) > '06:00:00' 
 		AND departure_times_of_drivers.store_id = st_id  AND  worked_hours + HOUR(round_trip_time) < 40;
     commit;
 END$$
