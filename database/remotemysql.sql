@@ -261,8 +261,6 @@ ALTER TABLE `Store_Manager`
   ADD CONSTRAINT `Store_Manager_ibfk_1` FOREIGN KEY (`email`) REFERENCES `User` (`email`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `Store_Manager_ibfk_2` FOREIGN KEY (`store_id`) REFERENCES `store`(`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE `Order_Assign`
-  ADD CONSTRAINT `Order_Assign_schedule_ibfk_1` FOREIGN KEY (`train_name`,`time_schedule`) REFERENCES `Railway_schedule` (`train_name`,`time_schedule`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE `Order`
   ADD CONSTRAINT `Order_ibfk_1` FOREIGN KEY (`route_id`) REFERENCES `Route` (`route_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
