@@ -141,6 +141,11 @@ INSERT INTO `route` (`route_id`, `store_id`, `route_name`, `description`, `trip_
 (115, 6, 'Trinco-Anuradapura', 'Addresses of Anuradapura will also be covered in this route', '05:00:00');
 
 
+
+
+
+
+
 INSERT INTO `railway` (`train_name`, `max_capacity`) VALUES
 ('Colombo Commuter', 300),
 ('Connected Train - Matara', 500),

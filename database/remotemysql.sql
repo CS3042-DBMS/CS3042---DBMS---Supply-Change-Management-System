@@ -295,7 +295,7 @@ CREATE DEFINER=`root`@`localhost` EVENT `e_weekly` ON SCHEDULE EVERY 7 DAY START
 -- triggers
 
 -- trigger
-CREATE TRIGGER `d_r_update_trigger` AFTER INSERT ON `driver_assistant`
+CREATE TRIGGER `x_r_update_trigger` AFTER INSERT ON `driver_assistant`
  FOR EACH ROW BEGIN
 	IF NOT EXISTS (SELECT driver_id FROM driver_rosters WHERE driver_id = NEW.driver_id) THEN
 		INSERT INTO `cs3042-dbms`.`driver_rosters`

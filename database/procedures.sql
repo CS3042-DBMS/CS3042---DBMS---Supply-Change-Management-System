@@ -15,8 +15,8 @@ END$$
 
 
 
-DELIMITER
-$$
+DELIMITER $$
+
  CREATE OR REPLACE  PROCEDURE getcart()
    BEGIN 
     SELECT Cart.product_id, Product.product_name, Product.unit_price, Cart.quantity FROM Cart LEFT  JOIN Product on Product.product_id= Cart.product_id; END
@@ -24,7 +24,7 @@ $$
 
 
 
-DELIMITER $$
+DELIMITER $$ 
 CREATE OR REPLACE PROCEDURE `create_order`(`email` VARCHAR (100) ,`route_id` int(10),`address` varchar(1000))
 BEGIN
     DECLARE id int;
@@ -81,39 +81,39 @@ $$
 $$
 
 --get total price of the cart
-DELIMITER
-$$
+DELIMITER $$
+
  CREATE OR REPLACE  PROCEDURE totalPrice(email VARCHAR (100))
    BEGIN 
     select sum(Product.unit_price*Cart.quantity) as total_price from Cart left join Product on Cart.product_id=Product.product_id where Cart.customer_id in (select customer_id from Customer where Customer.email=email); END
 $$
 
-DELIMITER
-$$
+DELIMITER $$
+
  CREATE OR REPLACE  PROCEDURE removeCartItem(email VARCHAR (100),product int(10))
    BEGIN 
    DELETE FROM Cart where Cart.customer_id in (select customer_id from Customer where Customer.email=email) and Cart.product_id= product LIMIT 1; END
 $$
 
 
-DELIMITER
-$$
+DELIMITER $$
+
  CREATE OR REPLACE  PROCEDURE getRoutes()
    BEGIN 
    SELECT  route_id,route_name,`description` FROM `Route`;END
 $$
 
 
-DELIMITER
-$$
+DELIMITER $$
+
  CREATE OR REPLACE  PROCEDURE getcustomer_order_report()
    BEGIN 
    SELECT  Order.state,Order.order_id,Order.customer_id,substring(Order.date_and_time_of_placement,1,10) as date_of_placement,Order.route_id,Order.price,order.capacity,Order_Addition.product_id,Order_Addition.quantity FROM `Order`,`Order_Addition` where Order.order_id=Order_Addition.order_id ORDER BY Order.state;END
 $$
 
 
-DELIMITER
-$$
+DELIMITER $$
+
  CREATE OR REPLACE  PROCEDURE items_with_most_orders()
    BEGIN 
    SELECT Product.product_name,Order_Addition.product_id,count(Order_Addition.product_id) as number_of_orders from Product,Order_Addition WHERE Product.product_id=Order_Addition.product_id group by Order_Addition.product_id ORDER by number_of_orders desc limit 10;END
@@ -147,8 +147,8 @@ END$$
 DELIMITER ;
 
 --display confirmed orders to customers
-DELIMITER
-$$
+DELIMITER $$
+
  CREATE OR REPLACE  PROCEDURE get_confirmed_orders(email VARCHAR (100))
    BEGIN 
    select `Order`.order_id, substring(Order.date_and_time_of_placement,1,10) as date_of_placement,substring(Order.date_and_time_of_placement,12,8) as time_of_placement, Order.route_id,Order.price,Product.product_name,Order_Addition.quantity FROM `Order` left join Order_Addition using(order_id) left join Product using(product_id) where Order.customer_id in (select Customer.customer_id from Customer where Customer.email=email) ORDER BY date_of_placement desc,time_of_placement desc;
