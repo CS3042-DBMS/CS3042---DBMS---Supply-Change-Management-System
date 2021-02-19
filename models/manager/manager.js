@@ -78,21 +78,18 @@ module.exports = class Manager{
       
     }
     
-    static viewUsedHoursReport(request){
-        const select_year = 2020;
+    static viewUsedHoursReport(request) {
         return new Promise((resolve, reject) => {
-            pool.query("CALL viewQuarterlySalesReport(?)",[request.body.selectyear],//change procedure
+            pool.query("CALL viewUsedHoursReport()",   
                 (error, results, fields) => {
                     if (error) {
                         reject(error);
                     };
-
-                    //console.log(results);
                     resolve(results);
-
                 }
             )
         })
+      
     }
     static viewOrders(){
         return new Promise((resolve, reject) => {
