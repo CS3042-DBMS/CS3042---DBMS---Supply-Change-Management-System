@@ -51,6 +51,49 @@ module.exports = class Manager{
         })
     }
 
+    static viewDriverWorkingHoursReport(request) {
+        return new Promise((resolve, reject) => {
+            pool.query("CALL viewDriverWorkingHoursReport()",   
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+                    resolve(results);
+                }
+            )
+        })
+      
+    }
+    static viewAssistantWorkingHoursReport(request) {
+        return new Promise((resolve, reject) => {
+            pool.query("CALL viewAssistantWorkingHoursReport()",   
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+                    resolve(results);
+                }
+            )
+        })
+      
+    }
+    
+    static viewUsedHoursReport(request){
+        const select_year = 2020;
+        return new Promise((resolve, reject) => {
+            pool.query("CALL viewQuarterlySalesReport(?)",[request.body.selectyear],//change procedure
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+
+                    //console.log(results);
+                    resolve(results);
+
+                }
+            )
+        })
+    }
     static viewOrders(){
         return new Promise((resolve, reject) => {
             pool.query("CALL viewOrdersList()",

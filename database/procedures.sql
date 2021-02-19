@@ -59,6 +59,29 @@ DELIMITER $$
    END
 $$
 
+DELIMITER
+$$
+ CREATE OR REPLACE  PROCEDURE viewDriverWorkingHoursReport()
+   BEGIN 
+   SELECT  driver_id,working_hours FROM driver_rosters order by driver_id;END
+$$
+
+DELIMITER
+$$
+ CREATE OR REPLACE  PROCEDURE viewAssistantWorkingHoursReport()
+   BEGIN 
+   SELECT  assistant_id,working_hours FROM assistant_rosters order by assistant_id;END
+$$
+
+DELIMITER $$
+CREATE or replace DEFINER=`root`@`localhost` PROCEDURE `viewUsedHoursReport`(IN `select_year` INT)
+    DETERMINISTIC
+BEGIN
+
+DELETE FROM used_hours_report;
+
+END$$
+
 
 DELIMITER $$
 CREATE OR REPLACE  PROCEDURE getDrivertruckschedule(email VARCHAR(100))
