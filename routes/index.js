@@ -14,7 +14,7 @@ const managerFunctions = require('./manager');
 const storeManagerFunctions = require('./storemanager');
 const authRoutes = require('./authroutes/authroute');
 // manager routes
-router.use('/manager_func',managerFunctions);
+router.use('/manager_func',requireAuthManager,managerFunctions);
 
 // customer routes
 router.use('/customer_func', requireAuthCustomer,customerFunctions);
