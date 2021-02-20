@@ -131,7 +131,7 @@ DELIMITER
 $$
  CREATE OR REPLACE  PROCEDURE getcustomer_order_report()
    BEGIN 
-   SELECT  Order.state,Order.order_id,Order.customer_id,substring(Order.date_and_time_of_placement,1,10) as date_of_placement,Order.route_id,Order.price,order.capacity,Order_Addition.product_id,Order_Addition.quantity FROM `Order`,`Order_Addition` where Order.order_id=Order_Addition.order_id ORDER BY Order.state;END
+   SELECT  Order.state,Order.order_id,Order.customer_id,substring(Order.date_and_time_of_placement,1,10) as date_of_placement,Order.route_id,Order.price,order.capacity,Order_Addition.product_id,Order_Addition.quantity FROM `Order`,`Order_Addition` where Order.order_id=Order_Addition.order_id ORDER BY Order.state,Order.order_id;END
 $$
 
 
@@ -147,7 +147,7 @@ CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `assignOrders`(IN `id` I
 BEGIN 
 INSERT INTO order_assign VALUES(id,train_name,time_schedule);
 UPDATE `order` set state='Assigned to Train' WHERE order_id=id;
-UPDATE railway_schedule SET available_capacity = available_capacity - (SELECT capacity FROM `order` WHERE order_id = id) WHERE `railway_schedule`.`train_name` = train_name AND `railway_schedule`.`time_schedule` = time_schedule;
+UPDATE railway_schedule SET available_capacity =available_capacity - (SELECT capacity FROM `order` WHERE order_id = id) WHERE `railway_schedule`.`train_name` = train_name AND `railway_schedule`.`time_schedule` = time_schedule;
 END$$
 DELIMITER ;
 
@@ -156,7 +156,7 @@ DELIMITER $$
 CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `viewOrdersList`()
     DETERMINISTIC
 BEGIN 
-	SELECT order_id, route_id, date_and_time_of_placement, delivery_address, state FROM `order`;
+	SELECT order_id, route_id,capacity, date_and_time_of_placement, delivery_address, state FROM `order`;
 END$$
 DELIMITER ;
 
@@ -165,7 +165,7 @@ DELIMITER $$
 CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `viewTrain`()
     DETERMINISTIC
 BEGIN 
-	SELECT * FROM `railway_schedule` where time_schedule>=now() order by time_schedule;
+	SELECT * FROM `railway_schedule` where time_schedule>=now() and available_capacity>0 order by time_schedule;
 END$$
 DELIMITER ;
 
