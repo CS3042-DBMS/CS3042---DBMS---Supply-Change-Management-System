@@ -229,9 +229,6 @@ ALTER TABLE `railway_schedule`
 
 
 
-ALTER TABLE `railway_schedule`
-  ADD CONSTRAINT `railway_schedule_ibfk_1` FOREIGN KEY (`train_name`) REFERENCES `railway` (`tain_name`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
 ALTER TABLE `quarterly_sales_report`
   ADD PRIMARY KEY (`product_id`,`product_name`,`date_and_time_of_placement`);
 

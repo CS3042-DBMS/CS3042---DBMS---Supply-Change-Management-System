@@ -38,3 +38,5 @@ create function quant_capacity(email varchar(100))
   return
    (select sum(Product.unit_capacity*Cart.quantity) as total_price from Cart left join Product on Cart.product_id=Product.product_id where Cart.customer_id in (select customer_id from Customer where Customer.email=email));
 //
+
+

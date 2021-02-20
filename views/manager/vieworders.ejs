@@ -26,9 +26,6 @@
 <a href="/manager_func/most_order_items/view">
   <button type="button" class="btn btn-dark">Items with Most Orders</button>
 </a>
-<a href="/manager_func/trainschedule/trains">
-  <button type="button" class="btn btn-dark" style="word-wrap: break-word;">Train Schedules</button>
-</a>
 <a href="/manager_func/sales_reports/view">
   <button type="button" class="btn btn-dark">Quarterly Sales Report for a given year</button>
 </a>
@@ -41,6 +38,7 @@
 </a>
 <a href="/manager_func/usedhours_reports/view">
   <button type="button" class="btn btn-dark">Used hours of Trucks</button>
+</a>
 <a href="/manager_func/sales_report_city_route/view">
   <button type="button" class="btn btn-dark">Sales report categorized according to main cities and routes</button>
 </a>
@@ -58,6 +56,7 @@
           <tr>
               <th>Order ID</th>
               <th>Route </th>
+              <th>Order Capacity </th>
               <th>Placement Date</th>
               <!-- <th>Delivery Date</th> -->
               <th>Address</th>
@@ -71,6 +70,7 @@
             <tr>
               <td id="orderId"><%= item.order_id %></td>
               <td><%= item.route_id %></td>
+              <td><%= item.capacity %></td>
               <td><%= item.date_and_time_of_placement.substring(0,10) %></td>
               
               <td><%= item.delivery_address  %></td>
