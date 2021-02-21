@@ -283,3 +283,9 @@ ALTER TABLE `assistant_rosters`
 -- getting trip full fill time
 SELECT TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),TIMESTAMPADD(SECOND,SECOND (trip_time),departure_time))) FROM `cs3042-dbms`.truck_schedule NATURAL JOIN route;
 
+
+-- event
+CREATE or replace DEFINER=`root`@`localhost` EVENT `e_weekly` ON SCHEDULE EVERY 7 DAY STARTS '2021-02-08 00:00:00' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Clear weekly worked hours of drivers and assitants' DO BEGIN
+        UPDATE `assistant_rosters` SET `worked_hours`= 0 WHERE 1;
+        UPDATE `driver_rosters` SET `worked_hours`= 0 WHERE 1;
+      END
