@@ -285,7 +285,10 @@ SELECT TIMESTAMPADD(HOUR,HOUR(trip_time),TIMESTAMPADD(MINUTE,MINUTE(trip_time),T
 
 
 -- event
+DELIMITER
+$$
 CREATE or replace DEFINER=`root`@`localhost` EVENT `e_weekly` ON SCHEDULE EVERY 7 DAY STARTS '2021-02-08 00:00:00' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Clear weekly worked hours of drivers and assitants' DO BEGIN
         UPDATE `assistant_rosters` SET `worked_hours`= 0 WHERE 1;
         UPDATE `driver_rosters` SET `worked_hours`= 0 WHERE 1;
       END
+$$
