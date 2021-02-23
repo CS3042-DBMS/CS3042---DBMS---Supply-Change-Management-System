@@ -144,10 +144,18 @@ $$
 
 DELIMITER $$
 CREATE OR REPLACE  DEFINER=`root`@`localhost` PROCEDURE `assignOrders`(IN `id` INT(10), IN `train_name` VARCHAR(30), IN `time_schedule` DATETIME)
-BEGIN 
+BEGIN
+DECLARE amount1 int;
+DECLARE amount2 int;
+set AUTOCOMMIT = 0;
+SELECT railway_schedule.available_capacity into amount1 FROM railway_schedule WHERE `railway_schedule`.`train_name` = train_name AND `railway_schedule`.`time_schedule` = time_schedule;
+SELECT capacity INTO amount2 FROM `order` WHERE order_id = id;
+IF (amount1>=amount2) THEN
 INSERT INTO order_assign VALUES(id,train_name,time_schedule);
 UPDATE `order` set state='Assigned to Train' WHERE order_id=id;
 UPDATE railway_schedule SET available_capacity =available_capacity - (SELECT capacity FROM `order` WHERE order_id = id) WHERE `railway_schedule`.`train_name` = train_name AND `railway_schedule`.`time_schedule` = time_schedule;
+COMMIT;
+END IF;
 END$$
 DELIMITER ;
 
