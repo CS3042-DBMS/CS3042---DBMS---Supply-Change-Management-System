@@ -73,14 +73,15 @@ $$
    SELECT  assistant_id,working_hours FROM assistant_rosters order by assistant_id;END
 $$
 
-DELIMITER $$
-CREATE or replace DEFINER=`root`@`localhost` PROCEDURE `viewUsedHoursReport`(IN `select_year` INT)
-    DETERMINISTIC
-BEGIN
+DELIMITER
+$$
 
-DELETE FROM used_hours_report;
+ CREATE OR REPLACE  PROCEDURE viewUsedHoursReport()
+   BEGIN 
+   select * from  usedhours;
+   END
+$$
 
-END$$
 
 
 DELIMITER $$

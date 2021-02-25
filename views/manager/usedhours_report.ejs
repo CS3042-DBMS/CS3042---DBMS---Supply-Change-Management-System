@@ -16,12 +16,42 @@
       <button type="button" class="btn btn-dark" style="margin-left: 10px;">Back</button>
     </a>
     <div class="pageTitle">
-    <h1 class="col-md-12" style=" font-family: 'Lucida Handwriting';">Used hours of Trucks<span id="yeartag"><%= year %></span></h1> 
-    </div>
+      <h1 class="col-md-12" style=" font-family: 'Lucida Handwriting';">Used hours of Trucks</h1> 
+  </div>
 
     <br>
     
+    <div class='usedhourTable'>
+ 
 
+      <div>
+          <table class="table table-hover bg-warning">
+              <thead>
+              </thead>
+              <tbody>
+                  <tr>
+                      <th>Truck ID</th>
+                      <th>Hours</th>
+                    
+                  </tr>
+                  <% report.forEach(item => {%>
+                    <tr>
+                      <form action="/manager_func/usedhours_reports/view" method="post">
+                      <td><%= item.truck_id %></td>
+                      <td><%= item.used_hours %></td>
+                     
+                      </form>
+                      
+                    </tr>
+                  <% }); %> 
+                 
+                  
+              </tbody>
+            </table>
+            
+            
+      </div>
+  </div>
 
 </body>
 
