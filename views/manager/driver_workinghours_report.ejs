@@ -27,6 +27,7 @@
             <tbody>
                 <tr>
                     <th>ID</th>
+                    <th>Name</th>
                     <th>Hours</th>
                   
                 </tr>
@@ -34,6 +35,7 @@
                   <tr>
                     <form action="/manager_func/driver_workinghours_reports/view" method="post">
                     <td><%= item.driver_id %></td>
+                    <td><%= item.driver_name %></td>
                     <td><%= item.working_hours %></td>
                    
                     </form>

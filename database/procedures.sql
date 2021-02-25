@@ -63,14 +63,14 @@ DELIMITER
 $$
  CREATE OR REPLACE  PROCEDURE viewDriverWorkingHoursReport()
    BEGIN 
-   SELECT  driver_id,working_hours FROM driver_rosters order by driver_id;END
+   SELECT  driver_rosters.driver_id,Driver.driver_name,driver_rosters.working_hours FROM driver_rosters,Driver where driver_rosters.driver_id=Driver.driver_id;END
 $$
 
 DELIMITER
 $$
  CREATE OR REPLACE  PROCEDURE viewAssistantWorkingHoursReport()
    BEGIN 
-   SELECT  assistant_id,working_hours FROM assistant_rosters order by assistant_id;END
+   SELECT  assistant_rosters.assistant_id,Driver_Assistant.assistant_name,assistant_rosters.working_hours FROM assistant_rosters,Driver_Assistant where assistant_rosters.assistant_id=Driver_Assistant.assistant_id ;END
 $$
 
 DELIMITER
