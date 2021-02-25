@@ -1,6 +1,12 @@
 # CS3042-DBMS - Supply Chain Management System
 
-
+database importing order
+remotemysql
+functions
+views
+procedures
+data
+triggers
 
 # Accessing user information in the session
 
