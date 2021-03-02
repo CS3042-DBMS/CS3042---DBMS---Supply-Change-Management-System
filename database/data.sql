@@ -130,15 +130,15 @@ INSERT INTO `driver` (`driver_id`, `store_id`, `driver_name`, `email`, `contact_
 (9, 6, 'driver9', 'driver9@gmail.com', '0772243990');
 
 INSERT INTO `driver_rosters` (`driver_id`, `schedule_id`, `worked_hours`, `working_hours`) VALUES
-(1, 1021, 2, 4),
+(1, 1021, 0, 4),
 (2, NULL, 0, 0),
 (3, NULL, 0, 0),
-(4, 1023, 2, 4),
-(5, 1025, 4, 5),
-(6, 1026, 5, 10),
-(7, 1022, 5, 10),
-(8, 1024, 4, 4),
-(9, 1027, 5, 10);
+(4, 1023, 0, 4),
+(5, 1025, 0, 5),
+(6, 1026, 0, 10),
+(7, 1022, 0, 10),
+(8, 1024, 0, 4),
+(9, 1027, 0, 10);
 
 INSERT INTO `driver_assistant` (`assistant_id`, `store_id`, `assistant_name`, `email`, `contact_number`) VALUES
 (1, 1, 'assistant1', 'a@gmail.com', 912243998),
@@ -154,7 +154,7 @@ INSERT INTO `assistant_rosters` (`assistant_id`, `schedule_id`, `worked_hours`, 
 (1, 1021, 2, 0, 4),
 (2, NULL, 0, 0, 0),
 (3, 1022, 5, 0, 10),
-(4, 1024, 6, 1, 8),
+(4, 1024, 6, 0, 8),
 (5, 1025, 4, 0, 5),
 (6, 1026, 5, 0, 10),
 (7, 1027, 5, 0, 10);
@@ -208,20 +208,12 @@ INSERT INTO `railway` (`train_name`, `max_capacity`) VALUES
 ('Udarata Manike - Colombo', 250);
 
 INSERT INTO `railway_schedule` (`train_name`, `time_schedule`, `available_capacity`) VALUES
-('Colombo Commuter', '2020-12-18 08:00:00', 90),
-('Colombo Commuter', '2021-02-23 08:00:00', 9),
-('Connected Train - Matara', '2020-12-19 05:00:00', 30),
-('Connected Train - Matara', '2021-02-23 05:00:00', 11),
-('Connected Train - Matara', '2021-02-24 05:00:00', 50),
-('Intercity - Colombo', '2020-12-19 15:00:00', 65),
-('Intercity - Colombo', '2021-02-23 15:00:00', 25),
-('Podi Menike - Badulla', '2020-12-19 08:55:00', 400),
-('Podi Menike - Badulla', '2021-02-23 08:55:00', 104),
-('Udarata Manike - Badulla', '2020-12-19 11:10:00', 420),
-('Udarata Manike - Badulla', '2021-02-23 11:10:00', 270),
-('Udarata Manike - Colombo', '2020-12-19 13:10:00', 250),
-('Udarata Manike - Colombo', '2021-02-24 13:10:00', 224);
-
+('Colombo Commuter', '2021-03-02 14:00:00', 300),
+('Connected Train - Matara', '2021-03-02 14:10:00', 500),
+('Intercity - Colombo', '2021-03-02 15:00:00', 250),
+('Podi Menike - Badulla', '2021-03-02 15:20:00', 400),
+('Udarata Manike - Badulla', '2021-03-02 15:30:00', 420),
+('Udarata Manike - Colombo', '2021-03-02 15:40:00', 250);
 
 INSERT INTO `order` (`order_id`, `customer_id`, `route_id`, `state`, `date_and_time_of_placement`, `delivery_address`, `price`, `capacity`) VALUES
 (1, 6, 10, 'Assigned to truck', '2020-12-16 20:54:04', 'No 3,Elliot road,Galle', '3000.00', 30),
