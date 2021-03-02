@@ -509,3 +509,13 @@ BEGIN
     
 END$$
 DELIMITER ;
+
+DELIMITER $$
+
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `get_schedule_ids`()
+BEGIN
+    
+	select schedule_id from `truck_schedule` where `departure_time` > now();
+  
+END$$
+DELIMITER ;
