@@ -300,3 +300,12 @@ UPDATE `railway_schedule` SET `time_schedule` = `time_schedule` + interval 1 day
 END
 $$
 
+DELIMITER $$
+DROP EVENT IF EXISTS `e_train` $$
+CREATE EVENT `e_train`
+ON SCHEDULE EVERY 1 DAY STARTS '2021-02-27 10:25:58' ON COMPLETION NOT PRESERVE ENABLE
+DO
+BEGIN
+UPDATE `railway_schedule` SET `time_schedule` = `time_schedule` + interval 1 day WHERE 1;
+END
+$$
