@@ -23,8 +23,12 @@ async function getOrder(request,response){
     try{
          const order = await StoreManager.getorder(request.params.id)
          const result = JSON.parse(JSON.stringify(order[0]))
-         response.render('storemanager/editTruckSchedule',{result: result});
-        //  response.send(result)
+
+         const schedule_ids = await StoreManager.getschedules()
+         const schedule_list = JSON.parse(JSON.stringify(schedule_ids[0]))
+
+         response.render('storemanager/editTruckSchedule',{result: result, schedule_list: schedule_list});
+        //  response.send(schedule_list)
     } catch (e) {
 
     }

@@ -466,6 +466,16 @@ DELIMITER ;
 
 DELIMITER $$
 
+CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `view_orders`(IN `email` VARCHAR(100))
+BEGIN
+    
+   select schedule_id from `truck_schedule` where `departure_time` > now();
+    
+END$$
+DELIMITER ;
+
+DELIMITER $$
+
 CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `update_order`(IN `orderID` INT, IN `scheduleID` INT)
 BEGIN
     update `order` set `state` = 'Assigned to truck' where (`order_id` = orderID and `order_id` <> 0);  

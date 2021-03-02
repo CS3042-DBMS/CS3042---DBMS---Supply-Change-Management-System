@@ -47,6 +47,20 @@ module.exports= class StoreManager {
         })
       
     }
+
+    static getschedules() {  // get schedule ids for the dropdown in edit schedule page
+        return new Promise((resolve, reject) => {
+            pool.query("CALL get_schedule_ids()",
+                (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                    };
+                    resolve(results);
+                }
+            )
+        })
+      
+    }
     
     /**
      * 

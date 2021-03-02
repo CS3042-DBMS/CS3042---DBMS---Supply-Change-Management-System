@@ -12,7 +12,7 @@
     <title>Edit Schedule</title>
 </head>
 <body>
-  <div class="row" style="margin-left: 10px;"> <h3><i>Hi Customer</i></h3>
+  <div class="row" style="margin-left: 10px;"> <h3><i>Hi Store Manager</i></h3>
     <button id='logout' type="button" class="btn btn-danger" style="margin-left: 80%;">Logout</button>
   </div>
 <div class="data-form" >
@@ -45,9 +45,22 @@ result[0].route_name %>" autofocus readonly>
 result[0].contact_number %>" placeholder="<%=
 result[0].contact_number %>" autofocus readonly>
 <label for="route_name">Schedule ID</label>
-<input class="form-control" type="text" name="schedule_id" id="input_schedule_id" value="<%=
-result[0].schedule_id %>" placeholder="<%=
-result[0].schedule_id %>" autofocus>
+
+<select class="form-control" name="schedule_id" id="schedule_id" autofocus>
+  
+  <% if (result[0].schedule_id) { %>
+    <option value="<%= result[0].schedule_id  %>" ><%= result[0].schedule_id %></option>
+  <% }; %>
+
+  <% schedule_list.forEach(function(schedule){ %>
+    <% if (result[0].schedule_id !== schedule.schedule_id) { %>
+    <option value="<%= schedule.schedule_id  %>" ><%= schedule.schedule_id %></option>
+    <% }; %>
+  <% }); %>
+
+</select>
+
+
     <button type="submit">Update</button>
   </form>
 </div>
