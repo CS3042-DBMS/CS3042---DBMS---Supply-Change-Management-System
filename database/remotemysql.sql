@@ -293,4 +293,10 @@ CREATE or replace DEFINER=`root`@`localhost` EVENT `e_weekly` ON SCHEDULE EVERY 
       END
 $$
 
+DELIMITER
+$$
+CREATE or replace DEFINER=`root`@`localhost` EVENT `e_train` ON SCHEDULE EVERY 1 DAY STARTS '2021-02-27 10:25:58' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+UPDATE `railway_schedule` SET `time_schedule` = `time_schedule` + interval 1 day WHERE 1;
+END
+$$
 
