@@ -149,15 +149,14 @@ INSERT INTO `driver_assistant` (`assistant_id`, `store_id`, `assistant_name`, `e
 (6, 5, 'assistant6', 'assistant6@gmail.com', 703456678),
 (7, 6, 'assistant7', 'assistant7@gmail.com', 789976544);
 
-
 INSERT INTO `assistant_rosters` (`assistant_id`, `schedule_id`, `worked_hours`, `consecutive_schedules`, `working_hours`) VALUES
-(1, 1021, 2, 0, 4),
+(1, 1021, 0, 0, 4),
 (2, NULL, 0, 0, 0),
-(3, 1022, 5, 0, 10),
-(4, 1024, 6, 0, 8),
-(5, 1025, 4, 0, 5),
-(6, 1026, 5, 0, 10),
-(7, 1027, 5, 0, 10);
+(3, 1022, 0, 0, 10),
+(4, 1024, 0, 1, 8),
+(5, 1025, 0, 0, 5),
+(6, 1026, 0, 0, 10),
+(7, 1027, 0, 0, 10);
 
 
 
