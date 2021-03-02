@@ -47,7 +47,7 @@ CREATE TABLE `railway_schedule` (
 
 CREATE TABLE `Product` (
   `product_id` int(10) NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(50) NOT NULL,
+  `product_name` varchar(50) NOT NULL unique,
   `product_type` varchar(50) NOT NULL,
   `description` varchar(1000) NOT NULL,
   `unit_capacity` int(100) NOT NULL CHECK (`unit_capacity` > 0),
@@ -230,7 +230,7 @@ ALTER TABLE `railway_schedule`
 
 
 ALTER TABLE `quarterly_sales_report`
-  ADD PRIMARY KEY (`product_id`,`product_name`,`date_and_time_of_placement`);
+  ADD PRIMARY KEY (`product_id`,`product_name`);
 
 
 
