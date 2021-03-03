@@ -51,10 +51,12 @@
     </div>
     <div class='cartTable'>
         <a href="/storemanager/order/getorders">
-            <button type="button" class="btn btn-dark" style="margin-bottom: 10px;margin-left: 10px;">View Orders</button>
+            <button type="button" class="btn btn-dark" style="margin-bottom: 10px;margin-left: 10px;">View
+                Orders</button>
         </a>
         <a href="/storemanager/createschedule/createnewschedule">
-            <button type="button" class="btn btn-dark" style="margin-bottom: 10px;margin-left: 10px;">Create new schedule</button>
+            <button type="button" class="btn btn-dark" style="margin-bottom: 10px;margin-left: 10px;">Create new
+                schedule</button>
         </a>
         <button id='logout' type="button" class="btn btn-danger" style="margin-bottom: 10px;">Logout</button>
 
@@ -72,7 +74,6 @@
                         <th>Driver</th>
                         <th>Route</th>
                         <th>Trip Status</th>
-
                     </tr>
                     <% result.forEach(item=> { %>
                         <tr>
@@ -126,15 +127,29 @@
                                                                 <% } %>
 
                             </td>
-
                         </tr>
                         <% }); %>
-
                 </tbody>
             </table>
-
-
         </div>
+    </div>
+    <div style="display: inline;">
+        <span class="badge badge-success">
+            done
+        </span>
+        <span>-Trip is finished</span>
+    </div>
+    <div style="display: inline;">
+        <span class="badge badge-light">
+            pending
+        </span>
+        <span>-Trip is yet to start</span>
+    </div>
+    <div style="display: inline;">
+        <span class="badge badge-info">
+            in progress
+        </span>
+        <span>-Trip still not finished</span>
     </div>
     <script>
         const logout = document.getElementById('logout')
