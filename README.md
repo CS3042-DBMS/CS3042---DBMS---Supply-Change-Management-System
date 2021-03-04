@@ -1,8 +1,8 @@
 # CS3042-DBMS - Supply Chain Management System
 
-**database name should be *cs3042-dbms* 
+**database name should be *cs3042-dbms*  **
 
-##database importing order
+##database importing order##
 ```
 remotemysql
 functions
@@ -11,7 +11,7 @@ procedures
 data
 triggers
 ```
-##create .env file
+##create .env file##
 ```
 PORT=5000
 HOST=localhost
